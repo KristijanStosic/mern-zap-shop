@@ -5,7 +5,6 @@ const AddressSchema = new mongoose.Schema({
       type: String,
       required: [true, 'Please provide street'],
       default: 'my street',
-      unique: true
     },
     city: {
       type: String,
@@ -19,7 +18,6 @@ const AddressSchema = new mongoose.Schema({
     },
     country: {
       type: String,
-      required: [true, 'Please provide country'],
       default: 'my country',
     },
   },

@@ -5,7 +5,7 @@ import {
   UnauthenticatedError,
   UnauthorizedError,
 } from '../errors/index.js'
-import { attachCookiesToResponse } from '../utils/index.js'
+import { attachCookiesToResponse, createTokenUser } from '../utils/index.js'
 
 const register = async (req, res) => {
   const { name, email, password, address } = req.body
@@ -30,7 +30,7 @@ const register = async (req, res) => {
 
   const user = await User.create({ name, email, password, role, address })
 
-  const tokenUser = { userId: user._id, name: user.name, role: user.role, createdAt: user.createdAt }
+  const tokenUser = createTokenUser(user)
 
   attachCookiesToResponse({ res, user: tokenUser })
 
@@ -56,7 +56,7 @@ const login = async (req, res) => {
     throw new UnauthenticatedError('Incorrect password')
   }
 
-  const tokenUser = { userId: user._id, name: user.name, role: user.role, createdAt: user.createdAt }
+  const tokenUser = createTokenUser(user)
   attachCookiesToResponse({ res, user: tokenUser })
 
   res.status(StatusCodes.OK).json({ user: tokenUser })

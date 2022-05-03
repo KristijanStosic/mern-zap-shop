@@ -14,8 +14,8 @@ import { authenticateUser, authorizePermissions } from '../middleware/authentica
 
 router.route('/').get(authenticateUser, authorizePermissions('admin'), getAllUsers)
 router.route('/profile').get(authenticateUser, showCurrentUser)
-router.route('/updateUser').patch(updateUser)
-router.route('/updateUserPassword').patch(updateUserPassword)
-router.route('/:id').get(authenticateUser, authorizePermissions('admin'), getUserById).delete(authenticateUser, authorizePermissions('admin'), deleteUser)
+router.route('/updateUser').patch(authenticateUser, updateUser)
+router.route('/updateUserPassword').patch(authenticateUser, updateUserPassword)
+router.route('/:id').get(authenticateUser, getUserById).delete(authenticateUser, authorizePermissions('admin'), deleteUser)
 
 export default router

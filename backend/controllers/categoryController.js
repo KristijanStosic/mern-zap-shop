@@ -3,9 +3,9 @@ import { StatusCodes } from 'http-status-codes'
 import { NotFoundError, BadRequestError } from '../errors/index.js'
 
 const createCategory = async (req, res) => {
-  const { name } = req.body 
+  const { name } = req.body
 
-  if(!name) {
+  if (!name) {
     throw new BadRequestError('Please provide category name')
   }
 
@@ -36,18 +36,29 @@ const getCategoryById = async (req, res) => {
 }
 
 const updateCategory = async (req, res) => {
-  const { id: categoryId } = req.params 
+  const { id: categoryId } = req.params
+  const { name } = req.body
 
-  const category = await Category.findOneAndUpdate({ _id: categoryId }, req.body, {
-    new: true,
-    runValidators: true
-  })
+  if (!name) {
+    throw new BadRequestError('Please provide category name')
+  }
+
+  const category = await Category.findOne({ _id: categoryId })
 
   if (!category) {
     throw new NotFoundError(`No category with id: ${categoryId}`)
   }
 
-  res.status(StatusCodes.OK).json({ category })
+  const categoryAlreadyExists = await Category.findOne({ name })
+
+  if (categoryAlreadyExists) {
+    throw new BadRequestError('Category already exists. Insert new value')
+  }
+
+  category.name = name
+  await category.save()
+
+  res.status(StatusCodes.OK).json({ msg: 'Success! Category updated.' })
 }
 
 const deleteCategory = async (req, res) => {

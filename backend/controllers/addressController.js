@@ -1,4 +1,5 @@
 import Address from '../models/Address.js'
+import User from '../models/User.js'
 import { StatusCodes } from 'http-status-codes'
 import { BadRequestError, NotFoundError } from '../errors/index.js'
 
@@ -29,22 +30,36 @@ const getAddressById = async (req, res) => {
 }
 
 const updateAddress = async (req, res) => {
-  const { id: addressId } = req.params 
+  const { id: addressId } = req.params
+  const { street, city, postalCode, country } = req.body
 
-  const address = await Address.findOneAndUpdate({ _id: addressId }, req.body, {
-    new: true,
-    runValidators: true
-  })
+  if (!street || !city || !postalCode || !country) {
+    throw new BadRequestError('Please provide all values')
+  }
+
+  const address = await Address.findOne({ _id: addressId })
 
   if (!address) {
     throw new NotFoundError(`No address with id: ${addressId}`)
   }
 
-  res.status(StatusCodes.OK).json({ address })
+  address.street = street
+  address.city = city
+  address.postalCode = postalCode
+  address.country = country
+
+  await address.save()
+
+  res.status(StatusCodes.OK).json({ msg: 'Success! Address updated.' })
 }
 
 const deleteAddress = async (req, res) => {
   const { id: addressId } = req.params
+
+  const user = await User.findOne({ address: addressId })
+  if (user) {
+    throw new BadRequestError('Please delete all users with a relationship')
+  }
 
   const address = await Address.findOne({ _id: addressId })
   if (!address) {
