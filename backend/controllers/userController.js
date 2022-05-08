@@ -8,12 +8,12 @@ import {
 import { createTokenUser, attachCookiesToResponse, checkPermissions } from '../utils/index.js'
 
 const getAllUsers = async (req, res) => {
-  const users = await User.find({ role: 'user' }).select('-password') //.populate('address')
+  const users = await User.find({ role: 'user' }).select('-password').populate('address')
   res.status(StatusCodes.OK).json({ users })
 }
 
 const getUserById = async (req, res) => {
-  const user = await User.findOne({ _id: req.params.id }).select('-password').populate('address')
+  const user = await User.findOne({ _id: req.params.id }).select('-password')
   if (!user) {
     throw new NotFoundError(`No user with id: ${req.params.id}`)
   }

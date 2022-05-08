@@ -20,6 +20,11 @@ const AddressSchema = new mongoose.Schema({
       type: String,
       default: 'my country',
     },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: false, // change value later
+    }
   },
   {
     timestamps: true,

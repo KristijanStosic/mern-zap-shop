@@ -6,6 +6,8 @@ import {
 
 import createTokenUser from './createTokenUser.js'
 import checkPermissions from './checkPermissions.js'
+import sendEmail from './sendEmail.js'
+import sendVerificationEmail from './sendVerificationEmail.js'
 
 export {
   createJWT,
@@ -13,4 +15,6 @@ export {
   attachCookiesToResponse,
   createTokenUser,
   checkPermissions,
+  sendEmail,
+  sendVerificationEmail
 }

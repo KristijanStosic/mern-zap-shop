@@ -4,6 +4,7 @@ import { StatusCodes } from 'http-status-codes'
 import { BadRequestError, NotFoundError } from '../errors/index.js'
 
 const createAddress = async (req, res) => {
+  req.body.user = req.user.userId
   const { street, city, country } = req.body
 
   if (!street || !city || !country) {
@@ -21,7 +22,7 @@ const getAllAddresses = async (req, res) => {
 const getAddressById = async (req, res) => {
   const { id: addressId } = req.params
 
-  const address = await Address.findOne({ _id: addressId })
+  const address = await Address.findOne({ _id: addressId }).populate('user', '-password -verificationToken -isVerified')
 
   if (!address) {
     throw new NotFoundError(`No address with id: ${addressId}`)

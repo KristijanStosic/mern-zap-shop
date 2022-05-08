@@ -29,11 +29,12 @@ const UserSchema = new mongoose.Schema({
       enum: ['admin', 'user'],
       default: 'user'
   },
-  address: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Address',
-    required: false, // change value later
-  }
+  verificationToken: String,
+  isVerified: {
+    type: Boolean,
+    default: false
+  },
+  verified: Date,
 },
 {
   timestamps: true

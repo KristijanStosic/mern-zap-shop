@@ -1,5 +1,6 @@
 import express from 'express'
 import dotenv from 'dotenv'
+import cors from 'cors'
 dotenv.config()
 import 'express-async-errors'
 import morgan from 'morgan'
@@ -26,9 +27,11 @@ const app = express()
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(cookieParser(process.env.JWT_SECRET))
+//app.use(cors())
+//app.disable('etag');
 
 app.get('/', (req, res) => {
-  console.log(req.signedCookies);
+ //console.log(req.signedCookies);
   res.json({ msg: 'Welcome' })
 })
 

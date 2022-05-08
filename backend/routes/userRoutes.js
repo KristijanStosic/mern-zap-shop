@@ -12,7 +12,7 @@ import {
 
 import { authenticateUser, authorizePermissions } from '../middleware/authentication.js'
 
-router.route('/').get(authenticateUser, authorizePermissions('admin'), getAllUsers)
+router.route('/').get(getAllUsers)
 router.route('/profile').get(authenticateUser, showCurrentUser)
 router.route('/updateUser').patch(authenticateUser, updateUser)
 router.route('/updateUserPassword').patch(authenticateUser, updateUserPassword)
