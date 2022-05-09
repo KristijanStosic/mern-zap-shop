@@ -27,7 +27,7 @@ const showCurrentUser = async (req, res) => {
 
 // update user with user.save()
 const updateUser = async (req, res) => {
-  const { email, name, address } = req.body;
+  const { email, name, role } = req.body;
   if (!email || !name) {
     throw new BadRequestError('Please provide all values');
   }
@@ -35,7 +35,7 @@ const updateUser = async (req, res) => {
 
   user.email = email;
   user.name = name;
-  user.address = address;
+  user.role = role;
 
   await user.save();
 

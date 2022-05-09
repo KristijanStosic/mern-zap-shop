@@ -1,19 +1,19 @@
 import User from '../models/User.js'
+import Token from '../models/Token.js'
 import { StatusCodes } from 'http-status-codes'
 import crypto from 'crypto'
-import {
-  BadRequestError,
-  UnauthenticatedError,
-  UnauthorizedError,
-} from '../errors/index.js'
+
+import { BadRequestError, UnauthenticatedError } from '../errors/index.js'
 import {
   attachCookiesToResponse,
   createTokenUser,
   sendVerificationEmail,
+  sendResetPasswordEmail,
+  createHash
 } from '../utils/index.js'
 
 const register = async (req, res) => {
-  const { name, email, password, address } = req.body
+  const { name, email, password } = req.body
 
   if (!name || !email || !password) {
     throw new BadRequestError('Please provide all values')
@@ -40,7 +40,6 @@ const register = async (req, res) => {
     email,
     password,
     role,
-    address,
     verificationToken,
   })
 
@@ -72,7 +71,7 @@ const verifyEmail = async (req, res) => {
   }
 
   if (user.verificationToken !== verificationToken) {
-    throw new UnauthenticatedError('Verification token expired')
+    throw new UnauthenticatedError('Verification failed or token expired')
   }
 
   user.isVerified = true
@@ -110,17 +109,105 @@ const login = async (req, res) => {
   }
 
   const tokenUser = createTokenUser(user)
-  attachCookiesToResponse({ res, user: tokenUser })
+
+  // create refresh token
+  let refreshToken = ''
+  // check for existing token
+  const existingToken = await Token.findOne({ user: user._id })
+
+  if (existingToken) {
+    const { isValid } = existingToken
+    if (!isValid) {
+      throw new UnauthenticatedError('Invalid credentials')
+    }
+    refreshToken = existingToken.refreshToken
+    attachCookiesToResponse({ res, user: tokenUser, refreshToken })
+    res.status(StatusCodes.OK).json({ user: tokenUser })
+    return
+  }
+
+  refreshToken = crypto.randomBytes(40).toString('hex')
+  const userAgent = req.headers['user-agent']
+  const ip = req.ip
+  const userToken = { refreshToken, ip, userAgent, user: user._id }
+  await Token.create(userToken)
+
+  attachCookiesToResponse({ res, user: tokenUser, refreshToken })
 
   res.status(StatusCodes.OK).json({ user: tokenUser })
 }
 
 const logout = async (req, res) => {
-  res.cookie('token', 'logout', {
+  await Token.findOneAndDelete({ user: req.user.userId })
+
+  res.cookie('accessToken', 'logout', {
     httpOnly: true,
-    expires: new Date(Date.now() /*+ 5 * 1000*/),
+    expires: new Date(Date.now()),
+  })
+
+  res.cookie('refreshToken', 'logout', {
+    httpOnly: true,
+    expires: new Date(Date.now()),
   })
   res.status(StatusCodes.OK).json({ msg: 'Logged out!' })
 }
 
-export { register, login, logout, verifyEmail }
+const forgotPassword = async (req, res) => {
+  const { email } = req.body
+
+  if (!email) {
+    throw new BadRequestError('Please provide email')
+  }
+
+  const user = await User.findOne({ email })
+
+  if (user) {
+    const passwordToken = crypto.randomBytes(70).toString('hex')
+    const origin = 'http://localhost:3000'
+    await sendResetPasswordEmail({
+      name: user.name,
+      email: user.email,
+      token: passwordToken,
+      origin,
+    })
+
+    const tenMinutes = 1000 * 60 * 10
+    const passwordTokenExpirationDate = new Date(Date.now() + tenMinutes)
+
+    user.passwordToken = createHash(passwordToken)
+    user.passwordTokenExpirationDate = passwordTokenExpirationDate
+    await user.save()
+  }
+
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: 'Please check your email for reset password link' })
+}
+
+const resetPassword = async (req, res) => {
+  const { token, email, password } = req.body;
+  if (!token || !email || !password) {
+    throw new CustomError.BadRequestError('Please provide all values');
+  }
+  const user = await User.findOne({ email });
+
+  if (user) {
+    const currentDate = new Date();
+
+    if (
+      user.passwordToken === createHash(token) &&
+      user.passwordTokenExpirationDate > currentDate
+    ) {
+      user.password = password;
+      user.passwordToken = undefined;
+      user.passwordTokenExpirationDate = undefined;
+      await user.save();
+    }
+  }
+
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: 'Success! New password set successfully' })
+};
+
+export { register, login, logout, verifyEmail, forgotPassword, resetPassword }
