@@ -20,6 +20,10 @@ SMTP_EMAIL = Add smtp email
 SMTP_PASSWORD = Add smtp password
 SMTP_FROM_EMAIL = Add smtp from email
 SMTP_FROM_NAME = Add smtp from name
+
+CLOUDINARY_NAME =  cloudinary name
+CLOUDINARY_API_KEY = cloudinary api key
+CLOUDINARY_API_SECRET = cloudinary api secret
 ```
 
 ### Install Dependencies (frontend & backend)
