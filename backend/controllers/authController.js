@@ -119,6 +119,7 @@ const login = async (req, res) => {
     const { isValid } = existingToken
     if (!isValid) {
       throw new UnauthenticatedError('Invalid credentials')
+      // if user maybe starts to do something unwanted in our app we can easily set isValid to false so he or she does not have access anymore
     }
     refreshToken = existingToken.refreshToken
     attachCookiesToResponse({ res, user: tokenUser, refreshToken })

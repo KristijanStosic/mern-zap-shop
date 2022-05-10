@@ -2,6 +2,7 @@ import Address from '../models/Address.js'
 import User from '../models/User.js'
 import { StatusCodes } from 'http-status-codes'
 import { BadRequestError, NotFoundError } from '../errors/index.js'
+import { checkPermissions } from '../utils/index.js'
 
 const createAddress = async (req, res) => {
   req.body.user = req.user.userId
@@ -57,16 +58,17 @@ const updateAddress = async (req, res) => {
 const deleteAddress = async (req, res) => {
   const { id: addressId } = req.params
 
-  const user = await User.findOne({ address: addressId })
+  /*const user = await User.findOne({ address: addressId })
   if (user) {
     throw new BadRequestError('Please delete all users with a relationship')
-  }
+  }*/
 
   const address = await Address.findOne({ _id: addressId })
   if (!address) {
     throw new NotFoundError(`No address with id: ${addressId}`)
   }
-
+  checkPermissions(req.user, address.user)
+  
   await address.remove()
 
   res.status(StatusCodes.OK).json({ msg: 'Success! Address removed.' })

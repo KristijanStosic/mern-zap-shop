@@ -1,4 +1,5 @@
 import Publisher from '../models/Publisher.js'
+import Product from '../models/Product.js'
 import { BadRequestError, NotFoundError } from '../errors/index.js'
 import { StatusCodes } from 'http-status-codes'
 
@@ -65,6 +66,11 @@ const updatePublisher = async (req, res) => {
 
 const deletePublisher = async (req, res) => {
   const { id: publisherId } = req.params
+
+  const product = await Product.findOne({ publisher: publisherId })
+  if (product) {
+    throw new BadRequestError('Please delete all products with a relationship')
+  }
 
   const publisher = await Publisher.findOne({ _id: publisherId })
   if (!publisher) {

@@ -1,6 +1,6 @@
 import { UnauthorizedError } from '../errors/index.js'
 
-// only admin can see profile of other users
+// only admin can access specific routes, example: user cannot see profile of other uers, user cannot delete reviews of other users
 const checkPermissions = (requestUser, resourceUserId) => {
     /*console.log(requestUser);
     console.log(resourceUserId);

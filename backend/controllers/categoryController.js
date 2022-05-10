@@ -1,4 +1,5 @@
 import Category from '../models/Category.js'
+import Product from '../models/Product.js'
 import { StatusCodes } from 'http-status-codes'
 import { NotFoundError, BadRequestError } from '../errors/index.js'
 
@@ -63,6 +64,11 @@ const updateCategory = async (req, res) => {
 
 const deleteCategory = async (req, res) => {
   const { id: categoryId } = req.params
+
+  const product = await Product.findOne({ category: categoryId })
+  if (product) {
+    throw new BadRequestError('Please delete all products with a relationship')
+  }
 
   const category = await Category.findOne({ _id: categoryId })
   if (!category) {
