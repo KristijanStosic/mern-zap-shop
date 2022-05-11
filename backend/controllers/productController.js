@@ -116,7 +116,7 @@ const getAllProducts = async (req, res) => {
   const apiFeatures = new APIFeatures(
     Product.find().populate('category publisher'),
     req.query
-  ).search().filter().pagination(pageSize)
+  ).search().filter().pagination(pageSize).sorting()
 
   //const products = await Product.find({})//.populate('category publisher')
   const products = await apiFeatures.query
