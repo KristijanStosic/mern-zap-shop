@@ -5,6 +5,7 @@ import users from './data/users.js'
 import categories from './data/categories.js'
 import publishers from './data/publishers.js'
 import addresses from './data/addresses.js'
+import orders from './data/orders.js'
 
 import Product from './models/Product.js'
 import User from './models/User.js'
@@ -12,7 +13,6 @@ import Category from './models/Category.js'
 import Publisher from './models/Publisher.js'
 import Address from './models/Address.js'
 import Review from './models/Review.js'
-//import Order from './models/Order.js'
 
 import connectDB from './db/connect.js'
 
@@ -22,7 +22,6 @@ connectDB(process.env.MONGO_URL)
 
 const importData = async () => {
   try {
-    //await Order.deleteMany()
     await Product.deleteMany()
     await User.deleteMany()
     await Publisher.deleteMany()
@@ -57,6 +56,7 @@ const importData = async () => {
       }
     })
 
+
     await Product.insertMany(sampleProducts)
     await Address.insertMany(sampleAddresses)
 
@@ -70,7 +70,6 @@ const importData = async () => {
 
 const destroyData = async () => {
   try {
-    //await Order.deleteMany()
     await Product.deleteMany()
     await User.deleteMany()
     await Publisher.deleteMany()

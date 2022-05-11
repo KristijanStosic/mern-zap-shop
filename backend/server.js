@@ -25,13 +25,12 @@ import productRoutes from './routes/productRoutes.js'
 import authRoutes from './routes/authRoutes.js'
 import reviewRoutes from './routes/reviewRoutes.js'
 import userRoutes from './routes/userRoutes.js'
-//import orderRoutes from './routes/orderRoutes.js'
+import orderRoutes from './routes/orderRoutes.js'
 import addressRoutes from './routes/addressRoutes.js'
 
 // middleware
 import notFoundMiddleware from './middleware/not-found.js'
 import errorHandlerMiddleware from './middleware/error-handler.js'
-import { permittedCrossDomainPolicies } from 'helmet'
 
 const app = express()
 
@@ -62,7 +61,7 @@ app.use('/api/publishers', publisherRoutes)
 app.use('/api/addresses', addressRoutes)
 app.use('/api/products', productRoutes)
 app.use('/api/reviews', reviewRoutes)
-//app.use('/api/orders', orderRoutes)
+app.use('/api/orders', orderRoutes)
 
 app.use(notFoundMiddleware)
 app.use(errorHandlerMiddleware)

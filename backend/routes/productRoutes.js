@@ -8,7 +8,9 @@ import {
   updateProduct,
   deleteProduct,
   uploadImage,
-  uploadImageToCloud
+  uploadImageToCloud,
+  productCount,
+  featuredProducts
 } from '../controllers/productController.js'
 
 import { getSingleProductReviews } from '../controllers/reviewController.js'
@@ -20,9 +22,14 @@ router
   .post([authenticateUser, authorizePermissions('admin')], createProduct)
   .get(getAllProducts);
 
+
 router
   .route('/uploadImage')
   .post([authenticateUser, authorizePermissions('admin')], uploadImageToCloud);
+
+  router.get('/count', productCount)
+  router.get('/featured/:count', featuredProducts)
+
 
 router
   .route('/:id')

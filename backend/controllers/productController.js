@@ -7,6 +7,8 @@ import cloudinary from 'cloudinary'
 import path from 'path'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
+import APIFeatures from '../utils/apiFeatures.js'
+import { count } from 'console'
 
 const createProduct = async (req, res) => {
   //req.body.user = req.user.userId
@@ -108,8 +110,18 @@ const createProduct = async (req, res) => {
 }
 
 const getAllProducts = async (req, res) => {
-  const products = await Product.find({}) //.populate('category publisher')
-  res.status(StatusCodes.OK).json({ productsCount: products.length, products })
+  const pageSize = 4
+  const productCount = await Product.countDocuments()
+
+  const apiFeatures = new APIFeatures(
+    Product.find().populate('category publisher'),
+    req.query
+  ).search().filter().pagination(pageSize)
+
+  //const products = await Product.find({})//.populate('category publisher')
+  const products = await apiFeatures.query
+
+  res.status(StatusCodes.OK).json({ count: productCount, productsCount: products.length, products })
 }
 
 const getProductById = async (req, res) => {
@@ -178,9 +190,10 @@ const updateProduct = async (req, res) => {
     maxPlayers: maxPlayers || product.maxPlayers,
     sku: sku || product.sku,
     suggestedAge: suggestedAge || product.suggestedAge,
-    languageOfPublication: languageOfPublication || product.languageOfPublication,
+    languageOfPublication:
+      languageOfPublication || product.languageOfPublication,
     languageDependence: languageDependence || product.languageDependence,
-    originCountry:originCountry || product.originCountry,
+    originCountry: originCountry || product.originCountry,
     designer: designer || product.designer,
     category: category || product.category,
     publisher: publisher || product.publisher,
@@ -269,6 +282,19 @@ const uploadImageToCloud = async (req, res) => {
     .json({ image: { public_id: result.public_id, url: result.secure_url } })
 }
 
+const productCount = async (req, res) => {
+  const countProducts = await Product.countDocuments((count) => count).clone()
+
+  res.status(StatusCodes.OK).json({ productCount: countProducts })
+}
+
+const featuredProducts = async (req, res) => {
+  const count = req.params.count ? req.params.count : 0
+  const featuredProducts = await Product.find({ featured: true }).limit(count)
+
+  res.status(StatusCodes.OK).json({ featuredProducts: featuredProducts })
+}
+
 export {
   createProduct,
   getAllProducts,
@@ -277,8 +303,9 @@ export {
   deleteProduct,
   uploadImage,
   uploadImageToCloud,
+  productCount,
+  featuredProducts,
 }
-
 
 /*const updateProduct = async (req, res) => {
   const { id: productId } = req.params;
