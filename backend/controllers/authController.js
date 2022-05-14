@@ -3,7 +3,7 @@ import Token from '../models/Token.js'
 import { StatusCodes } from 'http-status-codes'
 import crypto from 'crypto'
 
-import { BadRequestError, UnauthenticatedError } from '../errors/index.js'
+import { BadRequestError, UnauthenticatedError, ConflictError } from '../errors/index.js'
 import {
   attachCookiesToResponse,
   createTokenUser,
@@ -26,7 +26,7 @@ const register = async (req, res) => {
   const emailAlreadyExists = await User.findOne({ email })
 
   if (emailAlreadyExists) {
-    throw new BadRequestError('Email already exists')
+    throw new ConflictError('Email already exists')
   }
 
   // first registered user is an admin

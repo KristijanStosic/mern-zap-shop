@@ -62,4 +62,13 @@ UserSchema.methods.comparePassword = async function (candidatePassword) {
   return isMatch
 }
 
+// when deleting user, remove all orders associated with that user
+UserSchema.pre('remove', async function (next) {
+  await this.model('Order').deleteMany({ user: this._id })
+})
+
+UserSchema.pre('remove', async function (next) {
+  await this.model('Address').deleteMany({ user: this._id })
+})
+
 export default mongoose.model('User', UserSchema)

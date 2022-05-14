@@ -1,7 +1,7 @@
 import Category from '../models/Category.js'
 import Product from '../models/Product.js'
 import { StatusCodes } from 'http-status-codes'
-import { NotFoundError, BadRequestError } from '../errors/index.js'
+import { NotFoundError, BadRequestError, ConflictError } from '../errors/index.js'
 
 const createCategory = async (req, res) => {
   const { name } = req.body
@@ -13,7 +13,7 @@ const createCategory = async (req, res) => {
   const categoryAlreadyExists = await Category.findOne({ name })
 
   if (categoryAlreadyExists) {
-    throw new BadRequestError('Category already exists. Insert new value')
+    throw new ConflictError('Category already exists. Insert new value')
   }
 
   const category = await Category.create({ name })

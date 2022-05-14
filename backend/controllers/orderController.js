@@ -42,16 +42,23 @@ const createOrder = async (req, res) => {
     // add item to order
     orderItems = [...orderItems, singleOrderItem]
     // calculate subtotal
-    subtotal += cartItem.quantity * price;
+    subtotal += cartItem.quantity * price
+
+    if (cartItem.quantity > dbProduct.countInStock) {
+      throw new BadRequestError('You cannot order more products than count in stock')
+    }
+    updateCountInStock(cartItem.product, cartItem.quantity, dbProduct.countInStock)
+    /*dbProduct.countInStock = dbProduct.countInStock - cartItem.quantity
+    await dbProduct.save()*/
   }
 
   // calculate total
-  const total = tax + shippingFee + subtotal;
+  const total = tax + shippingFee + subtotal
   // get client secret
   const paymentIntent = await fakeStripeAPI({
     amount: total,
     currency: 'usd',
-  });
+  })
 
   const order = await Order.create({
     orderItems,
@@ -61,48 +68,59 @@ const createOrder = async (req, res) => {
     shippingFee,
     clientSecret: paymentIntent.client_secret,
     user: req.user.userId,
-  });
+  })
 
-  res
-    .status(StatusCodes.CREATED)
-    .json({ msg: 'Success! Order created', order, clientSecret: order.clientSecret });
+  res.status(StatusCodes.CREATED).json({
+    msg: 'Success! Order created',
+    order,
+    clientSecret: order.clientSecret,
+  })
+}
+
+const updateCountInStock = async (id, quantity, oldInStock) => {
+  await Product.findOneAndUpdate(
+    { _id: id },
+    {
+      countInStock: oldInStock - quantity,
+    }
+  )
 }
 
 const getAllOrders = async (req, res) => {
-  const orders = await Order.find({});
-  res.status(StatusCodes.OK).json({ ordersCount: orders.length, orders });
+  const orders = await Order.find({})
+  res.status(StatusCodes.OK).json({ ordersCount: orders.length, orders })
 }
 
 const getOrderById = async (req, res) => {
-  const { id: orderId } = req.params;
-  const order = await Order.findOne({ _id: orderId });
+  const { id: orderId } = req.params
+  const order = await Order.findOne({ _id: orderId })
   if (!order) {
-    throw new NotFoundError(`No order with id : ${orderId}`);
+    throw new NotFoundError(`No order with id : ${orderId}`)
   }
-  checkPermissions(req.user, order.user);
-  res.status(StatusCodes.OK).json({ order });
+  checkPermissions(req.user, order.user)
+  res.status(StatusCodes.OK).json({ order })
 }
 
-const getCurrentUserOrders = async(req, res) => {
-  const orders = await Order.find({ user: req.user.userId });
-  res.status(StatusCodes.OK).json({ ordersCount: orders.length, orders });
+const getCurrentUserOrders = async (req, res) => {
+  const orders = await Order.find({ user: req.user.userId })
+  res.status(StatusCodes.OK).json({ ordersCount: orders.length, orders })
 }
 
 const updateOrder = async (req, res) => {
-  const { id: orderId } = req.params;
+  const { id: orderId } = req.params
   //const { paymentIntentId } = req.body;
 
-  const order = await Order.findOne({ _id: orderId });
+  const order = await Order.findOne({ _id: orderId })
   if (!order) {
-    throw new NotFoundError(`No order with id : ${orderId}`);
+    throw new NotFoundError(`No order with id : ${orderId}`)
   }
-  checkPermissions(req.user, order.user);
+  checkPermissions(req.user, order.user)
 
   //order.paymentIntentId = paymentIntentId;
-  order.status = 'paid';
-  await order.save();
+  order.status = 'paid'
+  await order.save()
 
-  res.status(StatusCodes.OK).json({ msg: 'Success! Order updated.' });
+  res.status(StatusCodes.OK).json({ msg: 'Success! Order updated.' })
 }
 
 const deleteOrder = async (req, res) => {

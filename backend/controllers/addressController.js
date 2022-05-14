@@ -58,11 +58,6 @@ const updateAddress = async (req, res) => {
 const deleteAddress = async (req, res) => {
   const { id: addressId } = req.params
 
-  /*const user = await User.findOne({ address: addressId })
-  if (user) {
-    throw new BadRequestError('Please delete all users with a relationship')
-  }*/
-
   const address = await Address.findOne({ _id: addressId })
   if (!address) {
     throw new NotFoundError(`No address with id: ${addressId}`)

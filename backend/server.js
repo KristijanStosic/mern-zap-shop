@@ -42,7 +42,7 @@ app.use(fileUpload({ useTempFiles: true }))
 const __dirname = path.resolve()
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 
-//app.use(cors())
+app.use(cors())
 //app.disable('etag');
 
 app.get('/', (req, res) => {

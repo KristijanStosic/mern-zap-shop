@@ -3,6 +3,8 @@ import BadRequestError from './bad-request.js'
 import NotFoundError from './not-found.js'
 import UnauthorizedError from './unauthorized.js'
 import UnauthenticatedError from './unauthenticated.js'
+import ConflictError from './conflict.js'
+
 
 export {
   CustomAPIError,
@@ -10,4 +12,5 @@ export {
   NotFoundError,
   UnauthorizedError,
   UnauthenticatedError,
+  ConflictError
 }

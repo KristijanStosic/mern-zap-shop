@@ -1,6 +1,6 @@
 import Publisher from '../models/Publisher.js'
 import Product from '../models/Product.js'
-import { BadRequestError, NotFoundError } from '../errors/index.js'
+import { BadRequestError, NotFoundError, ConflictError } from '../errors/index.js'
 import { StatusCodes } from 'http-status-codes'
 
 const createPublisher = async (req, res) => {
@@ -13,7 +13,7 @@ const createPublisher = async (req, res) => {
   const publisherAlreadyExists = await Publisher.findOne({ name })
 
   if (publisherAlreadyExists) {
-    throw new BadRequestError('Publisher already exists. Insert new value')
+    throw new ConflictError('Publisher already exists. Insert new value')
   }
 
   const publisher = await Publisher.create({ name })
