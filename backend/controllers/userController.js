@@ -8,7 +8,7 @@ import {
 import { createTokenUser, attachCookiesToResponse, checkPermissions } from '../utils/index.js'
 
 const getAllUsers = async (req, res) => {
-  const users = await User.find({ role: 'user' }).select('-password').populate('address')
+  const users = await User.find({ role: 'user' }).select('-password')
   res.status(StatusCodes.OK).json({ users })
 }
 
@@ -36,7 +36,7 @@ const updateUser = async (req, res) => {
 
   user.email = email;
   user.name = name;
-  user.role = role;
+  //user.role = role;
 
   await user.save();
 

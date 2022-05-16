@@ -110,7 +110,7 @@ const createProduct = async (req, res) => {
 }
 
 const getAllProducts = async (req, res) => {
-  const pageSize = 4
+  const pageSize = 8
   const productCount = await Product.countDocuments()
 
   const apiFeatures = new APIFeatures(
@@ -132,7 +132,6 @@ const getProductById = async (req, res) => {
   if (!product) {
     throw new NotFoundError(`No product with id: ${productId}`)
   }
-
   res.status(StatusCodes.OK).json({ product })
 }
 
