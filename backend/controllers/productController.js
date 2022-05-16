@@ -120,7 +120,6 @@ const getAllProducts = async (req, res) => {
 
   //const products = await Product.find({})//.populate('category publisher')
   const products = await apiFeatures.query
-
   res.status(StatusCodes.OK).json({ count: productCount, productsCount: products.length, products })
 }
 

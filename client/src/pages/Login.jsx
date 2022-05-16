@@ -130,14 +130,14 @@ function Login() {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link to='/register' style={{ color: '#333' }}>
+              <Button component={Link} to='/register'>
                 Don't have an account? Register
-              </Link>
+              </Button>
             </Grid>
             <Grid item>
-              <Link to='/forgot-password' style={{ color: '#333' }}>
+              <Button component={Link} to='/forgot-password'>
                 Forgot password?
-              </Link>
+              </Button>
             </Grid>
           </Grid>
         </Box>

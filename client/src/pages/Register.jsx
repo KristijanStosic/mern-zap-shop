@@ -141,9 +141,9 @@ function Register() {
             </Button>
             <Grid container>
               <Grid item>
-                <Link to='/login' style={{ color: '#333' }}>
+                <Button component={Link} to='/login'>
                   Already have an account? Login
-                </Link>
+                </Button>
               </Grid>
             </Grid>
           </Box>
