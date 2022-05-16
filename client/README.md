@@ -1,4 +1,3 @@
 #### Proxy
-
-"proxy": "https://user-workflow-11.herokuapp.com"
+### Zap shop client 
 "proxy": "http://localhost:5000"
