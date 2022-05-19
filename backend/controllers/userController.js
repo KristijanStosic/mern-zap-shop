@@ -45,6 +45,30 @@ const updateUser = async (req, res) => {
   res.status(StatusCodes.OK).json({ user: tokenUser });
 };
 
+const updateUserById = async (req, res) => {
+
+    const { id: userId } = req.params
+    const { name, email, role } = req.body
+  
+    if (!name || !email || !role) {
+      throw new BadRequestError('Please provide all values')
+    }
+  
+    const user = await User.findOne({ _id: userId })
+  
+    if (!user) {
+      throw new NotFoundError(`No user with id: ${userId}`)
+    }
+
+    user.name = name
+    user.email = email
+    user.role = role
+    await user.save()
+  
+    res.status(StatusCodes.OK).json({ msg: 'Success! User updated.' })
+
+}
+
 const updateUserPassword = async (req, res) => {
   const { oldPassword, newPassword } = req.body
 
@@ -90,6 +114,7 @@ export {
   deleteUser,
   showCurrentUser,
   updateUserPassword,
+  updateUserById
 }
 
 

@@ -6,19 +6,19 @@ const users = [
     email: 'admin@example.com',
     password: bcrypt.hashSync('12345678', 10),
     role: 'admin',
-    isVerified: true,
+    //isVerified: true,
   },
   {
     name: 'John Doe',
     email: 'john@example.com',
     password: bcrypt.hashSync('12345678', 10),
-    isVerified: true,
+    //isVerified: true,
   },
   {
     name: 'Jane Doe',
     email: 'jane@example.com',
     password: bcrypt.hashSync('12345678', 10),
-    isVerified: true,
+    //isVerified: true,
   },
 ]
 

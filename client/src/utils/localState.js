@@ -1,4 +1,9 @@
 import { useState } from 'react'
+import { useLocation } from 'react-router-dom'
+
+export function useQuery() {
+  return new URLSearchParams(useLocation().search)
+}
 
 const useLocalState = () => {
   const [hide, setHide] = useState(false)
@@ -31,7 +36,7 @@ const useLocalState = () => {
     setSuccess,
     hideAlert,
     showPassword,
-    hide
+    hide,
   }
 }
 

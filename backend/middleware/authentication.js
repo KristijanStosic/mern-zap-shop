@@ -3,7 +3,45 @@ import { isTokenValid } from '../utils/index.js'
 import { attachCookiesToResponse } from '../utils/index.js'
 import Token from '../models/Token.js'
 
+// authentication by passing token via Auth headers
 const authenticateUser = async (req, res, next) => {
+  // check header
+  const authHeader = req.headers.authorization
+  if (!authHeader || !authHeader.startsWith('Bearer')) {
+    throw new UnauthenticatedError('Authentication invalid. Please login to access this route')
+  }
+  const token = authHeader.split(' ')[1]
+
+  try {
+    const { name, userId, role, createdAt } = isTokenValid({ token })
+    req.user = { name, userId, role, createdAt }
+    next()
+  } catch (error) {
+    throw new UnauthenticatedError('Authentication invalid')
+  }
+
+  if (!token) {
+    throw new UnauthenticatedError('Authentication invalid. No token')
+  }
+}
+
+const authorizePermissions = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      throw new UnauthorizedError(`Unauthorized to access this resource`)
+    }
+    next()
+  }
+
+  /*if(req.user && req.user.role !== 'admin') {
+        throw new UnauthorizedError(`Role (${req.user.role}) is not allowed to access this resource`)
+    }
+    next()*/
+}
+
+
+// Authentication with cookies and access and refresh tokens
+/*const authenticateUser = async (req, res, next) => {
   const { refreshToken, accessToken } = req.signedCookies
 
   try {
@@ -38,7 +76,7 @@ const authenticateUser = async (req, res, next) => {
       'Authentication invalid.'
     )
   }
-}
+}*/
 
 /*const authenticateUser = async (req, res, next) => {
   const token = req.signedCookies.token
@@ -57,19 +95,5 @@ const authenticateUser = async (req, res, next) => {
     throw new UnauthenticatedError('Authentication invalid. Token invalid or expired.')
   }
 }*/
-
-const authorizePermissions = (...roles) => {
-  return (req, res, next) => {
-    if (!roles.includes(req.user.role)) {
-      throw new UnauthorizedError(`Unauthorized to access this resource`)
-    }
-    next()
-  }
-
-  /*if(req.user && req.user.role !== 'admin') {
-        throw new UnauthorizedError(`Role (${req.user.role}) is not allowed to access this resource`)
-    }
-    next()*/
-}
 
 export { authenticateUser, authorizePermissions }

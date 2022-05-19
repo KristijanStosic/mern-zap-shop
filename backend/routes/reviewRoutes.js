@@ -11,13 +11,14 @@ import {
 
 import {
   authenticateUser,
+  authorizePermissions
 } from '../middleware/authentication.js'
 
 router
   .route('/')
   .post(authenticateUser, createReview)
   .get(getAllReviews)
-router.route('/:id').get(getReviewById).patch(authenticateUser, updateReview).delete(authenticateUser, deleteReview)
+router.route('/:id').get(getReviewById).patch(authenticateUser, authorizePermissions('admin'), updateReview).delete(authenticateUser, authorizePermissions('admin'), deleteReview)
 
 
 export default router

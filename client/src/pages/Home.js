@@ -30,10 +30,10 @@ function Home() {
             size='large'
             variant='contained'
             fullWidth
+            component={Link} 
+            to='/products'
           >
-            <Link to='/products' style={{ color: 'white' }}>
-              SHOP NOW!
-            </Link>
+            SHOP NOW!
           </Button>
         </Grid>
         <Grid item xs={6}>

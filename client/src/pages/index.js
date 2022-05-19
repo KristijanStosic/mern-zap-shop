@@ -1,5 +1,5 @@
 import Home from './Home';
-import NotFound from './NotFound';
+import NotFound from '../components/NotFound';
 import Register from './Register';
 import Login from './Login';
 import Verify from './Verify';
@@ -10,6 +10,9 @@ import ResetPassword from './ResetPassword';
 import Products from './Products';
 import ProductDetails from './ProductDetails';
 import About from './About';
+import Cart from './Cart';
+
+
 
 export {
   Home,
@@ -23,5 +26,6 @@ export {
   ResetPassword,
   Products,
   ProductDetails,
-  About
+  About,
+  Cart
 };

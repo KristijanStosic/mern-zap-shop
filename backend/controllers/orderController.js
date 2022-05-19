@@ -10,14 +10,14 @@ const fakeStripeAPI = async ({ amount, currency }) => {
 }
 
 const createOrder = async (req, res) => {
-  const { orderItems: cartItems, tax, shippingFee } = req.body
+  const { orderItems: cartItems, tax, shippingFee, shippingAddress } = req.body
 
   if (!cartItems || cartItems.length < 1) {
     throw new BadRequestError('No cart items provided.')
   }
 
-  if (!tax || !shippingFee) {
-    throw new BadRequestError('Please provide tax and shipping fee')
+  if (!tax || !shippingFee || !shippingAddress) {
+    throw new BadRequestError('Please provide tax, shipping fee and shipping address')
   }
 
   let orderItems = []
@@ -47,9 +47,9 @@ const createOrder = async (req, res) => {
     if (cartItem.quantity > dbProduct.countInStock) {
       throw new BadRequestError('You cannot order more products than count in stock')
     }
-    updateCountInStock(cartItem.product, cartItem.quantity, dbProduct.countInStock)
-    /*dbProduct.countInStock = dbProduct.countInStock - cartItem.quantity
-    await dbProduct.save()*/
+    //updateCountInStock(cartItem.product, cartItem.quantity, dbProduct.countInStock)
+    dbProduct.countInStock = dbProduct.countInStock - cartItem.quantity
+    await dbProduct.save()
   }
 
   // calculate total
@@ -66,6 +66,7 @@ const createOrder = async (req, res) => {
     subtotal,
     tax,
     shippingFee,
+    shippingAddress,
     clientSecret: paymentIntent.client_secret,
     user: req.user.userId,
   })

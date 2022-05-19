@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useLocation, useNavigate, Link } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   Container,
   Box,
@@ -7,59 +7,50 @@ import {
   Typography,
   TextField,
   Button,
-  IconButton
+  IconButton,
 } from '@mui/material'
 import KeyIcon from '@mui/icons-material/Key'
 import InputAdornment from '@mui/material/InputAdornment'
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import Alert from '../components/Alert'
-import axios from 'axios'
+import { useQuery } from '../utils/localState'
 import useLocalState from '../utils/localState'
+import 'react-toastify/dist/ReactToastify.css'
+import { resetPassword } from '../actions/authActions'
 
-function useQuery() {
-  return new URLSearchParams(useLocation().search)
-}
 
 const ResetPasswordForm = () => {
-  const navigate = useNavigate()
-  const [password, setPassword] = useState('')
-  const { alert, showAlert, loading, setLoading, success, setSuccess, hide, showPassword } =
-    useLocalState()
-
   const query = useQuery()
 
-  const handleChange = async (e) => {
-    setPassword(e.target.value)
-  }
+  const [token] = useState(query.get('token'))
+  const [email] = useState(query.get('email'))
+  const [password, setPassword] = useState('')
+
+  const dispatch = useDispatch()
+
+  const { loading, error, msg } = useSelector(state => state.resetPassword)
+
+  const {
+    hide,
+    showPassword,
+  } = useLocalState()
+
+  useEffect(() => {
+    
+  }, [])
+
+
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setLoading(true)
-    if (!password) {
-      showAlert({ text: 'Please enter password' })
-      setLoading(false)
-      return
-    }
-    try {
-      const { data } = await axios.post('/api/auth/reset-password', {
-        password,
-        token: query.get('token'),
-        email: query.get('email'),
-      })
-      setSuccess(true)
-      setLoading(false)
-      showAlert({
-        text: `Success, redirecting to login page shortly`,
-        type: 'success',
-      })
-      setTimeout(() => {
-        navigate('/login')
-      }, 3000)
-    } catch (error) {
-      showAlert({ text: error.response.data.msg })
-      setLoading(false)
-    }
+
+    const formData = new FormData()
+
+    formData.set('token', token)
+    formData.set('email', email)
+    formData.set('password', password)
+
+    dispatch(resetPassword(formData))
   }
 
   return (
@@ -76,11 +67,15 @@ const ResetPasswordForm = () => {
           <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
             <KeyIcon />
           </Avatar>
-          <Typography component='h1' variant='h5'>
+        <Typography component='h1' variant='h5'>
             RESET PASSWORD
           </Typography>
-          {alert.show && <Alert severity={alert.type}>{alert.text}</Alert>}
-          {!success && (
+          {error && (
+            <Alert severity='error'>{error}</Alert>
+          )}
+          {msg && (
+            <Alert severity='info'>{msg}</Alert>
+          )}
             <Box
               component='form'
               onSubmit={handleSubmit}
@@ -98,7 +93,7 @@ const ResetPasswordForm = () => {
                 type={hide ? 'text' : 'password'}
                 value={password}
                 name='password'
-                onChange={handleChange}
+                onChange={(e) => setPassword(e.target.value)}
                 InputProps={{
                   endAdornment: (
                     <IconButton onClick={showPassword}>
@@ -114,12 +109,11 @@ const ResetPasswordForm = () => {
                 fullWidth
                 variant='contained'
                 sx={{ mt: 3, mb: 2 }}
-                disabled={loading}
+                disabled={loading ? true : false}
               >
-                {loading ? 'Please Wait...' : 'New Password'}
+                SET NEW PASSWORD
               </Button>
             </Box>
-          )}
         </Box>
       </Container>
     </>

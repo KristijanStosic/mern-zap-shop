@@ -1,18 +1,18 @@
 import jwt from 'jsonwebtoken'
 
 const createJWT = ({ payload }) => {
-  const token = jwt.sign(
-    payload,
-    process.env.JWT_SECRET /*{
+  const token = jwt.sign(payload, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_LIFETIME,
-  }Expiration is now controlled with cookies  */
-  )
+  })
 
   return token
 }
 
-const isTokenValid = (token) => jwt.verify(token, process.env.JWT_SECRET)
+const isTokenValid = ({token}) => jwt.verify(token, process.env.JWT_SECRET)
 
+
+
+//////////////////////////////////////////////
 const attachCookiesToResponse = ({ res, user, refreshToken }) => {
   const accessTokenJWT = createJWT({ payload: { user } })
 

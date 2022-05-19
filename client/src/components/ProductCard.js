@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import {
   Avatar,
   Button,
@@ -10,8 +11,23 @@ import {
   Typography,
 } from '@mui/material'
 import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { addToCart } from '../actions/cartActions'
 
 const ProductCard = ({ product }) => {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const [quantity] = useState(1)
+
+  const productId = product.id
+
+  useEffect(() => {}, [])
+
+  const addToCartHandler = () => {
+    dispatch(addToCart(productId, quantity))
+    navigate('/cart')
+  }
+
   return (
     <Card>
       <CardHeader
@@ -30,18 +46,18 @@ const ProductCard = ({ product }) => {
           height: 140,
           backgroundSize: 'contain',
         }}
+        component={Link}
+        to={`/products/${product.id}`}
         title={product.name}
         image={product.image}
       />
       <CardContent>
         <Typography gutterBottom color='primary' variant='h5'>
-          $ {product.price}
+          ${(product.price / 100).toFixed(2)}
         </Typography>
       </CardContent>
       <CardActions>
-        <Button
-          size='small'
-        >
+        <Button size='small' onClick={addToCartHandler}>
           Add to cart
         </Button>
         <Button component={Link} to={`/products/${product.id}`} size='small'>

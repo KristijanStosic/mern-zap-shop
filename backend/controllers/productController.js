@@ -47,7 +47,6 @@ const createProduct = async (req, res) => {
     gameLength,
     minPlayers,
     maxPlayers,
-    freeShipping,
     featured,
     sku,
     suggestedAge,
@@ -67,7 +66,6 @@ const createProduct = async (req, res) => {
     !gameLength ||
     !minPlayers ||
     !maxPlayers ||
-    !freeShipping ||
     !featured ||
     !sku ||
     !suggestedAge ||
@@ -92,7 +90,6 @@ const createProduct = async (req, res) => {
     minPlayers: minPlayers,
     maxPlayers: maxPlayers,
     featured: featured,
-    freeShipping: freeShipping,
     sku: sku,
     suggestedAge: suggestedAge,
     languageOfPublication: languageOfPublication,
@@ -145,7 +142,6 @@ const updateProduct = async (req, res) => {
     gameLength,
     minPlayers,
     maxPlayers,
-    freeShipping,
     featured,
     sku,
     suggestedAge,
@@ -181,7 +177,6 @@ const updateProduct = async (req, res) => {
     countInStock: countInStock || product.countInStock,
     image: result.secure_url || product.image,
     cloudinary_id: result.public_id || product.cloudinary_id,
-    freeShipping: freeShipping || product.freeShipping,
     featured: featured || product.featured,
     gameLength: gameLength || product.gameLength,
     minPlayers: minPlayers || product.minPlayers,

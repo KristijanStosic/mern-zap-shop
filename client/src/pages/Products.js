@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useGlobalContext } from '../context'
 import { getAllProducts } from '../actions/productActions'
 import { Grid } from '@mui/material'
 import ProductCard from '../components/ProductCard'
-import Loading from './Loading'
+import Loading from '../components/Loading'
 import Meta from '../components/Meta'
+import Alert from '../components/Alert'
 
 const Products = () => {
   const dispatch = useDispatch()
@@ -37,7 +37,7 @@ const Products = () => {
       {loading ? (
         <Loading message='Loading products...' />
       ) : error ? (
-        <h1>{error}</h1>
+        <Alert severity='error'>{error}</Alert>
       ) : (
         <Grid container spacing={4}>
           {products &&
