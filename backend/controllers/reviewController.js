@@ -79,6 +79,7 @@ const deleteReview = async (req, res) => {
 
   // not able to delete other users reviews except admins
   checkPermissions(req.user, review.user)
+
   await review.remove()
   res.status(StatusCodes.OK).json({ msg: 'Success! Review removed' })
 }

@@ -9,20 +9,18 @@ import {
   Button,
   IconButton,
 } from '@mui/material'
+import 'react-toastify/dist/ReactToastify.css'
 import KeyIcon from '@mui/icons-material/Key'
 import InputAdornment from '@mui/material/InputAdornment'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import Alert from '../components/Alert'
-import { useQuery } from '../utils/localState'
-import useLocalState from '../utils/localState'
-import 'react-toastify/dist/ReactToastify.css'
-import { resetPassword } from '../actions/authActions'
-
+import { useQuery } from '../utils/utils'
+import { resetPassword } from '../redux/actions/authActions'
 
 const ResetPasswordForm = () => {
   const query = useQuery()
-
+  const [hide, setHide] = useState(false)
   const [token] = useState(query.get('token'))
   const [email] = useState(query.get('email'))
   const [password, setPassword] = useState('')
@@ -30,11 +28,6 @@ const ResetPasswordForm = () => {
   const dispatch = useDispatch()
 
   const { loading, error, msg } = useSelector(state => state.resetPassword)
-
-  const {
-    hide,
-    showPassword,
-  } = useLocalState()
 
   useEffect(() => {
     
@@ -51,6 +44,11 @@ const ResetPasswordForm = () => {
     formData.set('password', password)
 
     dispatch(resetPassword(formData))
+  }
+
+  const showPassword = (e) => {
+    e.preventDefault()
+    setHide(!hide)
   }
 
   return (

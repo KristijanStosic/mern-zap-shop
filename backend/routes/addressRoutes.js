@@ -9,9 +9,9 @@ import {
   updateAddress,
 } from '../controllers/addressController.js'
 
-import { authenticateUser } from '../middleware/authentication.js'
+import { authenticateUser, authorizePermissions } from '../middleware/authentication.js'
 
-router.route('/').post(authenticateUser, createAddress).get(authenticateUser, getAllAddresses)
-router.route('/:id').delete(authenticateUser, deleteAddress).patch(authenticateUser, updateAddress).get(getAddressById)
+router.route('/').post(authenticateUser, createAddress).get(authenticateUser, authorizePermissions('admin'),  getAllAddresses)
+router.route('/:id').get(authenticateUser, getAddressById).delete(authenticateUser, deleteAddress).patch(authenticateUser, updateAddress)
 
 export default router

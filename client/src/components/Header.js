@@ -21,7 +21,7 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import 'react-toastify/dist/ReactToastify.css'
 import { ShoppingCart, PersonAdd, Settings, Logout } from '@mui/icons-material'
 import { ToastContainer, toast } from 'react-toastify'
-import { logout } from '../actions/authActions'
+import { logout } from '../redux/actions/authActions'
 
 const middleLinks = [
   { title: 'home', path: '/' },
@@ -116,7 +116,10 @@ const Header = ({ darkMode, handleThemeChange }) => {
               component={Link}
               to='/cart'
               size='small'
-              sx={{ color: 'inherit' }}
+              disableRipple
+              style={{ backgroundColor: 'transparent' }}
+              sx={{ color: 'white', alignItems: 'center' }}
+              
             >
               <Badge
                 badgeContent={cartItems.length}
@@ -185,7 +188,7 @@ const Header = ({ darkMode, handleThemeChange }) => {
                   transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                   anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                 >
-                  <MenuItem>
+                  <MenuItem component={Link} to='/profile'>
                     <Avatar /> Profile
                   </MenuItem>
                   <MenuItem>

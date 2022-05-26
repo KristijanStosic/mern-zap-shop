@@ -1,5 +1,5 @@
+import React from 'react'
 import { useSelector } from 'react-redux'
-
 import {
   TableContainer,
   Paper,
@@ -13,15 +13,12 @@ import { currencyFormat } from '../utils/utils'
 const CartSummary = () => {
   const cart = useSelector((state) => state.cart)
   const { cartItems } = cart
-
-  const subtotal =
-    cartItems.reduce(
-      (sum, cartItem) => sum + cartItem.quantity * cartItem.price,
-      0
-    ) ?? 0 // will return 0 if left side is null or undefined
+  
+  // will return 0 if left side is null or undefined
+  const subtotal = cartItems.reduce((sum, cartItem) => sum + cartItem.quantity * cartItem.price, 0 ) ?? 0 
 
   const taxFee = 100
-  const deliveryFee = subtotal > 10000 ? 0 : 500
+  const deliveryFee = subtotal > 10000 ? 0 : 250
 
   return (
     <>

@@ -11,7 +11,8 @@ import Products from './Products';
 import ProductDetails from './ProductDetails';
 import About from './About';
 import Cart from './Cart';
-
+import Profile from './Profile';
+import UpdatePassword from './UpdatePassword';
 
 
 export {
@@ -27,5 +28,7 @@ export {
   Products,
   ProductDetails,
   About,
-  Cart
+  Cart,
+  Profile,
+  UpdatePassword
 };

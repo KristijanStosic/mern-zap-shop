@@ -18,12 +18,12 @@ import {
   InputLabel,
   Rating,
 } from '@mui/material'
-import { useParams } from 'react-router-dom'
-import { currencyFormat } from '../utils/utils'
 import ReadMore from '../components/ReadMore'
 import Loading from '../components/Loading'
 import Meta from '../components/Meta'
-import { getProductDetails } from '../actions/productActions'
+import { useParams } from 'react-router-dom'
+import { currencyFormat } from '../utils/utils'
+import { getProductDetails } from '../redux/actions/productActions'
 
 const ProductDetails = () => {
   const navigate = useNavigate()

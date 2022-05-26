@@ -14,6 +14,8 @@ import {
   About,
   NotFound,
   Cart,
+  Profile,
+  UpdatePassword
 } from './pages'
 
 import {
@@ -27,7 +29,7 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 
 const App = () => {
-  const [loading, setLoading] = useState(false)
+  const [loading] = useState(false)
   const [darkMode, setDarkMode] = useState(false)
   const paletteType = darkMode ? 'dark' : 'light'
 
@@ -57,7 +59,6 @@ const App = () => {
           <Container>
             <Routes>
               <Route path='/' element={<Home />} />
-
               <Route path='/products' element={<Products />} />
               <Route path='/products/:id' element={<ProductDetails />} />
               <Route path='/cart'>
@@ -67,20 +68,19 @@ const App = () => {
 
               <Route path='/about' element={<About />} />
 
-              <Route
-                path='/dashboard'
-                element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                }
-              />
+              <Route path='/dashboard' element={ <ProtectedRoute> <Dashboard /> </ProtectedRoute> } />
+
+              {/* Auth */}
               <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />
               <Route path='/forgot-password' element={<ForgotPassword />} />
               <Route path='/user/verify-email' element={<Verify />} />
               <Route path='/user/reset-password' element={<ResetPassword />} />
               <Route path='*' element={<NotFound />} />
+
+              {/* User */}
+              <Route path='/profile' element={<Profile />} />
+              <Route path='/update-password' element={<UpdatePassword />} />
             </Routes>
           </Container>
           <Footer />

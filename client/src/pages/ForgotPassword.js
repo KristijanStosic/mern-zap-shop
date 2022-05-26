@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import {
   Container,
   Box,
@@ -9,12 +10,11 @@ import {
   Grid,
   Button,
 } from '@mui/material'
-import { Link } from 'react-router-dom'
 import LockOpenIcon from '@mui/icons-material/LockOpen'
 import Alert from '../components/Alert'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { forgotPassword, clearErrors } from '../actions/authActions'
+import { forgotPassword, clearErrors } from '../redux/actions/authActions'
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('')

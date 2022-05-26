@@ -4,9 +4,21 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import {
   productListReducer,
   productDetailsReducer,
-} from './reducers/productReducers'
-import { cartReducer } from './reducers/cartReducers'
-import { userLoginReducer, userRegisterReducer, forgotPasswordReducer, resetPasswordReducer, verifyEmailReducer } from './reducers/authReducers'
+} from './redux/reducers/productReducers'
+import { cartReducer } from './redux/reducers/cartReducers'
+import {
+  userLoginReducer,
+  userRegisterReducer,
+  forgotPasswordReducer,
+  resetPasswordReducer,
+  verifyEmailReducer,
+} from './redux/reducers/authReducers'
+
+import {
+  userDetailsReducer,
+  updatePasswordReducer,
+  userUpdateProfileReducer
+} from './redux/reducers/userReducers'
 
 const reducer = combineReducers({
   productList: productListReducer,
@@ -16,7 +28,10 @@ const reducer = combineReducers({
   userRegister: userRegisterReducer,
   forgotPassword: forgotPasswordReducer,
   resetPassword: resetPasswordReducer,
-  verifyEmail: verifyEmailReducer
+  verifyEmail: verifyEmailReducer,
+  userDetails: userDetailsReducer,
+  userUpdatePassword: updatePasswordReducer,
+  userUpdateProfile: userUpdateProfileReducer
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')
@@ -41,11 +56,5 @@ const store = createStore(
   initialState,
   composeWithDevTools(applyMiddleware(...middleware))
 )
-
-/*const store = configureStore(
-  reducer,
-  initialState,
-  composeWithDevTools(applyMiddleware(...middleware))
-)*/
 
 export default store

@@ -18,7 +18,7 @@ router
   .route('/')
   .post(authenticateUser, createReview)
   .get(getAllReviews)
-router.route('/:id').get(getReviewById).patch(authenticateUser, authorizePermissions('admin'), updateReview).delete(authenticateUser, authorizePermissions('admin'), deleteReview)
+router.route('/:id').get(getReviewById).patch(authenticateUser, updateReview).delete(authenticateUser, authorizePermissions('admin'), deleteReview)
 
 
 export default router

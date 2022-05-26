@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation, Link } from 'react-router-dom'
 import { Container, Button, Typography, Box } from '@mui/material'
-import { verifyEmail, clearErrors } from '../actions/authActions'
-import { useQuery } from '../utils/localState'
-import axios from 'axios'
+import { verifyEmail } from '../redux/actions/authActions'
+import { useQuery } from '../utils/utils'
 import Loading from '../components/Loading'
 
 
@@ -17,7 +15,7 @@ const VerifyPage = () => {
   console.log(token, email);
   const dispatch = useDispatch()
 
-  const { error, loading, msg } = useSelector((state) => state.verifyEmail)
+  const { error, loading } = useSelector((state) => state.verifyEmail)
 
   const handleSubmit =  (e) => {
     e.preventDefault()

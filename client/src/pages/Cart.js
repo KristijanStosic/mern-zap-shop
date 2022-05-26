@@ -16,22 +16,23 @@ import {
   MenuItem,
 } from '@mui/material'
 import { Delete } from '@mui/icons-material'
-import { Link, useParams, useNavigate, useSearchParams } from 'react-router-dom'
-import { addToCart, removeFromCart } from '../actions/cartActions'
+import { Link, useParams, useNavigate } from 'react-router-dom'
+import { addToCart, removeFromCart } from '../redux/actions/cartActions'
+import { useQuery } from '../utils/utils'
 import Alert from '../components/Alert'
 import CartSummary from '../components/CartSummary'
 
 const Cart = () => {
-  const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
+  const query = useQuery()
+  const params = useParams()
   const dispatch = useDispatch()
+  
   const cart = useSelector((state) => state.cart)
   const { cartItems } = cart
 
-  const navigate = useNavigate()
-  const params = useParams()
-
   const productId = params.id
-  const quantity = Number(searchParams.get('quantity'))
+  const quantity = Number(query.get('quantity'))
 
   useEffect(() => {
     if (productId) {

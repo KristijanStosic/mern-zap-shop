@@ -5,13 +5,10 @@ import store from './store'
 import './index.css'
 import 'normalize.css'
 import App from './App'
-import { AppProvider } from './context'
 
 ReactDOM.render(
   <Provider store={store}>
-    <AppProvider>
       <App />
-    </AppProvider>
   </Provider>,
   document.getElementById('root')
 )

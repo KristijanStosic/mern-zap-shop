@@ -12,7 +12,7 @@ import {
 } from '@mui/material'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
-import { addToCart } from '../actions/cartActions'
+import { addToCart } from '../redux/actions/cartActions'
 
 const ProductCard = ({ product }) => {
   const navigate = useNavigate()

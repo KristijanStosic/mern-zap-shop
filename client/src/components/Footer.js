@@ -5,9 +5,9 @@ import { Container, Typography, Box } from '@mui/material'
 function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary">
-      {'Copyright © 2022'}
-      <Link color="inherit" to="https://google.com/">
-        Your Website
+      {'Copyright ©'}
+      <Link color="white" to="https://google.com/">
+        ZAP-SHOP
       </Link>{' '}
       {new Date().getFullYear()}
 
@@ -21,16 +21,15 @@ const Footer = () => {
 
       <Box
         component="footer"
+        bgcolor="primary.main"   
         sx={{
           py: 3,
           px: 2,
           mt: 'auto',
+          width: 1,
         }}
       >
-        <Container maxWidth="sm">
-          <Typography variant="body1">
-            My sticky footer can be found here.
-          </Typography>
+        <Container sx={{ alignItems: 'center', justifyContent: 'center', display: 'flex'}} maxWidth="sm">
           <Copyright />
         </Container>
       </Box>

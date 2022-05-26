@@ -18,11 +18,11 @@ import InputAdornment from '@mui/material/InputAdornment'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
-import useLocalState from '../utils/localState'
-import { login } from '../actions/authActions'
+import { login } from '../redux/actions/authActions'
 import 'react-toastify/dist/ReactToastify.css'
 
-function Login() {
+const Login = () => {
+  const [hide, setHide] = useState(false)
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -31,8 +31,6 @@ function Login() {
 
   const userLogin = useSelector((state) => state.userLogin)
   const { loading, error, userInfo } = userLogin
-
-  const { hide, showPassword } = useLocalState()
 
   useEffect(() => {
     if (userInfo) {
@@ -43,6 +41,11 @@ function Login() {
   const onSubmit = async (e) => {
     e.preventDefault()
     dispatch(login(email, password))
+  }
+
+  const showPassword = (e) => {
+    e.preventDefault()
+    setHide(!hide)
   }
 
   return (
@@ -64,9 +67,7 @@ function Login() {
             LOGIN
           </Typography>
 
-          {error && (
-            <Alert severity='error'>{error}</Alert>
-          )}
+          {error && <Alert severity='error'>{error}</Alert>}
           {loading ? (
             <Loading message='Logging...' />
           ) : (
@@ -103,7 +104,11 @@ function Login() {
                   sx={{ mt: 2, mb: 1 }}
                   InputProps={{
                     endAdornment: (
-                      <IconButton onClick={showPassword}>
+                      <IconButton
+                        disableRipple
+                        style={{ backgroundColor: 'transparent' }}
+                        onClick={showPassword}
+                      >
                         <InputAdornment position='end'>
                           {hide ? <Visibility /> : <VisibilityOff />}
                         </InputAdornment>

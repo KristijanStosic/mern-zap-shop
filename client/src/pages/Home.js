@@ -1,4 +1,3 @@
-import main from '../assets/main.svg'
 import { Link } from 'react-router-dom'
 import { Typography, Grid, Button } from '@mui/material'
 import Meta from '../components/Meta'
@@ -37,7 +36,7 @@ function Home() {
           </Button>
         </Grid>
         <Grid item xs={6}>
-          <img src={main} alt='zap shop main' className='img main-img' />
+          <img src='' alt='zap shop main' className='img main-img' />
         </Grid>
       </Grid>
     </>

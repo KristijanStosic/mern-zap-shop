@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getAllProducts } from '../actions/productActions'
+import { getAllProducts } from '../redux/actions/productActions'
 import { Grid } from '@mui/material'
 import ProductCard from '../components/ProductCard'
 import Loading from '../components/Loading'
@@ -12,19 +12,6 @@ const Products = () => {
   const productList = useSelector((state) => state.productList)
 
   const { loading, error, products } = productList
-
-  //const [loading, setLoading] = useState(true)
-  //const [products, setProducts] = useState([])
-
-  /*const getProducts = async () => {
-    try {
-      const { data } = await axios.get('/api/products')
-      setProducts(data.products)
-      setLoading(false)
-    } catch (error) {
-      console.log(error)
-    }
-  }*/
 
   useEffect(() => {
     dispatch(getAllProducts())

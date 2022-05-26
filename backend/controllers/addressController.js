@@ -1,16 +1,15 @@
 import Address from '../models/Address.js'
-import User from '../models/User.js'
 import { StatusCodes } from 'http-status-codes'
 import { BadRequestError, NotFoundError } from '../errors/index.js'
 import { checkPermissions } from '../utils/index.js'
 
 const createAddress = async (req, res) => {
-  req.body.user = req.user.userId
   const { street, city, country } = req.body
 
   if (!street || !city || !country) {
     throw new BadRequestError('Please provide all values')
   }
+  req.body.user = req.user.userId
   const address = await Address.create(req.body)
   res.status(StatusCodes.CREATED).json({ address })
 }
@@ -28,6 +27,7 @@ const getAddressById = async (req, res) => {
   if (!address) {
     throw new NotFoundError(`No address with id: ${addressId}`)
   }
+
   res.status(StatusCodes.OK).json({ address })
 }
 
@@ -44,6 +44,7 @@ const updateAddress = async (req, res) => {
   if (!address) {
     throw new NotFoundError(`No address with id: ${addressId}`)
   }
+  checkPermissions(req.user, address.user)
 
   address.street = street
   address.city = city

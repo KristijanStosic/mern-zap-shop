@@ -9,13 +9,12 @@ import {
   RESET_PASSWORD_REQUEST,
   RESET_PASSWORD_SUCCESS,
   RESET_PASSWORD_FAIL,
-  CLEAR_ERRORS,
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
   USER_REGISTER_FAIL,
   VERIFY_EMAIL_REQUEST,
   VERIFY_EMAIL_SUCCESS,
-  VERIFY_EMAIL_FAIL
+  VERIFY_EMAIL_FAIL,
 } from '../constants/authConstants'
 
 export const userLoginReducer = (state = {}, action) => {
@@ -28,12 +27,6 @@ export const userLoginReducer = (state = {}, action) => {
       return { loading: false, error: action.payload }
     case USER_LOGOUT:
       return {}
-
-    case CLEAR_ERRORS:
-      return {
-        ...state,
-        error: null,
-      }
     default:
       return state
   }
@@ -44,15 +37,11 @@ export const userRegisterReducer = (state = {}, action) => {
     case USER_REGISTER_REQUEST:
       return { loading: true }
     case USER_REGISTER_SUCCESS:
-      return { loading: false, userInfo: action.payload }
+      return { loading: true, userInfo: action.payload }
     case USER_REGISTER_FAIL:
       return { loading: false, error: action.payload }
-
-    case CLEAR_ERRORS:
-      return {
-        ...state,
-        error: null,
-      }
+    case USER_LOGOUT:
+      return {}
     default:
       return state
   }
@@ -75,12 +64,6 @@ export const forgotPasswordReducer = (state = {}, action) => {
 
     case FORGOT_PASSWORD_FAIL:
       return { ...state, loading: false, error: action.payload }
-
-    case CLEAR_ERRORS:
-      return {
-        ...state,
-        error: null,
-      }
 
     default:
       return state
@@ -105,12 +88,6 @@ export const resetPasswordReducer = (state = {}, action) => {
     case RESET_PASSWORD_FAIL:
       return { ...state, loading: false, error: action.payload }
 
-    case CLEAR_ERRORS:
-      return {
-        ...state,
-        error: null,
-      }
-
     default:
       return state
   }
@@ -133,12 +110,6 @@ export const verifyEmailReducer = (state = {}, action) => {
 
     case VERIFY_EMAIL_FAIL:
       return { ...state, loading: false, error: action.payload }
-
-    case CLEAR_ERRORS:
-      return {
-        ...state,
-        error: null,
-      }
 
     default:
       return state

@@ -1,13 +1,9 @@
 import User from '../models/User.js'
 import Token from '../models/Token.js'
-import { StatusCodes } from 'http-status-codes'
 import crypto from 'crypto'
+import { StatusCodes } from 'http-status-codes'
 
-import {
-  BadRequestError,
-  UnauthenticatedError,
-  ConflictError,
-} from '../errors/index.js'
+import { BadRequestError, UnauthenticatedError, ConflictError } from '../errors/index.js'
 import {
   createJWT,
   attachCookiesToResponse,
@@ -74,7 +70,7 @@ const login = async (req, res) => {
   res
     .status(StatusCodes.OK)
     .json({
-      user: { name: user.name, email: user.email, role: user.role },
+      user: { name: user.name, email: user.email, role: user.role, createdAt: user.createdAt },
       token,
     })
 }

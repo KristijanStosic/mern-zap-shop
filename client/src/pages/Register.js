@@ -9,17 +9,12 @@ import {
   TextField,
   Grid,
   Button,
-  IconButton,
 } from '@mui/material'
-import InputAdornment from '@mui/material/InputAdornment'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
-import Visibility from '@mui/icons-material/Visibility'
-import VisibilityOff from '@mui/icons-material/VisibilityOff'
-import useLocalState from '../utils/localState'
 import Alert from '../components/Alert'
 import Loading from '../components/Loading'
 import Meta from '../components/Meta'
-import { register } from '../actions/authActions'
+import { register } from '../redux/actions/authActions'
 
 function Register() {
   const [name, setName] = useState('')
@@ -34,8 +29,6 @@ function Register() {
   const userRegister = useSelector((state) => state.userRegister)
   const { loading, error, userInfo } = userRegister
 
-  const { hide, showPassword } = useLocalState()
-
   const onSubmit = async (e) => {
     e.preventDefault()
 
@@ -43,16 +36,17 @@ function Register() {
       setMessage('Passwords do not match')
     } else {
       dispatch(register(name, email, password))
-      navigate('/')
-      /*setName('')
+      setName('')
       setEmail('')
       setPassword('')
-      setConfirmPassword('')*/
+      setConfirmPassword('')
     }
   }
 
   useEffect(() => {
-
+    if(userInfo) {
+      navigate('/')
+    }
   }, [dispatch, userInfo, navigate])
 
   return (
@@ -67,8 +61,6 @@ function Register() {
             alignItems: 'center',
           }}
         >
-          {message && <Alert severity='error'>{message}</Alert>}
-          {error && <Alert severity='error'>{error}</Alert>}
           {loading ? (
             <Loading message='Registering new user...' />
           ) : (
@@ -79,7 +71,8 @@ function Register() {
               <Typography component='h1' variant='h5'>
                 REGISTER
               </Typography>
-              {/* {confirmMessage &&  <Alert severity='success'>{confirmMessage}</Alert>} */}
+              {message && <Alert severity='error'>{message}</Alert>}
+              {error && <Alert severity='error'>{error}</Alert>}
               <Box
                 component='form'
                 onSubmit={onSubmit}
@@ -117,20 +110,11 @@ function Register() {
                   autoComplete='password'
                   id='password'
                   label='Password'
-                  type={hide ? 'text' : 'password'}
+                  type='password'
                   value={password}
                   name='password'
                   onChange={(e) => setPassword(e.target.value)}
                   sx={{ mt: 2, mb: 1 }}
-                  InputProps={{
-                    endAdornment: (
-                      <IconButton onClick={showPassword}>
-                        <InputAdornment position='end'>
-                          {hide ? <Visibility /> : <VisibilityOff />}
-                        </InputAdornment>
-                      </IconButton>
-                    ),
-                  }}
                 />
 
                 <TextField
@@ -139,20 +123,11 @@ function Register() {
                   autoComplete='confirmPassword'
                   id='confirmPassword'
                   label='Confirm Password'
-                  type={hide ? 'text' : 'password'}
+                  type='password'
                   value={confirmPassword}
                   name='confirmPassword'
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   sx={{ mt: 2, mb: 1 }}
-                  InputProps={{
-                    endAdornment: (
-                      <IconButton onClick={showPassword}>
-                        <InputAdornment position='end'>
-                          {hide ? <Visibility /> : <VisibilityOff />}
-                        </InputAdornment>
-                      </IconButton>
-                    ),
-                  }}
                 />
 
                 <Button

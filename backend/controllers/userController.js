@@ -5,7 +5,7 @@ import {
   BadRequestError,
   UnauthenticatedError,
 } from '../errors/index.js'
-import { createTokenUser, attachCookiesToResponse, checkPermissions } from '../utils/index.js'
+import { createTokenUser, checkPermissions, createJWT } from '../utils/index.js'
 
 const getAllUsers = async (req, res) => {
   const users = await User.find({ role: 'user' }).select('-password')
@@ -21,13 +21,19 @@ const getUserById = async (req, res) => {
   res.status(StatusCodes.OK).json({ user })
 }
 
-const showCurrentUser = async (req, res) => {
-  res.status(StatusCodes.OK).json({ user: req.user })
+const getUserProfile = async (req, res) => {
+  const user = await User.findOne({ _id: req.user.userId }).select('-password')
+
+  if(!user) {
+    throw new NotFoundError(`No user with id: ${req.params.id}`)
+  }
+
+  res.status(StatusCodes.OK).json({ user })
 }
 
 // update user with user.save()
-const updateUser = async (req, res) => {
-  const { email, name, role } = req.body;
+const updateUserProfile = async (req, res) => {
+  const { email, name} = req.body;
   
   if (!email || !name) {
     throw new BadRequestError('Please provide all values');
@@ -36,18 +42,17 @@ const updateUser = async (req, res) => {
 
   user.email = email;
   user.name = name;
-  //user.role = role;
 
   await user.save();
 
   const tokenUser = createTokenUser(user);
-  attachCookiesToResponse({ res, user: tokenUser });
-  res.status(StatusCodes.OK).json({ user: tokenUser });
+  const token = createJWT({ payload: tokenUser })
+  res.status(StatusCodes.OK).json({ user: tokenUser, token });
 };
 
 const updateUserById = async (req, res) => {
-
     const { id: userId } = req.params
+
     const { name, email, role } = req.body
   
     if (!name || !email || !role) {
@@ -73,7 +78,7 @@ const updateUserPassword = async (req, res) => {
   const { oldPassword, newPassword } = req.body
 
   if (!oldPassword || !newPassword) {
-    throw new BadRequestError('Please provide both values')
+    throw new BadRequestError('Please provide all values')
   }
 
   const user = await User.findOne({ _id: req.user.userId })
@@ -85,7 +90,7 @@ const updateUserPassword = async (req, res) => {
   const isPasswordCorrect = await user.comparePassword(oldPassword)
 
   if (!isPasswordCorrect) {
-    throw new UnauthenticatedError('Incorrect password')
+    throw new UnauthenticatedError('Old password is incorrect')
   }
 
   user.password = newPassword
@@ -110,9 +115,9 @@ const deleteUser = async (req, res) => {
 export {
   getAllUsers,
   getUserById,
-  updateUser,
+  updateUserProfile,
   deleteUser,
-  showCurrentUser,
+  getUserProfile,
   updateUserPassword,
   updateUserById
 }

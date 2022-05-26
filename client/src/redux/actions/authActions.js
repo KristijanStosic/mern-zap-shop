@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { USER_DETAILS_RESET } from '../constants/userConstants'
 import {
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
@@ -96,6 +97,7 @@ export const register = (name, email, password) => async (dispatch) => {
 export const logout = () => (dispatch) => {
   localStorage.removeItem('userInfo')
   dispatch({ type: USER_LOGOUT })
+  dispatch({ type: USER_DETAILS_RESET })
 }
 
 export const forgotPassword = (email) => async (dispatch) => {
