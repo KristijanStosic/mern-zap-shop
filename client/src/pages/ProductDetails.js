@@ -16,13 +16,12 @@ import {
   Select,
   MenuItem,
   InputLabel,
-  Rating,
 } from '@mui/material'
 import ReadMore from '../components/ReadMore'
 import Loading from '../components/Loading'
 import Meta from '../components/Meta'
+import Rating from '../components/Rating'
 import { useParams } from 'react-router-dom'
-import { currencyFormat } from '../utils/utils'
 import { getProductDetails } from '../redux/actions/productActions'
 
 const ProductDetails = () => {
@@ -65,7 +64,7 @@ const ProductDetails = () => {
               <Typography variant='h3'>{product.name}</Typography>
               <Divider sx={{ mb: 2 }} />
               <Typography variant='h5' color='primary.dark'>
-                Price: {currencyFormat(product.price)}
+                Price: ${product.price.toFixed(2)}
               </Typography>
               <TableContainer>
                 <Table>
@@ -79,17 +78,9 @@ const ProductDetails = () => {
                       <TableCell>{product.name}</TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell>Number of reviews</TableCell>
-                      <TableCell>{product.numOfReviews} reviews</TableCell>
-                    </TableRow>
-                    <TableRow>
                       <TableCell>Rating</TableCell>
                       <TableCell>
-                        <Rating
-                          name='averageRating'
-                          value={product.averageRating}
-                          align='center'
-                        />
+                      <Rating value={product.averageRating} text={` (${product.numOfReviews})  reviews`} />
                       </TableCell>
                     </TableRow>
 

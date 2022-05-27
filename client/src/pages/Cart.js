@@ -14,12 +14,13 @@ import {
   FormControl,
   Select,
   MenuItem,
+  Typography,
 } from '@mui/material'
 import { Delete } from '@mui/icons-material'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { addToCart, removeFromCart } from '../redux/actions/cartActions'
 import { useQuery } from '../utils/utils'
-import Alert from '../components/Alert'
+import Meta from '../components/Meta'
 import CartSummary from '../components/CartSummary'
 
 const Cart = () => {
@@ -30,6 +31,9 @@ const Cart = () => {
   
   const cart = useSelector((state) => state.cart)
   const { cartItems } = cart
+
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
 
   const productId = params.id
   const quantity = Number(query.get('quantity'))
@@ -45,16 +49,18 @@ const Cart = () => {
   }
 
   const checkoutHandler = () => {
-    navigate('/login?redirect=shipping')
+    userInfo ? navigate('/shipping') : navigate('/login')
   }
 
   return (
     <>
+    <Meta title={'Cart Page'} />
+
       {cartItems.length === 0 ? (
         <>
-          <Alert severity='error' size='medium'>
-            Your cart is empty!{' '}
-          </Alert>
+          <Typography variant='h6'>
+            Your cart is empty!
+          </Typography>
           <Button
             variant='contained'
             component={Link}
@@ -73,7 +79,7 @@ const Cart = () => {
                   <TableCell>Product</TableCell>
                   <TableCell align='right'>Price</TableCell>
                   <TableCell align='center'>Quantity</TableCell>
-                  <TableCell align='right'>Subtotal</TableCell>
+                  <TableCell align='right'>Total</TableCell>
                   <TableCell align='right'></TableCell>
                 </TableRow>
               </TableHead>
@@ -102,7 +108,7 @@ const Cart = () => {
                         </Box>
                       </TableCell>
                       <TableCell align='right'>
-                        ${(cartItem.price / 100).toFixed(2)}
+                        ${(cartItem.price).toFixed(2)}
                       </TableCell>
                       <TableCell align='center'>
                       <FormControl fullWidth>
@@ -122,7 +128,7 @@ const Cart = () => {
                       </TableCell>
                       <TableCell align='right'>
                         $
-                        {((cartItem.price / 100) * cartItem.quantity).toFixed(
+                        {((cartItem.price) * cartItem.quantity).toFixed(
                           2
                         )}
                       </TableCell>
@@ -145,8 +151,9 @@ const Cart = () => {
                 size='large'
                 fullWidth
                 onClick={checkoutHandler}
+                disabled={cartItems.length === 0}
               >
-                Checkout
+                PROCEED TO CHECKOUT
               </Button>
             </Grid>
           </Grid>

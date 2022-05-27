@@ -13,6 +13,11 @@ import About from './About';
 import Cart from './Cart';
 import Profile from './Profile';
 import UpdatePassword from './UpdatePassword';
+import Shipping from './Shipping';
+import PaymentMethod from './PaymentMethod'
+import PlaceOrder from './PlaceOrder'
+import OrderSuccess from './OrderSuccess'
+
 
 
 export {
@@ -30,5 +35,9 @@ export {
   About,
   Cart,
   Profile,
-  UpdatePassword
+  UpdatePassword,
+  Shipping,
+  PaymentMethod,
+  PlaceOrder,
+  OrderSuccess
 };

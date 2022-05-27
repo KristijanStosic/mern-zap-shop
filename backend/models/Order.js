@@ -28,21 +28,25 @@ const OrderItemSchema = new mongoose.Schema(
 
 const OrderSchema = new mongoose.Schema(
   {
-    tax: {
+    taxPrice: {
       type: Number,
       required: true,
+      default: 0.0,
     },
-    shippingFee: {
+    shippingPrice: {
       type: Number,
       required: true,
+      default: 0.0,
     },
-    subtotal: {
+    itemsPrice: {
       type: Number,
       required: true,
+      default: 0.0,
     },
-    total: {
+    totalPrice: {
       type: Number,
       required: true,
+      default: 0.0
     },
     status: {
       type: String,
@@ -51,23 +55,28 @@ const OrderSchema = new mongoose.Schema(
     },
     orderItems: [OrderItemSchema],
     shippingAddress: {
+      firstName: { type: String, required: true },
+      lastName: { type: String, required: true },
       address: { type: String, required: true },
-      phone: { type: String, required: true },
+      phoneNumber: { type: String, required: true },
       city: { type: String, required: true },
       postalCode: { type: String, required: true },
       country: { type: String, required: true },
+    },
+    paymentMethod: {
+      type: String,
+      required: true,
+    },
+    clientSecret: {
+      type: String,
+    },
+    paymentIntentId: {
+      type: String,
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
-    },
-    clientSecret: {
-      type: String,
-      required: true,
-    },
-    paymentIntentId: {
-      type: String,
     },
   },
   {

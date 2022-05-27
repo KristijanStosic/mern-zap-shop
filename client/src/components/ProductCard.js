@@ -10,6 +10,7 @@ import {
   CardMedia,
   Typography,
 } from '@mui/material'
+import Rating from '../components/Rating'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { addToCart } from '../redux/actions/cartActions'
@@ -53,8 +54,10 @@ const ProductCard = ({ product }) => {
       />
       <CardContent>
         <Typography gutterBottom color='primary' variant='h5'>
-          ${(product.price / 100).toFixed(2)}
+          ${product.price.toFixed(2)}
         </Typography>
+
+        <Rating value={product.averageRating} text={` (${product.numOfReviews})  reviews`} />
       </CardContent>
       <CardActions>
         <Button size='small' onClick={addToCartHandler}>

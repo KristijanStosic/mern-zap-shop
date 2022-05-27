@@ -19,7 +19,7 @@ import {
 } from '@mui/material'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import 'react-toastify/dist/ReactToastify.css'
-import { ShoppingCart, PersonAdd, Settings, Logout } from '@mui/icons-material'
+import { ShoppingCart, Logout } from '@mui/icons-material'
 import { ToastContainer, toast } from 'react-toastify'
 import { logout } from '../redux/actions/authActions'
 
@@ -195,18 +195,6 @@ const Header = ({ darkMode, handleThemeChange }) => {
                     <Avatar /> My account
                   </MenuItem>
                   <Divider />
-                  <MenuItem>
-                    <ListItemIcon>
-                      <PersonAdd fontSize='small' />
-                    </ListItemIcon>
-                    Add another account
-                  </MenuItem>
-                  <MenuItem>
-                    <ListItemIcon>
-                      <Settings fontSize='small' />
-                    </ListItemIcon>
-                    Settings
-                  </MenuItem>
                   <MenuItem onClick={logoutHandler}>
                     <ListItemIcon>
                       <Logout fontSize='small' />

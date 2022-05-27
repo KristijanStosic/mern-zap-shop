@@ -39,6 +39,10 @@ const UpdatePassword = () => {
       formData.set('newPassword', newPassword)
       formData.set('confirmPassword', confirmPassword)
       dispatch(updateUserPassword(formData))
+
+      setTimeout(() => {
+        navigate('/profile')
+      }, 3000)
     }
   }
 

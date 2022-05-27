@@ -15,7 +15,11 @@ import {
   NotFound,
   Cart,
   Profile,
-  UpdatePassword
+  UpdatePassword,
+  Shipping,
+  PaymentMethod,
+  PlaceOrder,
+  OrderSuccess
 } from './pages'
 
 import {
@@ -61,10 +65,16 @@ const App = () => {
               <Route path='/' element={<Home />} />
               <Route path='/products' element={<Products />} />
               <Route path='/products/:id' element={<ProductDetails />} />
+
               <Route path='/cart'>
                 <Route path=':id' element={<Cart />} />
                 <Route index element={<Cart />} />
               </Route>
+
+              <Route path='/shipping' element={<Shipping />} />
+              <Route path='/payment-method' element={<PaymentMethod />} />
+              <Route path='/place-order' element={<PlaceOrder />} />
+              <Route path='/order-success' element={<OrderSuccess />} />
 
               <Route path='/about' element={<About />} />
 

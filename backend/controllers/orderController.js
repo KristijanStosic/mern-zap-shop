@@ -10,18 +10,28 @@ const fakeStripeAPI = async ({ amount, currency }) => {
 }
 
 const createOrder = async (req, res) => {
-  const { orderItems: cartItems, tax, shippingFee, shippingAddress } = req.body
+  let {
+    orderItems: cartItems,
+    shippingAddress,
+    paymentMethod,
+    itemsPrice,
+    taxPrice,
+    shippingPrice,
+    totalPrice
+  } = req.body
 
   if (!cartItems || cartItems.length < 1) {
     throw new BadRequestError('No cart items provided.')
   }
 
-  if (!tax || !shippingFee || !shippingAddress) {
-    throw new BadRequestError('Please provide tax, shipping fee and shipping address')
+  if (!taxPrice || !shippingPrice || !shippingAddress || !paymentMethod) {
+    throw new BadRequestError(
+      'Please provide tax, shipping fee, shipping addres, payament method'
+    )
   }
 
   let orderItems = []
-  let subtotal = 0
+  itemsPrice = 0
 
   for (const cartItem of cartItems) {
     const dbProduct = await Product.findOne({ _id: cartItem.product })
@@ -39,52 +49,44 @@ const createOrder = async (req, res) => {
       product: _id,
     }
 
-    // add item to order
     orderItems = [...orderItems, singleOrderItem]
     // calculate subtotal
-    subtotal += cartItem.quantity * price
+    itemsPrice += cartItem.quantity * price // all items multipiled their quantity with price example: 3xgame1 + 2xgame2 
 
     if (cartItem.quantity > dbProduct.countInStock) {
-      throw new BadRequestError('You cannot order more products than count in stock')
+      throw new BadRequestError(
+        'You cannot order more products than count in stock'
+      )
     }
-    //updateCountInStock(cartItem.product, cartItem.quantity, dbProduct.countInStock)
     dbProduct.countInStock = dbProduct.countInStock - cartItem.quantity
     await dbProduct.save()
   }
 
-  // calculate total
-  const total = tax + shippingFee + subtotal
+  //let totalPrice = taxPrice + shippingPrice + itemsPrice
+  
   // get client secret
-  const paymentIntent = await fakeStripeAPI({
+  /*const paymentIntent = await fakeStripeAPI({
     amount: total,
     currency: 'usd',
-  })
+  })*/
 
   const order = await Order.create({
     orderItems,
-    total,
-    subtotal,
-    tax,
-    shippingFee,
     shippingAddress,
-    clientSecret: paymentIntent.client_secret,
+    paymentMethod,
+    totalPrice,
+    itemsPrice,
+    taxPrice,
+    shippingPrice,
+    //clientSecret: paymentIntent.client_secret,
     user: req.user.userId,
   })
 
-  res.status(StatusCodes.CREATED).json({
-    msg: 'Success! Order created',
-    order,
-    clientSecret: order.clientSecret,
-  })
-}
 
-const updateCountInStock = async (id, quantity, oldInStock) => {
-  await Product.findOneAndUpdate(
-    { _id: id },
-    {
-      countInStock: oldInStock - quantity,
-    }
-  )
+  res.status(StatusCodes.CREATED).json({
+    order,
+    //clientSecret: order.clientSecret,
+  })
 }
 
 const getAllOrders = async (req, res) => {

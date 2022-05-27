@@ -1,7 +1,7 @@
 import { useLocation } from 'react-router-dom'
 
 export function currencyFormat(amount) {
-  return '$' + (amount / 100).toFixed(2)
+  return (amount).toFixed(2)
 }
 
 export function useQuery() {

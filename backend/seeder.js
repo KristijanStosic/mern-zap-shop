@@ -13,6 +13,8 @@ import Category from './models/Category.js'
 import Publisher from './models/Publisher.js'
 import Address from './models/Address.js'
 import Review from './models/Review.js'
+import Order from './models/Order.js'
+
 
 import connectDB from './db/connect.js'
 
@@ -28,6 +30,7 @@ const importData = async () => {
     await Category.deleteMany()
     await Address.deleteMany()
     await Review.deleteMany()
+    await Order.deleteMany()
 
     const createdUsers = await User.insertMany(users)
 
@@ -76,6 +79,7 @@ const destroyData = async () => {
     await Category.deleteMany()
     await Address.deleteMany()
     await Review.deleteMany()
+    await Order.deleteMany()
 
     console.log('Data Destroyed!')
     process.exit()

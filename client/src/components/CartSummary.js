@@ -8,17 +8,13 @@ import {
   TableRow,
   TableCell,
 } from '@mui/material'
-import { currencyFormat } from '../utils/utils'
 
 const CartSummary = () => {
   const cart = useSelector((state) => state.cart)
   const { cartItems } = cart
   
   // will return 0 if left side is null or undefined
-  const subtotal = cartItems.reduce((sum, cartItem) => sum + cartItem.quantity * cartItem.price, 0 ) ?? 0 
-
-  const taxFee = 100
-  const deliveryFee = subtotal > 10000 ? 0 : 250
+  const total = cartItems.reduce((sum, cartItem) => sum + cartItem.quantity * cartItem.price, 0 ) ?? 0 
 
   return (
     <>
@@ -27,21 +23,7 @@ const CartSummary = () => {
           <TableBody>
             <TableRow>
               <TableCell colSpan={2}>Subtotal ({cartItems.length}) items</TableCell>
-              <TableCell align='right'>{currencyFormat(subtotal)}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell colSpan={2}>Delivery fee*</TableCell>
-              <TableCell align='right'>{currencyFormat(deliveryFee)}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell colSpan={2}>Tax fee*</TableCell>
-              <TableCell align='right'>{currencyFormat(taxFee)}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell colSpan={2}>Total</TableCell>
-              <TableCell align='right'>
-                {currencyFormat(subtotal + deliveryFee + taxFee)}
-              </TableCell>
+              <TableCell align='right'>${(total).toFixed(2)}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>
