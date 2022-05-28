@@ -5,7 +5,7 @@ import {
   Button,
 } from '@mui/material'
 
-const CheckoutSteps = ({ shipping, paymentMethod, placeOrder, payment }) => {
+const CheckoutSteps = ({ shipping, paymentMethod, reviewOrder, payment }) => {
   return (
     <Container component='main' maxWidth='sm' sx={{ aligntItems: 'center', justifyContent: 'center', display: 'flex', mb: 2 }}>
       <>
@@ -29,8 +29,8 @@ const CheckoutSteps = ({ shipping, paymentMethod, placeOrder, payment }) => {
           </Button>
         )}
 
-        {placeOrder ? (
-          <Button component={Link} to='/place-order' style={{ backgroundColor: 'transparent'}} disableRipple color='primary'>
+        {reviewOrder ? (
+          <Button component={Link} to='/review-order' style={{ backgroundColor: 'transparent'}} disableRipple color='primary'>
             3 Review Order
           </Button>
         ) : (

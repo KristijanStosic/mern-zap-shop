@@ -96,15 +96,15 @@ const getAllOrders = async (req, res) => {
 
 const getOrderById = async (req, res) => {
   const { id: orderId } = req.params
-  const order = await Order.findOne({ _id: orderId })
+  const order = await Order.findOne({ _id: orderId }).populate('user', 'name email')
   if (!order) {
     throw new NotFoundError(`No order with id : ${orderId}`)
   }
-  checkPermissions(req.user, order.user)
+  //checkPermissions(req.user, order.user)
   res.status(StatusCodes.OK).json({ order })
 }
 
-const getCurrentUserOrders = async (req, res) => {
+const getMyOrders = async (req, res) => {
   const orders = await Order.find({ user: req.user.userId })
   res.status(StatusCodes.OK).json({ ordersCount: orders.length, orders })
 }
@@ -117,7 +117,6 @@ const updateOrder = async (req, res) => {
   if (!order) {
     throw new NotFoundError(`No order with id : ${orderId}`)
   }
-  checkPermissions(req.user, order.user)
 
   //order.paymentIntentId = paymentIntentId;
   order.status = 'paid'
@@ -135,9 +134,29 @@ const deleteOrder = async (req, res) => {
     throw new NotFoundError(`No order with id ${orderId}`)
   }
 
-  checkPermissions(req.user, order.user)
   await order.remove()
   res.status(StatusCodes.OK).json({ msg: 'Success! Order removed' })
+}
+
+const updateOrderToPaid = async(req, res) => {
+  const { id: orderId } = req.params
+
+  const order = await Order.findOne({ _id: orderId })
+
+  if (!order) {
+    throw new NotFoundError(`No order with id : ${orderId}`)
+  }
+
+  if(order.isPaid) {
+    throw new BadRequestError(`You have already paid this order`)
+  }
+
+  order.status = 'paid'
+  order.isPaid = true 
+  order.paidAt = Date.now()
+
+  await order.save()
+  res.status(StatusCodes.OK).json({ msg: 'Success! Order updated.', order })
 }
 
 export {
@@ -145,6 +164,7 @@ export {
   deleteOrder,
   getAllOrders,
   getOrderById,
-  getCurrentUserOrders,
+  getMyOrders,
   updateOrder,
+  updateOrderToPaid
 }

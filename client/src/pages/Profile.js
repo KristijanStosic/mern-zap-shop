@@ -6,11 +6,22 @@ import {
   TextField,
   Grid,
   Button,
+  Table,
+  TableBody,
+  TableCell, 
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  IconButton
 } from '@mui/material'
+import ClearIcon from '@mui/icons-material/Clear';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import Alert from '../components/Alert'
 import Loading from '../components/Loading'
 import Meta from '../components/Meta'
 import { getUserDetails, updateUserProfile } from '../redux/actions/userActions'
+import { getMyOrders } from '../redux/actions/orderActions'
 
 const Profile = () => {
   const [name, setName] = useState('')
@@ -28,6 +39,9 @@ const Profile = () => {
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
   const { updateProfileError, success } = userUpdateProfile
 
+  const myOrders = useSelector((state) => state.myOrders)
+  const { loading: loadingOrders, error: errorOrders, orders } = myOrders
+
   const submitHandler = async (e) => {
     e.preventDefault()
     dispatch(updateUserProfile({ id: user._id, name, email }))
@@ -39,6 +53,7 @@ const Profile = () => {
     } else {
       if (!user.name) {
         dispatch(getUserDetails('profile')) // getting logged in user
+        dispatch(getMyOrders())
       } else {
         setName(user.name)
         setEmail(user.email)
@@ -121,6 +136,40 @@ const Profile = () => {
         {/* ORDERS */}
         <Grid item xs={9}>
           <Typography variant='h4'>My orders</Typography>
+          {loadingOrders ? <Loading message='Loading my orders...' /> : errorOrders ? <Alert severity='error'>{errorOrders}</Alert> : (
+            <TableContainer sx={{ mt: 2}} component={Paper}>
+            <Table sx={{ minWidth: 700 }}>
+              <TableHead>
+                <TableRow>
+                  <TableCell>ID</TableCell>
+                  <TableCell align="right">DATE</TableCell>
+                  <TableCell align="right">TOTAL PRICE</TableCell>
+                  <TableCell align="right">PAID</TableCell>
+                  <TableCell align="right">DELIVERED</TableCell>
+                  <TableCell align="right"></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {orders.map((order) => (
+                  <TableRow key={order._id}>
+                    <TableCell component="th" scope="row">
+                      {order._id}
+                    </TableCell>
+                    <TableCell align="right">{order.createdAt.substring(0, 10)}</TableCell>
+                    <TableCell align="right">${order.totalPrice}</TableCell>
+                    <TableCell align="right">{order.isPaid ? order.paidAt.substring(0, 10) : (
+                      <ClearIcon style={{ color: 'red'}} />
+                    )}</TableCell>
+                    <TableCell align="right">{order.isDelivered ? order.deliveredAt.substring(0, 10) : (
+                      <ClearIcon style={{ color: 'red'}} />
+                    )}</TableCell>
+                    <TableCell align="center"><IconButton  component={Link} to={`/order/${order._id}`}><VisibilityIcon style={{ color: 'teal'}} /></IconButton></TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          )}
         </Grid>
       </Grid>
     </>

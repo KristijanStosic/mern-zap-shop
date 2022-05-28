@@ -3,7 +3,7 @@ import NotFound from '../components/NotFound';
 import Register from './Register';
 import Login from './Login';
 import Verify from './Verify';
-import Dashboard from './Dashboard';
+import AdminDashboard from './AdminDashboard';
 import ProtectedRoute from './ProtectedRoute';
 import ForgotPassword from './ForgotPassword';
 import ResetPassword from './ResetPassword';
@@ -15,8 +15,10 @@ import Profile from './Profile';
 import UpdatePassword from './UpdatePassword';
 import Shipping from './Shipping';
 import PaymentMethod from './PaymentMethod'
-import PlaceOrder from './PlaceOrder'
+import ReviewOrder from './ReviewOrder'
 import OrderSuccess from './OrderSuccess'
+import Order from './Order'
+import Payment from './Payment'
 
 
 
@@ -26,7 +28,7 @@ export {
   Register,
   Login,
   Verify,
-  Dashboard,
+  AdminDashboard,
   ProtectedRoute,
   ForgotPassword,
   ResetPassword,
@@ -38,6 +40,8 @@ export {
   UpdatePassword,
   Shipping,
   PaymentMethod,
-  PlaceOrder,
-  OrderSuccess
+  ReviewOrder,
+  OrderSuccess,
+  Order,
+  Payment
 };

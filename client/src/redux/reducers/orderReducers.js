@@ -3,6 +3,13 @@ import {
   ORDER_CREATE_SUCCESS,
   ORDER_CREATE_FAIL,
   ORDER_CREATE_RESET,
+  ORDER_DETAILS_REQUEST,
+  ORDER_DETAILS_SUCCESS,
+  ORDER_DETAILS_FAIL,
+  MY_ORDERS_REQUEST,
+  MY_ORDERS_SUCCESS,
+  MY_ORDERS_FAIL,
+  MY_ORDERS_RESET,
 } from '../constants/orderConstants'
 
 export const orderCreateReducer = (state = {}, action) => {
@@ -24,6 +31,58 @@ export const orderCreateReducer = (state = {}, action) => {
       }
     case ORDER_CREATE_RESET:
       return {}
+    default:
+      return state
+  }
+}
+
+// loading: true, bug when load order before loading was true
+export const orderDetailsReducer = (
+  state = { loading: true, orderItems: [], shippingAddress: {} },
+  action
+) => {
+  switch (action.type) {
+    case ORDER_DETAILS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      }
+    case ORDER_DETAILS_SUCCESS:
+      return {
+        loading: false,
+        order: action.payload.order,
+      }
+    case ORDER_DETAILS_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      }
+    default:
+      return state
+  }
+}
+
+export const myOrdersReducer = (
+  state = { orders: [] },
+  action
+) => {
+  switch (action.type) {
+    case MY_ORDERS_REQUEST:
+      return {
+        loading: true,
+      }
+    case MY_ORDERS_SUCCESS:
+      return {
+        loading: false,
+        orders: action.payload.orders,
+      }
+    case MY_ORDERS_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      }
+    case MY_ORDERS_RESET:
+      return { orders: [] }
     default:
       return state
   }

@@ -192,7 +192,9 @@ const Header = ({ darkMode, handleThemeChange }) => {
                     <Avatar /> Profile
                   </MenuItem>
                   <MenuItem>
-                    <Avatar /> My account
+                    <ListItemIcon>
+                      My account
+                    </ListItemIcon> 
                   </MenuItem>
                   <Divider />
                   <MenuItem onClick={logoutHandler}>

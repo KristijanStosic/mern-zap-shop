@@ -35,16 +35,6 @@ export const getProductDetails = (id) => async (dispatch) => {
 
     const { data } = await axios.get(`/api/products/${id}`)
 
-    /*const category = await axios.get(`/api/categories/${data.product.category}`)
-
-    console.log(data);
-    console.log(category);
-
-    const productWithCategory = {
-      ...data, 
-      category: category.name
-    }*/
-
     dispatch({
       type: PRODUCT_DETAILS_SUCCESS,
       payload: data,

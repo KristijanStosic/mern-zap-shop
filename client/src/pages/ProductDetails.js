@@ -43,6 +43,7 @@ const ProductDetails = () => {
     navigate(`/cart/${id}?quantity=${quantity}`)
   }
 
+
   if (loading) return <Loading message='Loading product...' />
 
   return (
@@ -64,7 +65,7 @@ const ProductDetails = () => {
               <Typography variant='h3'>{product.name}</Typography>
               <Divider sx={{ mb: 2 }} />
               <Typography variant='h5' color='primary.dark'>
-                Price: ${product.price.toFixed(2)}
+                Price: ${product.price}
               </Typography>
               <TableContainer>
                 <Table>
@@ -131,7 +132,11 @@ const ProductDetails = () => {
                     </TableRow>
                     <TableRow>
                       <TableCell>Category</TableCell>
-                      <TableCell>{product.category}</TableCell>
+                      <TableCell>{product.category.name}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Publisher</TableCell>
+                      <TableCell>{product.publisher.name}</TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>

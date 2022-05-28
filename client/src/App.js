@@ -5,7 +5,7 @@ import {
   Register,
   Login,
   Verify,
-  Dashboard,
+  AdminDashboard,
   ProtectedRoute,
   ForgotPassword,
   ResetPassword,
@@ -18,8 +18,10 @@ import {
   UpdatePassword,
   Shipping,
   PaymentMethod,
-  PlaceOrder,
-  OrderSuccess
+  ReviewOrder,
+  OrderSuccess,
+  Order,
+  Payment
 } from './pages'
 
 import {
@@ -63,22 +65,28 @@ const App = () => {
           <Container>
             <Routes>
               <Route path='/' element={<Home />} />
+              <Route path='/about' element={<About />} />
+
+              {/* Products */}
               <Route path='/products' element={<Products />} />
               <Route path='/products/:id' element={<ProductDetails />} />
 
+              {/* Cart */}
               <Route path='/cart'>
                 <Route path=':id' element={<Cart />} />
                 <Route index element={<Cart />} />
               </Route>
 
+              {/* Checkout and Orders */}
               <Route path='/shipping' element={<Shipping />} />
               <Route path='/payment-method' element={<PaymentMethod />} />
-              <Route path='/place-order' element={<PlaceOrder />} />
+              <Route path='/review-order' element={<ReviewOrder />} />
               <Route path='/order-success' element={<OrderSuccess />} />
+              <Route path='/order/:id' element={ <ProtectedRoute> <Order /> </ProtectedRoute> } />
+              <Route path='/payment' element={<Payment />} />
 
-              <Route path='/about' element={<About />} />
-
-              <Route path='/dashboard' element={ <ProtectedRoute> <Dashboard /> </ProtectedRoute> } />
+              {/* Admin */}
+              <Route path='/admin-dashboard' element={ <ProtectedRoute> <AdminDashboard /> </ProtectedRoute> } />
 
               {/* Auth */}
               <Route path='/login' element={<Login />} />
@@ -89,7 +97,7 @@ const App = () => {
               <Route path='*' element={<NotFound />} />
 
               {/* User */}
-              <Route path='/profile' element={<Profile />} />
+              <Route path='/profile' element={ <ProtectedRoute> <Profile /> </ProtectedRoute> } />
               <Route path='/update-password' element={<UpdatePassword />} />
             </Routes>
           </Container>

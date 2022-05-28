@@ -7,7 +7,8 @@ import {
   getAllOrders,
   getOrderById,
   updateOrder,
-  getCurrentUserOrders,
+  getMyOrders,
+  updateOrderToPaid
 } from '../controllers/orderController.js'
 
 import {
@@ -19,12 +20,13 @@ router
   .post(authenticateUser, createOrder)
   .get(authenticateUser, authorizePermissions('admin'), getAllOrders)
 
-router.route('/showAllMyOrders').get(authenticateUser, getCurrentUserOrders)
+router.route('/my-orders').get(authenticateUser, getMyOrders)
+router.route('/:id/pay').patch(authenticateUser, updateOrderToPaid)
 
 router
   .route('/:id')
   .get(authenticateUser, getOrderById)
-  .patch(authenticateUser, updateOrder)
+  .patch(authenticateUser, authorizePermissions('admin'), updateOrder)
   .delete(authenticateUser, authorizePermissions('admin'), deleteOrder)
 
 export default router
