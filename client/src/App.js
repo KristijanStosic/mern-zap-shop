@@ -18,7 +18,7 @@ import {
   UpdatePassword,
   Shipping,
   PaymentMethod,
-  ReviewOrder,
+  PlaceOrder,
   OrderSuccess,
   Order,
   Payment
@@ -80,7 +80,7 @@ const App = () => {
               {/* Checkout and Orders */}
               <Route path='/shipping' element={<Shipping />} />
               <Route path='/payment-method' element={<PaymentMethod />} />
-              <Route path='/review-order' element={<ReviewOrder />} />
+              <Route path='/place-order' element={<PlaceOrder />} />
               <Route path='/order-success' element={<OrderSuccess />} />
               <Route path='/order/:id' element={ <ProtectedRoute> <Order /> </ProtectedRoute> } />
               <Route path='/payment' element={<Payment />} />

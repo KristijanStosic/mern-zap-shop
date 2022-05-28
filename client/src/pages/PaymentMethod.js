@@ -32,7 +32,7 @@ const PaymentMethod = () => {
   const savePaymentMethodHandler = (e) => {
     e.preventDefault()
     dispatch(savePaymentMethod(paymentMethod))
-    navigate('/review-order')
+    navigate('/place-order')
   }
 
   return (

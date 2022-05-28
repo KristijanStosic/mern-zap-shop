@@ -16,7 +16,7 @@ const Payment = () => {
   return (
     <>
       <Meta title={'Shipping'} />
-      <CheckoutSteps shipping paymentMethod reviewOrder payment />
+      <CheckoutSteps shipping paymentMethod placeOrder payment />
 
       <Container component='main' maxWidth='sm' sx={{ mb: 2 }}>
         <Divider />

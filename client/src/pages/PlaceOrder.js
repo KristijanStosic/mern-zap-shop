@@ -19,7 +19,7 @@ import { createOrder } from '../redux/actions/orderActions'
 import { ORDER_CREATE_RESET } from '../redux/constants/orderConstants'
 import { USER_DETAILS_RESET } from '../redux/constants/userConstants'
 
-const ReviewOrder = () => {
+const PlaceOrder = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -103,7 +103,7 @@ const ReviewOrder = () => {
   return (
     <>
       <Meta title={'Review Order Page'} />
-      <CheckoutSteps shipping paymentMethod reviewOrder />
+      <CheckoutSteps shipping paymentMethod placeOrder />
       <Container component='main' maxWidth='sm' sx={{ mb: 2 }}>
         <Divider />
           <Paper
@@ -215,4 +215,4 @@ const ReviewOrder = () => {
   )
 }
 
-export default ReviewOrder
+export default PlaceOrder

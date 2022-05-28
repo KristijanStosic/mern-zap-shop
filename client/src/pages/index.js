@@ -15,7 +15,7 @@ import Profile from './Profile';
 import UpdatePassword from './UpdatePassword';
 import Shipping from './Shipping';
 import PaymentMethod from './PaymentMethod'
-import ReviewOrder from './ReviewOrder'
+import PlaceOrder from './PlaceOrder'
 import OrderSuccess from './OrderSuccess'
 import Order from './Order'
 import Payment from './Payment'
@@ -40,7 +40,7 @@ export {
   UpdatePassword,
   Shipping,
   PaymentMethod,
-  ReviewOrder,
+  PlaceOrder,
   OrderSuccess,
   Order,
   Payment

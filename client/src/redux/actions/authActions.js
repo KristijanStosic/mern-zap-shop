@@ -20,6 +20,7 @@ import {
   CLEAR_ERRORS,
 } from '../constants/authConstants'
 import { MY_ORDERS_RESET } from '../constants/orderConstants'
+import { CART_CLEAR_ITEMS } from '../constants/cartConstants'
 
 export const login = (email, password) => async (dispatch) => {
   try {
@@ -100,10 +101,12 @@ export const logout = () => (dispatch) => {
   localStorage.removeItem('cartItems')
   localStorage.removeItem('shippingAddress')
   localStorage.removeItem('paymentMethod')
+  localStorage.removeItem('shippingInfo')
 
   dispatch({ type: USER_LOGOUT })
   dispatch({ type: USER_DETAILS_RESET })
   dispatch({ type: MY_ORDERS_RESET })
+  dispatch({ type: CART_CLEAR_ITEMS })
 }
 
 export const forgotPassword = (email) => async (dispatch) => {

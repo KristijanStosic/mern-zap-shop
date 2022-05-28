@@ -40,7 +40,7 @@ const Profile = () => {
   const { updateProfileError, success } = userUpdateProfile
 
   const myOrders = useSelector((state) => state.myOrders)
-  const { loading: loadingOrders, error: errorOrders, orders } = myOrders
+  const { loading: loadingMyOrders, error: errorOrders, orders } = myOrders
 
   const submitHandler = async (e) => {
     e.preventDefault()
@@ -67,7 +67,7 @@ const Profile = () => {
 
       <Grid container spacing={2}>
         <Grid item xs={3}>
-          <Typography variant='h4'>Update Profile</Typography>
+          <Typography variant='h4'>USER PROFILE</Typography>
           {loading ? (
             <Loading message='Fetching user informations...' />
           ) : (
@@ -135,8 +135,8 @@ const Profile = () => {
         </Grid>
         {/* ORDERS */}
         <Grid item xs={9}>
-          <Typography variant='h4'>My orders</Typography>
-          {loadingOrders ? <Loading message='Loading my orders...' /> : errorOrders ? <Alert severity='error'>{errorOrders}</Alert> : (
+          <Typography variant='h4'>MY ORDERS</Typography>
+          {loadingMyOrders ? <Loading message='Loading my orders...' /> : errorOrders ? <Alert severity='error'>{errorOrders}</Alert> : (
             <TableContainer sx={{ mt: 2}} component={Paper}>
             <Table sx={{ minWidth: 700 }}>
               <TableHead>
