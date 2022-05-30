@@ -2,11 +2,11 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Container, Typography, Box } from '@mui/material'
 
-function Copyright() {
+const Copyright = () => {
   return (
-    <Typography variant="body2" color="text.secondary">
+    <Typography variant="body2" color="white">
       {'Copyright ©'}
-      <Link color="white" to="https://google.com/">
+      <Link style={{ color: 'white', fontWeight: 500 }} to='/'>
         ZAP-SHOP
       </Link>{' '}
       {new Date().getFullYear()}

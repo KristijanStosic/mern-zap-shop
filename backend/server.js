@@ -1,8 +1,8 @@
 import express from 'express'
-import dotenv from 'dotenv'
+import 'dotenv/config'
+
 import cors from 'cors'
 import path from 'path'
-dotenv.config()
 import 'express-async-errors'
 import morgan from 'morgan'
 import cookieParser from 'cookie-parser'
@@ -27,6 +27,8 @@ import reviewRoutes from './routes/reviewRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
 import addressRoutes from './routes/addressRoutes.js'
+import stripeRoutes from './routes/stripeRoutes.js'
+
 
 // middleware
 import notFoundMiddleware from './middleware/not-found.js'
@@ -62,6 +64,7 @@ app.use('/api/addresses', addressRoutes)
 app.use('/api/products', productRoutes)
 app.use('/api/reviews', reviewRoutes)
 app.use('/api/orders', orderRoutes)
+app.use('/api/stripe', stripeRoutes)
 
 app.use(notFoundMiddleware)
 app.use(errorHandlerMiddleware)

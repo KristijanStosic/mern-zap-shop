@@ -20,6 +20,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import Alert from '../components/Alert'
 import Loading from '../components/Loading'
 import Meta from '../components/Meta'
+import { USER_UPDATE_PROFILE_RESET } from '../redux/constants/userConstants';
 import { getUserDetails, updateUserProfile } from '../redux/actions/userActions'
 import { getMyOrders } from '../redux/actions/orderActions'
 
@@ -31,7 +32,7 @@ const Profile = () => {
   const dispatch = useDispatch()
 
   const userDetails = useSelector((state) => state.userDetails)
-  const { loading, error, user } = userDetails
+  const { loading: loadingUser, error, user } = userDetails
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
@@ -51,7 +52,8 @@ const Profile = () => {
     if (!userInfo) {
       navigate('/login')
     } else {
-      if (!user.name) {
+      if (!user || !user.name || !user.email || success) {
+        dispatch({ type: USER_UPDATE_PROFILE_RESET })
         dispatch(getUserDetails('profile')) // getting logged in user
         dispatch(getMyOrders())
       } else {
@@ -59,7 +61,7 @@ const Profile = () => {
         setEmail(user.email)
       }
     }
-  }, [dispatch, navigate, userInfo, user])
+  }, [dispatch, navigate, userInfo, user, success])
 
   return (
     <>
@@ -68,7 +70,7 @@ const Profile = () => {
       <Grid container spacing={2}>
         <Grid item xs={3}>
           <Typography variant='h4'>USER PROFILE</Typography>
-          {loading ? (
+          {loadingUser ? (
             <Loading message='Fetching user informations...' />
           ) : (
             <>
@@ -116,7 +118,7 @@ const Profile = () => {
                 fullWidth
                 variant='contained'
                 sx={{ mt: 3, mb: 2 }}
-                disabled={loading ? true : false}
+                disabled={loadingUser ? true : false}
               >
                 UPDATE PROFILE
               </Button>
@@ -163,7 +165,7 @@ const Profile = () => {
                     <TableCell align="right">{order.isDelivered ? order.deliveredAt.substring(0, 10) : (
                       <ClearIcon style={{ color: 'red'}} />
                     )}</TableCell>
-                    <TableCell align="center"><IconButton  component={Link} to={`/order/${order._id}`}><VisibilityIcon style={{ color: 'teal'}} /></IconButton></TableCell>
+                    <TableCell align="center"><IconButton component={Link} to={`/order/${order._id}`}><VisibilityIcon style={{ color: 'teal'}} /></IconButton></TableCell>
                   </TableRow>
                 ))}
               </TableBody>

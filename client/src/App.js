@@ -1,5 +1,9 @@
-import { useState } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import React, { useState } from 'react'
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from 'react-router-dom'
 import {
   Home,
   Register,
@@ -21,7 +25,10 @@ import {
   PlaceOrder,
   OrderSuccess,
   Order,
-  Payment
+  Payment,
+  CheckoutSuccess,
+  UserList,
+  UserUpdate
 } from './pages'
 
 import {
@@ -30,12 +37,10 @@ import {
   CssBaseline,
   ThemeProvider,
 } from '@mui/material'
-import Loading from './components/Loading'
 import Header from './components/Header'
 import Footer from './components/Footer'
 
 const App = () => {
-  const [loading] = useState(false)
   const [darkMode, setDarkMode] = useState(false)
   const paletteType = darkMode ? 'dark' : 'light'
 
@@ -52,56 +57,78 @@ const App = () => {
     setDarkMode(!darkMode)
   }
 
-  if (loading) {
-    return <Loading message='Initializing app...' />
-  }
-
   return (
     <>
       <ThemeProvider theme={theme}>
         <Router>
-          <CssBaseline />
-          <Header darkMode={darkMode} handleThemeChange={handleThemeChange} />
-          <Container>
-            <Routes>
-              <Route path='/' element={<Home />} />
-              <Route path='/about' element={<About />} />
+          <React.Fragment>
+            <CssBaseline />
+            <Header darkMode={darkMode} handleThemeChange={handleThemeChange} />
+            <Container>
+              <Routes>
+                <Route path='/' element={<Home />} />
+                <Route path='/about' element={<About />} />
 
-              {/* Products */}
-              <Route path='/products' element={<Products />} />
-              <Route path='/products/:id' element={<ProductDetails />} />
+                {/* Products */}
+                <Route path='/products' element={<Products />} />
+                <Route path='/products/:id' element={<ProductDetails />} />
 
-              {/* Cart */}
-              <Route path='/cart'>
-                <Route path=':id' element={<Cart />} />
-                <Route index element={<Cart />} />
-              </Route>
+                {/* Cart */}
+                <Route path='/cart'>
+                  <Route path=':id' element={<Cart />} />
+                  <Route index element={<Cart />} />
+                </Route>
 
-              {/* Checkout and Orders */}
-              <Route path='/shipping' element={<Shipping />} />
-              <Route path='/payment-method' element={<PaymentMethod />} />
-              <Route path='/place-order' element={<PlaceOrder />} />
-              <Route path='/order-success' element={<OrderSuccess />} />
-              <Route path='/order/:id' element={ <ProtectedRoute> <Order /> </ProtectedRoute> } />
-              <Route path='/payment' element={<Payment />} />
+                {/* Checkout and Orders */}
+                <Route path='/shipping' element={<Shipping />} />
+                <Route path='/payment-method' element={<PaymentMethod />} />
+                <Route path='/place-order' element={<PlaceOrder />} />
+                <Route path='/order-success' element={<OrderSuccess />} />
+                <Route
+                  path='/order/:id'
+                  element={
+                    <ProtectedRoute>
+                      {' '}
+                      <Order />{' '}
+                    </ProtectedRoute>
+                  }
+                />
 
-              {/* Admin */}
-              <Route path='/admin-dashboard' element={ <ProtectedRoute> <AdminDashboard /> </ProtectedRoute> } />
+                  <Route
+                  path='/payment'
+                  element={
+                    <ProtectedRoute>
+                      {' '}
+                      <Payment />{' '}
+                    </ProtectedRoute>
+                  }
+                />
 
-              {/* Auth */}
-              <Route path='/login' element={<Login />} />
-              <Route path='/register' element={<Register />} />
-              <Route path='/forgot-password' element={<ForgotPassword />} />
-              <Route path='/user/verify-email' element={<Verify />} />
-              <Route path='/user/reset-password' element={<ResetPassword />} />
-              <Route path='*' element={<NotFound />} />
+                <Route path='/checkout-success' element={<CheckoutSuccess />} />
 
-              {/* User */}
-              <Route path='/profile' element={ <ProtectedRoute> <Profile /> </ProtectedRoute> } />
-              <Route path='/update-password' element={<UpdatePassword />} />
-            </Routes>
-          </Container>
-          <Footer />
+                {/* Admin */}
+                <Route path='/admin-dashboard' element={ <ProtectedRoute> <AdminDashboard /> </ProtectedRoute>} />
+
+                {/* Auth */}
+                <Route path='/login' element={<Login />} />
+                <Route path='/register' element={<Register />} />
+                <Route path='/forgot-password' element={<ForgotPassword />} />
+                <Route path='/user/verify-email' element={<Verify />} />
+                <Route
+                  path='/user/reset-password'
+                  element={<ResetPassword />}
+                />
+                <Route path='*' element={<NotFound />} />
+
+                {/* User */}
+                <Route path='/profile' element={ <ProtectedRoute> <Profile /> </ProtectedRoute>} />
+                <Route path='/admin/user-list' element={ <ProtectedRoute> <UserList /> </ProtectedRoute>} />
+                <Route path='/admin/user/:id/update' element={ <ProtectedRoute> <UserUpdate /> </ProtectedRoute>} />
+                <Route path='/update-password' element={ <ProtectedRoute> <UpdatePassword /> </ProtectedRoute>} />
+              </Routes>
+            </Container>
+            <Footer />
+          </React.Fragment>
         </Router>
       </ThemeProvider>
     </>

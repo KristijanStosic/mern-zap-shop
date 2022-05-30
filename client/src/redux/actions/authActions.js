@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { USER_DETAILS_RESET } from '../constants/userConstants'
+import { USER_DETAILS_RESET, USER_LIST_RESET } from '../constants/userConstants'
 import {
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
@@ -20,7 +20,6 @@ import {
   CLEAR_ERRORS,
 } from '../constants/authConstants'
 import { MY_ORDERS_RESET } from '../constants/orderConstants'
-import { CART_CLEAR_ITEMS } from '../constants/cartConstants'
 
 export const login = (email, password) => async (dispatch) => {
   try {
@@ -99,14 +98,15 @@ export const register = (name, email, password) => async (dispatch) => {
 export const logout = () => (dispatch) => {
   localStorage.removeItem('userInfo')
   localStorage.removeItem('cartItems')
-  localStorage.removeItem('shippingAddress')
+  //localStorage.removeItem('shippingAddress')
   localStorage.removeItem('paymentMethod')
   localStorage.removeItem('shippingInfo')
 
   dispatch({ type: USER_LOGOUT })
   dispatch({ type: USER_DETAILS_RESET })
+  dispatch({ type: USER_LIST_RESET })
   dispatch({ type: MY_ORDERS_RESET })
-  dispatch({ type: CART_CLEAR_ITEMS })
+  //dispatch({ type: CART_CLEAR_ITEMS })
 }
 
 export const forgotPassword = (email) => async (dispatch) => {

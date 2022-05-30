@@ -75,7 +75,6 @@ const Shipping = () => {
                 label='First name'
                 type='text'
                 fullWidth
-                autoComplete='given-name'
                 variant='standard'
                 {...register('firstName', {
                   required: 'First name is required.',
@@ -93,7 +92,6 @@ const Shipping = () => {
                 name='lastName'
                 label='Last name'
                 fullWidth
-                autoComplete='family-name'
                 variant='standard'
                 type='text'
                 {...register('lastName', {
@@ -112,7 +110,6 @@ const Shipping = () => {
                 name='address'
                 label='Address'
                 fullWidth
-                autoComplete='shipping address'
                 variant='standard'
                 type='text'
                 {...register('address', { required: 'Address is required.' })}
@@ -129,7 +126,6 @@ const Shipping = () => {
                 name='city'
                 label='City'
                 fullWidth
-                autoComplete='shipping address-level2'
                 variant='standard'
                 type='text'
                 {...register('city', { required: 'City is required.' })}
@@ -141,8 +137,8 @@ const Shipping = () => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                id='phone'
-                name='phone'
+                id='phoneNumber'
+                name='phoneNumber'
                 label='Phone Number'
                 fullWidth
                 variant='standard'
@@ -163,7 +159,6 @@ const Shipping = () => {
                 name='postalCode'
                 label='Zip / Postal code'
                 fullWidth
-                autoComplete='shipping postal-code'
                 variant='standard'
                 type='text'
                 {...register('postalCode', {
@@ -182,7 +177,6 @@ const Shipping = () => {
                 name='country'
                 label='Country'
                 fullWidth
-                autoComplete='shipping country'
                 variant='standard'
                 type='text'
                 {...register('country', { required: 'Country is required.' })}

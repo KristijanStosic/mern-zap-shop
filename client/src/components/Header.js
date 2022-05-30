@@ -55,6 +55,7 @@ const Header = ({ darkMode, handleThemeChange }) => {
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
@@ -73,6 +74,7 @@ const Header = ({ darkMode, handleThemeChange }) => {
   const handleClose = () => {
     setAnchorEl(null)
   }
+
 
   return (
     <>
@@ -191,10 +193,72 @@ const Header = ({ darkMode, handleThemeChange }) => {
                   <MenuItem component={Link} to='/profile'>
                     <Avatar /> Profile
                   </MenuItem>
-                  <MenuItem>
+                  <Divider />
+                  <MenuItem onClick={logoutHandler}>
                     <ListItemIcon>
-                      My account
-                    </ListItemIcon> 
+                      <Logout fontSize='small' />
+                    </ListItemIcon>
+                    Logout
+                  </MenuItem>
+                </Menu>
+                {userInfo && userInfo.user.role === 'admin' && (
+                  <Menu
+                  anchorEl={anchorEl}
+                  id='account-menu'
+                  open={open}
+                  onClose={handleClose}
+                  onClick={handleClose}
+                  PaperProps={{
+                    elevation: 0,
+                    sx: {
+                      overflow: 'visible',
+                      filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                      mt: 1.5,
+                      '& .MuiAvatar-root': {
+                        width: 32,
+                        height: 32,
+                        ml: -0.5,
+                        mr: 1,
+                      },
+                      '&:before': {
+                        content: '""',
+                        display: 'block',
+                        position: 'absolute',
+                        top: 0,
+                        right: 14,
+                        width: 10,
+                        height: 10,
+                        bgcolor: 'background.paper',
+                        transform: 'translateY(-50%) rotate(45deg)',
+                        zIndex: 0,
+                      },
+                    },
+                  }}
+                  transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                  anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                >
+                  <MenuItem component={Link} to='/profile'>
+                    Profile
+                  </MenuItem>
+                  <Divider />
+                  <MenuItem component={Link} to='/admin/user-list'>
+                    Users
+                  </MenuItem>
+                  <Divider />
+                  <MenuItem component={Link} to='/admin/product-list'>
+                    Products
+                  </MenuItem>
+                  <Divider />
+                  <MenuItem component={Link} to='/admin/order-list'>
+                    Orders
+                  </MenuItem>
+                  <Divider />
+                  <MenuItem component={Link} to='/admin/category-list'>
+                    Categories
+                  </MenuItem>
+                  <Divider />
+                  <MenuItem component={Link} to='/admin/address-list'>
+                    Addresses
                   </MenuItem>
                   <Divider />
                   <MenuItem onClick={logoutHandler}>
@@ -204,6 +268,7 @@ const Header = ({ darkMode, handleThemeChange }) => {
                     Logout
                   </MenuItem>
                 </Menu>
+                )}
               </>
             ) : (
               <List sx={{ display: 'flex' }}>

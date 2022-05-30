@@ -18,7 +18,7 @@ import {
 } from '@mui/material'
 import { Delete } from '@mui/icons-material'
 import { Link, useParams, useNavigate } from 'react-router-dom'
-import { addToCart, removeFromCart } from '../redux/actions/cartActions'
+import { addToCart, removeFromCart, clearCart} from '../redux/actions/cartActions'
 import { useQuery } from '../utils/utils'
 import Meta from '../components/Meta'
 import CartSummary from '../components/CartSummary'
@@ -46,6 +46,10 @@ const Cart = () => {
 
   const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id))
+  }
+
+  const clearCartHandler = () => {
+    dispatch(clearCart())
   }
 
   const checkoutHandler = () => {
@@ -80,7 +84,7 @@ const Cart = () => {
                   <TableCell align='right'>Price</TableCell>
                   <TableCell align='center'>Quantity</TableCell>
                   <TableCell align='right'>Total</TableCell>
-                  <TableCell align='right'></TableCell>
+                  <TableCell align='right'><Button onClick={() => clearCartHandler()} variant='contained' color='primary'>CLEAR CART</Button></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

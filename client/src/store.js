@@ -18,12 +18,16 @@ import {
   userDetailsReducer,
   updatePasswordReducer,
   userUpdateProfileReducer,
+  userListReducer,
+  userDeleteReducer,
+  userUpdateReducer
 } from './redux/reducers/userReducers'
 
 import {
   orderCreateReducer,
   orderDetailsReducer,
-  myOrdersReducer
+  myOrdersReducer,
+  orderPayReducer
 } from './redux/reducers/orderReducers'
 
 const reducer = combineReducers({
@@ -38,9 +42,13 @@ const reducer = combineReducers({
   userDetails: userDetailsReducer,
   userUpdatePassword: updatePasswordReducer,
   userUpdateProfile: userUpdateProfileReducer,
+  userList: userListReducer,
+  userUpdate: userUpdateReducer,
+  userDelete: userDeleteReducer,
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
-  myOrders: myOrdersReducer
+  myOrders: myOrdersReducer,
+  orderPay: orderPayReducer,
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')

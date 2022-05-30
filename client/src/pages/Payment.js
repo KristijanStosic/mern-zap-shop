@@ -1,21 +1,34 @@
-import React from 'react'
+import React, { useEffect, Fragment } from 'react'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import {
   Container,
   Paper,
   Divider,
-  Grid,
   Typography,
-  TextField,
-  Button,
   Box,
 } from '@mui/material'
+import PayButton from '../components/PayButton'
 import CheckoutSteps from '../pages/CheckoutSteps'
 import Meta from '../components/Meta'
 
 const Payment = () => {
+  const navigate = useNavigate()
+
+  const cart = useSelector((state) => state.cart)
+  const { cartItems, shippingAddress } = cart
+
+  useEffect(() => {
+    if (!shippingAddress.address) {
+      navigate('/shipping')
+    } else if (!cart.paymentMethod) {
+      navigate('/payment-method')
+    }
+  }, [cart.paymentMethod, navigate, shippingAddress.address])
+
   return (
-    <>
-      <Meta title={'Shipping'} />
+    <Fragment>
+      <Meta title={'Payment Page'} />
       <CheckoutSteps shipping paymentMethod placeOrder payment />
 
       <Container component='main' maxWidth='sm' sx={{ mb: 2 }}>
@@ -28,60 +41,14 @@ const Payment = () => {
           <Typography variant='h6' gutterBottom>
             Payment
           </Typography>
-          <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id='cardName'
-                label='Name on card'
-                fullWidth
-                autoComplete='cc-name'
-                variant='standard'
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField
-                required
-                id='cardNumber'
-                label='Card number'
-                fullWidth
-                autoComplete='cc-number'
-                variant='standard'
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField
-                required
-                id='expDate'
-                label='Expiry date'
-                fullWidth
-                autoComplete='cc-exp'
-                variant='standard'
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField
-                required
-                id='cvv'
-                label='CVV'
-                helperText='Last three digits on signature strip'
-                fullWidth
-                autoComplete='cc-csc'
-                variant='standard'
-              />
-            </Grid>
-          </Grid>
           <Box
-            component='form'
             sx={{ display: 'flex', justifyContent: 'flex-end' }}
           >
-            <Button type='submit' variant='contained' sx={{ mt: 3, ml: 1 }}>
-              PAY NOW
-            </Button>
+            <PayButton cartItems={cartItems} />
           </Box>
         </Paper>
       </Container>
-    </>
+    </Fragment>
   )
 }
 

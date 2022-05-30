@@ -14,9 +14,10 @@ import {
 import Meta from '../components/Meta'
 import Alert from '../components/Alert'
 import Loading from '../components/Loading'
+import PayButton from '../components/PayButton'
 import { getOrderById } from '../redux/actions/orderActions'
 
-const Order = () => {
+const Order = ({ cartItems }) => {
   const dispatch = useDispatch()
   const params = useParams()
 
@@ -28,6 +29,11 @@ const Order = () => {
   useEffect(() => {
     dispatch(getOrderById(orderId))
   }, [dispatch, orderId])
+
+  /*const successPaymentHandler = (paymentInfo) => {
+    console.log(paymentInfo);
+    dispatch(updateOrderToPaid(orderId, paymentInfo))
+  }*/
 
   return (
     <>
@@ -107,7 +113,9 @@ const Order = () => {
                         </Typography>
                       </ListItem>
                       <ListItemText disablePadding>
-                      <strong>Order date: </strong> {new Date(order.createdAt).toLocaleString('LL')}</ListItemText>
+                        <strong>Order date: </strong>{' '}
+                        {new Date(order.createdAt).toLocaleString('LL')}
+                      </ListItemText>
                     </List>
                   )}
                 </Paper>
@@ -117,7 +125,7 @@ const Order = () => {
               <Container component='main' maxWidth='sm'>
                 <Paper
                   variant='outlined'
-                  sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 },  }}
+                  sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
                 >
                   <Typography variant='h3'>Shipping Address</Typography>
                   <Divider sx={{ mt: 1 }} />
@@ -130,33 +138,41 @@ const Order = () => {
                     aria-label='contacts'
                   >
                     <ListItem disablePadding>
-                        {order.shippingAddress.firstName} {order.shippingAddress.lastName} 
+                      {order.shippingAddress.firstName}{' '}
+                      {order.shippingAddress.lastName}
                     </ListItem>
                     <ListItem disablePadding>
-                        {order.shippingAddress.address}
+                      {order.shippingAddress.address}
                     </ListItem>
                     <ListItem disablePadding>
-                        {order.shippingAddress.postalCode}, {order.shippingAddress.city}
+                      {order.shippingAddress.postalCode},{' '}
+                      {order.shippingAddress.city}
                     </ListItem>
                     <ListItem disablePadding>
-                      {order.shippingAddress.country}   
-                    </ListItem>     
+                      {order.shippingAddress.country}
+                    </ListItem>
                   </List>
                   {order.isDelivered ? (
-                      <Alert severity='success'>Delivered on: {order.deliveredAt}</Alert>
-                    ) : (
-                      <Alert severity='error'>Not Delivered</Alert> 
-                    )} 
+                    <Alert severity='success'>
+                      Delivered on: {order.deliveredAt}
+                    </Alert>
+                  ) : (
+                    <Alert severity='error'>Not Delivered</Alert>
+                  )}
                   <Divider sx={{ mt: 1 }} />
                   <Typography variant='h4'>Payment Method</Typography>
-                    <ListItem disablePadding>
-                      {order.paymentMethod}
-                    </ListItem>
-                    {order.isPaid ? (
-                      <Alert severity='success'>Paid on: {order.paidAt}</Alert>
-                    ) : (
-                      <Alert severity='error'>Not Paid</Alert> 
-                    )}    
+                  <ListItem disablePadding>{order.paymentMethod}</ListItem>
+                  {order.isPaid ? (
+                    <Alert severity='success'>Paid on: {order.paidAt}</Alert>
+                  ) : (
+                    <Alert severity='error'>Not Paid</Alert>
+                  )}
+
+                  {!order.isPaid ? (
+                    <PayButton cartItems={order.orderItems} />
+                  ) : (
+                    ''
+                  )}
                 </Paper>
               </Container>
             </Grid>

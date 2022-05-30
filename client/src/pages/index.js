@@ -1,5 +1,7 @@
 import Home from './Home';
 import NotFound from '../components/NotFound';
+import CheckoutSuccess from '../components/CheckoutSuccess';
+
 import Register from './Register';
 import Login from './Login';
 import Verify from './Verify';
@@ -19,6 +21,9 @@ import PlaceOrder from './PlaceOrder'
 import OrderSuccess from './OrderSuccess'
 import Order from './Order'
 import Payment from './Payment'
+import UserList from './UserList'
+import UserUpdate from './UserUpdate'
+
 
 
 
@@ -43,5 +48,8 @@ export {
   PlaceOrder,
   OrderSuccess,
   Order,
-  Payment
+  Payment,
+  CheckoutSuccess,
+  UserList,
+  UserUpdate
 };

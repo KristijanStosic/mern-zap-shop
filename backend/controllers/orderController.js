@@ -4,11 +4,6 @@ import { StatusCodes } from 'http-status-codes'
 import { BadRequestError, NotFoundError } from '../errors/index.js'
 import { checkPermissions } from '../utils/index.js'
 
-const fakeStripeAPI = async ({ amount, currency }) => {
-  const client_secret = 'someRandomValue'
-  return { client_secret, amount }
-}
-
 const createOrder = async (req, res) => {
   let {
     orderItems: cartItems,
@@ -17,7 +12,8 @@ const createOrder = async (req, res) => {
     itemsPrice,
     taxPrice,
     shippingPrice,
-    totalPrice
+    totalPrice,
+    paymentInfo
   } = req.body
 
   if (!cartItems || cartItems.length < 1) {
@@ -63,12 +59,6 @@ const createOrder = async (req, res) => {
   }
 
   //let totalPrice = taxPrice + shippingPrice + itemsPrice
-  
-  // get client secret
-  /*const paymentIntent = await fakeStripeAPI({
-    amount: total,
-    currency: 'usd',
-  })*/
 
   const order = await Order.create({
     orderItems,
@@ -78,14 +68,13 @@ const createOrder = async (req, res) => {
     itemsPrice,
     taxPrice,
     shippingPrice,
-    //clientSecret: paymentIntent.client_secret,
+    paymentInfo,
     user: req.user.userId,
   })
 
 
   res.status(StatusCodes.CREATED).json({
     order,
-    //clientSecret: order.clientSecret,
   })
 }
 
@@ -152,8 +141,12 @@ const updateOrderToPaid = async(req, res) => {
   }
 
   order.status = 'paid'
-  order.isPaid = true 
-  order.paidAt = Date.now()
+  //order.isPaid = true 
+  //order.paidAt = Date.now()
+  order.paymentInfo ={
+    id: req.body.id,
+    status: req.body.status
+  }
 
   await order.save()
   res.status(StatusCodes.OK).json({ msg: 'Success! Order updated.', order })

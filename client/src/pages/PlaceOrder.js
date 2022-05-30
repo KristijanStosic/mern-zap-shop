@@ -61,12 +61,11 @@ const PlaceOrder = () => {
 
   useEffect(() => {
     if (success) {
-      navigate('/payment')
+      navigate(`/profile`)
       dispatch({ type: USER_DETAILS_RESET })
       dispatch({ type: ORDER_CREATE_RESET })
     }
-    // eslint-disable-next-line
-  }, [navigate, success])
+  }, [dispatch, navigate, success])
 
   const placeOrderHandler = (e) => {
     e.preventDefault()
@@ -80,9 +79,6 @@ const PlaceOrder = () => {
       totalPrice: cart.totalPrice,
     }
     dispatch(createOrder(orderData))
-    navigate('/payment')
-
-    sessionStorage.setItem('orderInfo', JSON.stringify(orderData))
   }
 
   /*const proceedToPayment = async () => {

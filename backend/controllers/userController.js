@@ -8,7 +8,7 @@ import {
 import { createTokenUser, checkPermissions, createJWT } from '../utils/index.js'
 
 const getAllUsers = async (req, res) => {
-  const users = await User.find({ role: 'user' }).select('-password')
+  const users = await User.find({ }).select('-password')
   res.status(StatusCodes.OK).json({ users })
 }
 
@@ -59,7 +59,7 @@ const updateUserById = async (req, res) => {
       throw new BadRequestError('Please provide all values')
     }
   
-    const user = await User.findOne({ _id: userId })
+    const user = await User.findOne({ _id: userId }).select('-password')
   
     if (!user) {
       throw new NotFoundError(`No user with id: ${userId}`)
@@ -70,7 +70,7 @@ const updateUserById = async (req, res) => {
     user.role = role
     await user.save()
   
-    res.status(StatusCodes.OK).json({ msg: 'Success! User updated.' })
+    res.status(StatusCodes.OK).json({ msg: 'Success! User updated.', user })
 
 }
 
