@@ -56,7 +56,7 @@ const ProductDetails = () => {
           <Grid container spacing={6}>
             <Grid item xs={6}>
               <img
-                src={product.image}
+                src={product.image.url}
                 alt={product.name}
                 style={{ width: '100%' }}
               />
@@ -130,14 +130,14 @@ const ProductDetails = () => {
                       <TableCell>Language of publication</TableCell>
                       <TableCell>{product.languageOfPublication}</TableCell>
                     </TableRow>
-                    <TableRow>
+                    {/* <TableRow>
                       <TableCell>Category</TableCell>
                       <TableCell>{product.category.name}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>Publisher</TableCell>
                       <TableCell>{product.publisher.name}</TableCell>
-                    </TableRow>
+                    </TableRow> */}
                   </TableBody>
                 </Table>
               </TableContainer>

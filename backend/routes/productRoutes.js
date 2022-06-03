@@ -24,8 +24,8 @@ router
 
 
 router
-  .route('/uploadImage')
-  .post([authenticateUser, authorizePermissions('admin')], uploadImageToCloud);
+  .route('/upload-image')
+  .post(uploadImageToCloud);
 
   router.get('/count', productCount)
   router.get('/featured/:count', featuredProducts)

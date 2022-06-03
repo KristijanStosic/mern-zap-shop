@@ -1,11 +1,6 @@
 import React, { useState } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-} from 'react-router-dom'
-import {
-  Home,
   Register,
   Login,
   Verify,
@@ -28,15 +23,17 @@ import {
   Payment,
   CheckoutSuccess,
   UserList,
-  UserUpdate
+  UserUpdate,
+  ProductList,
+  CategoryList,
+  PublisherList,
+  ProductCreate,
+  CategoryCreate,
+  ProductUpdate,
+  OrderList
 } from './pages'
 
-import {
-  Container,
-  createTheme,
-  CssBaseline,
-  ThemeProvider,
-} from '@mui/material'
+import { Container, createTheme, CssBaseline, ThemeProvider, } from '@mui/material'
 import Header from './components/Header'
 import Footer from './components/Footer'
 
@@ -66,12 +63,19 @@ const App = () => {
             <Header darkMode={darkMode} handleThemeChange={handleThemeChange} />
             <Container>
               <Routes>
-                <Route path='/' element={<Home />} />
-                <Route path='/about' element={<About />} />
-
                 {/* Products */}
-                <Route path='/products' element={<Products />} />
+                <Route path='/' element={<Products />} />
                 <Route path='/products/:id' element={<ProductDetails />} />
+                <Route path='/admin/product-list' element={ <ProtectedRoute> <ProductList /> </ProtectedRoute>} />
+                <Route path='/admin/product-create' element={ <ProtectedRoute> <ProductCreate /> </ProtectedRoute>} />
+                <Route path='/admin/product/:id/update' element={ <ProtectedRoute> <ProductUpdate /> </ProtectedRoute>} />
+
+                {/* Categories */}
+                <Route path='/admin/category-list' element={ <ProtectedRoute> <CategoryList /> </ProtectedRoute>} />
+                <Route path='/admin/category-create' element={ <ProtectedRoute> <CategoryCreate /> </ProtectedRoute>} />
+
+                {/* Publishers */}
+                <Route path='/admin/publisher-list' element={ <ProtectedRoute> <PublisherList /> </ProtectedRoute>} />
 
                 {/* Cart */}
                 <Route path='/cart'>
@@ -84,27 +88,10 @@ const App = () => {
                 <Route path='/payment-method' element={<PaymentMethod />} />
                 <Route path='/place-order' element={<PlaceOrder />} />
                 <Route path='/order-success' element={<OrderSuccess />} />
-                <Route
-                  path='/order/:id'
-                  element={
-                    <ProtectedRoute>
-                      {' '}
-                      <Order />{' '}
-                    </ProtectedRoute>
-                  }
-                />
-
-                  <Route
-                  path='/payment'
-                  element={
-                    <ProtectedRoute>
-                      {' '}
-                      <Payment />{' '}
-                    </ProtectedRoute>
-                  }
-                />
-
+                <Route path='/order/:id' element={ <ProtectedRoute> <Order /> </ProtectedRoute>}/>
+                <Route path='/payment' element={ <ProtectedRoute> <Payment /> </ProtectedRoute> } />
                 <Route path='/checkout-success' element={<CheckoutSuccess />} />
+                <Route path='/admin/order-list' element={ <ProtectedRoute> <OrderList /> </ProtectedRoute>} />
 
                 {/* Admin */}
                 <Route path='/admin-dashboard' element={ <ProtectedRoute> <AdminDashboard /> </ProtectedRoute>} />
@@ -114,17 +101,17 @@ const App = () => {
                 <Route path='/register' element={<Register />} />
                 <Route path='/forgot-password' element={<ForgotPassword />} />
                 <Route path='/user/verify-email' element={<Verify />} />
-                <Route
-                  path='/user/reset-password'
-                  element={<ResetPassword />}
-                />
-                <Route path='*' element={<NotFound />} />
+                <Route path='/user/reset-password' element={<ResetPassword />} />
 
                 {/* User */}
                 <Route path='/profile' element={ <ProtectedRoute> <Profile /> </ProtectedRoute>} />
                 <Route path='/admin/user-list' element={ <ProtectedRoute> <UserList /> </ProtectedRoute>} />
                 <Route path='/admin/user/:id/update' element={ <ProtectedRoute> <UserUpdate /> </ProtectedRoute>} />
                 <Route path='/update-password' element={ <ProtectedRoute> <UpdatePassword /> </ProtectedRoute>} />
+
+                {/* Not Found Pages */}
+                <Route path='*' element={<NotFound />} />
+                <Route path='/about' element={<About />} />
               </Routes>
             </Container>
             <Footer />

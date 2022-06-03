@@ -8,46 +8,19 @@ import path from 'path'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 import APIFeatures from '../utils/apiFeatures.js'
-import { count } from 'console'
 
 const createProduct = async (req, res) => {
-  //req.body.user = req.user.userId
-
-  if (!req.files) {
-    throw new BadRequestError('No File Uploaded')
-  }
-
-  const productImage = req.files.image
-
-  if (!productImage.mimetype.startsWith('image')) {
-    throw new BadRequestError('Please upload image')
-  }
-
-  const maxSize = 1024 * 1024
-
-  if (productImage.size > maxSize) {
-    throw new BadRequestError('Please upload image smaller than 1MB')
-  }
-  // productImage ===  req.files.image
-  const result = await cloudinary.v2.uploader.upload(
-    productImage.tempFilePath,
-    {
-      use_filename: true,
-      folder: 'zapshop',
-    }
-  )
-
-  fs.unlinkSync(productImage.tempFilePath)
-
   const {
     name,
     description,
     price,
     countInStock,
+    image,
     gameLength,
     minPlayers,
     maxPlayers,
     featured,
+    freeShipping,
     sku,
     suggestedAge,
     languageOfPublication,
@@ -58,52 +31,40 @@ const createProduct = async (req, res) => {
     publisher,
   } = req.body
 
-  /*if (
-    !name ||
-    !description ||
-    !price ||
-    !countInStock ||
-    !gameLength ||
-    !minPlayers ||
-    !maxPlayers ||
-    !featured ||
-    !sku ||
-    !suggestedAge ||
-    !languageOfPublication ||
-    !languageDependence ||
-    !originCountry ||
-    !designer ||
-    !category ||
-    !publisher
-  ) {
-    throw new BadRequestError('Please provide all values')
-  }*/
+  if (image) {
+    const uploadedResponse = await cloudinary.v2.uploader.upload(image, {
+      upload_preset: "online-shop",
+    });
 
-  const product = new Product({
-    name: name,
-    description: description,
-    price: price,
-    countInStock: countInStock,
-    image: result.secure_url,
-    cloudinary_id: result.public_id,
-    gameLength: gameLength,
-    minPlayers: minPlayers,
-    maxPlayers: maxPlayers,
-    featured: featured,
-    sku: sku,
-    suggestedAge: suggestedAge,
-    languageOfPublication: languageOfPublication,
-    languageDependence: languageDependence,
-    originCountry: originCountry,
-    designer: designer,
-    category: category,
-    publisher: publisher,
-    user: req.user.userId,
-  })
+    if (uploadedResponse) {
+      const product = new Product({
+        image: uploadedResponse,
+        name, 
+        description, 
+        price, 
+        countInStock, 
+        gameLength, 
+        minPlayers, 
+        maxPlayers, 
+        featured, 
+        freeShipping, 
+        sku, 
+        suggestedAge, 
+        languageOfPublication,
+        languageDependence,
+        originCountry,
+        designer,
+        //category,
+        //publisher,
+        user: req.user.userId,
+      });
 
-  await product.save()
-  //const product = await Product.create(req.body)
-  res.status(StatusCodes.CREATED).json({ msg: 'Success! Product created.' })
+      const createdProduct = await product.save()
+  
+      //const product = await Product.create(req.body)
+      res.status(StatusCodes.CREATED).json(createdProduct)
+    }
+  }
 }
 
 const getAllProducts = async (req, res) => {
@@ -139,10 +100,12 @@ const updateProduct = async (req, res) => {
     description,
     price,
     countInStock,
+    image,
     gameLength,
     minPlayers,
     maxPlayers,
     featured,
+    freeShipping,
     sku,
     suggestedAge,
     languageOfPublication,
@@ -158,48 +121,45 @@ const updateProduct = async (req, res) => {
   if (!product) {
     throw new NotFoundError(`No product with id: ${productId}`)
   }
-  await cloudinary.v2.uploader.destroy(product.cloudinary_id)
 
-  const result = await cloudinary.v2.uploader.upload(
-    req.files.image.tempFilePath,
-    {
-      use_filename: true,
-      folder: 'zapshop',
+  await cloudinary.v2.uploader.destroy(product.image.public_id)
+
+  if (image) {
+    const uploadedResponse = await cloudinary.v2.uploader.upload(image, {
+      upload_preset: "online-shop",
+    });
+
+    if (uploadedResponse) {
+      const productData = {
+        name: name || product.name,
+        description: description || product.description,
+        price: price || product.price,
+        countInStock: countInStock || product.countInStock,
+        image: uploadedResponse || product.image.url,
+        featured: featured || product.featured,
+        freeShipping: freeShipping || product.freeShipping,
+        gameLength: gameLength || product.gameLength,
+        minPlayers: minPlayers || product.minPlayers,
+        maxPlayers: maxPlayers || product.maxPlayers,
+        sku: sku || product.sku,
+        suggestedAge: suggestedAge || product.suggestedAge,
+        languageOfPublication: languageOfPublication || product.languageOfPublication,
+        languageDependence: languageDependence || product.languageDependence,
+        originCountry: originCountry || product.originCountry,
+        designer: designer || product.designer,
+        //category: category || product.category,
+        //publisher: publisher || product.publisher,
+        user: req.user.userId || product.user,
+      }
+      await Product.findByIdAndUpdate(productId, productData, {
+        new: true,
+        runValidators: true,
+      })
+
+      const updatedProduct = await product.save()
+      res.status(StatusCodes.OK).json(updatedProduct)
     }
-  )
-
-  fs.unlinkSync(req.files.image.tempFilePath)
-
-  const productData = {
-    name: name || product.name,
-    description: description || product.description,
-    price: price || product.price,
-    countInStock: countInStock || product.countInStock,
-    image: result.secure_url || product.image,
-    cloudinary_id: result.public_id || product.cloudinary_id,
-    featured: featured || product.featured,
-    gameLength: gameLength || product.gameLength,
-    minPlayers: minPlayers || product.minPlayers,
-    maxPlayers: maxPlayers || product.maxPlayers,
-    sku: sku || product.sku,
-    suggestedAge: suggestedAge || product.suggestedAge,
-    languageOfPublication:
-      languageOfPublication || product.languageOfPublication,
-    languageDependence: languageDependence || product.languageDependence,
-    originCountry: originCountry || product.originCountry,
-    designer: designer || product.designer,
-    category: category || product.category,
-    publisher: publisher || product.publisher,
-    user: req.user.userId || product.user,
   }
-
-  await Product.findByIdAndUpdate(productId, productData, {
-    new: true,
-    runValidators: true,
-  })
-  await product.save()
-
-  res.status(StatusCodes.OK).json({ msg: 'Success! Product updated.' })
 }
 
 const deleteProduct = async (req, res) => {
@@ -210,7 +170,7 @@ const deleteProduct = async (req, res) => {
   if (!product) {
     throw new NotFoundError(`No product with id: ${productId}`)
   }
-  await cloudinary.v2.uploader.destroy(product.cloudinary_id)
+  await cloudinary.v2.uploader.destroy(product.image.public_id)
   await product.remove()
   res.status(StatusCodes.OK).json({ msg: 'Success! Product removed.' })
 }
@@ -234,13 +194,11 @@ const uploadImage = async (req, res) => {
 
   const imagePath = path.join(
     __dirname,
-    '../../uploads/' + `${productImage.name}`
+    '../../uploads/' + `${productImage.name}` 
   )
   await productImage.mv(imagePath)
 
-  return res
-    .status(StatusCodes.OK)
-    .json({ image: { src: `/uploads/${productImage.name}` } })
+  return res.send( `/uploads/${productImage.name}`)
 }
 
 const uploadImageToCloud = async (req, res) => {
@@ -272,7 +230,7 @@ const uploadImageToCloud = async (req, res) => {
 
   return res
     .status(StatusCodes.OK)
-    .json({ image: { public_id: result.public_id, url: result.secure_url } })
+    .json({ public_id: result.public_id, url: result.secure_url })
 }
 
 const productCount = async (req, res) => {

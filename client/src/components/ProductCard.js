@@ -50,7 +50,7 @@ const ProductCard = ({ product }) => {
         component={Link}
         to={`/products/${product.id}`}
         title={product.name}
-        image={product.image}
+        image={product.image.url}
       />
       <CardContent>
         <Typography gutterBottom color='primary' variant='h5'>

@@ -97,7 +97,7 @@ const Cart = () => {
                       <TableCell component='th' scope='row'>
                         <Box display='flex' alignItems='center'>
                           <img
-                            src={cartItem.image}
+                            src={cartItem.image.url}
                             alt={cartItem.name}
                             style={{ height: 50, marginRight: 20 }}
                           />

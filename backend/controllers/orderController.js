@@ -2,7 +2,6 @@ import Order from '../models/Order.js'
 import Product from '../models/Product.js'
 import { StatusCodes } from 'http-status-codes'
 import { BadRequestError, NotFoundError } from '../errors/index.js'
-import { checkPermissions } from '../utils/index.js'
 
 const createOrder = async (req, res) => {
   let {
@@ -79,7 +78,7 @@ const createOrder = async (req, res) => {
 }
 
 const getAllOrders = async (req, res) => {
-  const orders = await Order.find({})
+  const orders = await Order.find({}).populate('user', 'id name')
   res.status(StatusCodes.OK).json({ ordersCount: orders.length, orders })
 }
 

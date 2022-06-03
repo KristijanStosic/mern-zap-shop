@@ -56,9 +56,9 @@ const UserList = () => {
 
     {loading ? <Loading message='Loading users...' /> : 
      error ? <Alert severity='error'>{error}</Alert> : (
+       <Grid container spacing={2}>
         <Grid item xs={12}>
         <Typography variant='h4'>USERS</Typography>
-
           <TableContainer sx={{ mt: 2}} component={Paper}>
           <Table sx={{ minWidth: 700 }}>
             <TableHead>
@@ -90,7 +90,9 @@ const UserList = () => {
           </Table>
         </TableContainer>
       </Grid>
+      </Grid>
      )}
+     
   </>
 }
 

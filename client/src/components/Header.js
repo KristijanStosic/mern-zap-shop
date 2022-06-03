@@ -24,11 +24,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import { logout } from '../redux/actions/authActions'
 
 const middleLinks = [
-  { title: 'home', path: '/' },
-  { title: 'products', path: '/products' },
-  { title: 'orders', path: '/orders' },
-  { title: 'about', path: '/about' },
-  { title: 'admin', path: '/admin' },
+  { title: '', path: '/' },
 ]
 
 const rightLinks = [
@@ -255,6 +251,10 @@ const Header = ({ darkMode, handleThemeChange }) => {
                   <Divider />
                   <MenuItem component={Link} to='/admin/category-list'>
                     Categories
+                  </MenuItem>
+                  <Divider />
+                  <MenuItem component={Link} to='/admin/publisher-list'>
+                    Publishers
                   </MenuItem>
                   <Divider />
                   <MenuItem component={Link} to='/admin/address-list'>

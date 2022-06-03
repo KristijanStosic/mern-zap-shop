@@ -15,6 +15,7 @@ import {
 import Alert from '../components/Alert'
 import Loading from '../components/Loading'
 import Meta from '../components/Meta'
+import { toast } from 'react-toastify'
 import { getUserDetails, updateUser } from '../redux/actions/userActions'
 import { USER_UPDATE_RESET } from '../redux/constants/userConstants'
 
@@ -54,6 +55,7 @@ const UserUpdate = () => {
   const updateUserHandler = (e) => {
     e.preventDefault()
     dispatch(updateUser({ _id: userId, name, email, role }))
+    toast.info('User updated successfully')
   }
 
   return (

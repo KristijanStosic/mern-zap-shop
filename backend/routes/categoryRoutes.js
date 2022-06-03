@@ -12,6 +12,6 @@ import {
 import { authenticateUser, authorizePermissions } from '../middleware/authentication.js'
 
 router.route('/').post(authenticateUser, authorizePermissions('admin'), createCategory).get(getAllCategories)
-router.route('/:id').delete(deleteCategory).patch(updateCategory).get(getCategoryById)
+router.route('/:id').delete(authenticateUser, authorizePermissions('admin'), deleteCategory).patch(authenticateUser, authorizePermissions('admin'), updateCategory).get(getCategoryById)
 
 export default router

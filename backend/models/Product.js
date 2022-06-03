@@ -23,8 +23,8 @@ const ProductSchema = new mongoose.Schema(
       default: 0,
     },
     image: {
-      type: String,
-      default: '/uploads/example.jpg',
+      type: Object,
+      //default: '/uploads/sample.jpg',
     },
     cloudinary_id: {
       type: String,
@@ -84,7 +84,7 @@ const ProductSchema = new mongoose.Schema(
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Category',
-      required: true,
+     // required: true,
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -94,7 +94,7 @@ const ProductSchema = new mongoose.Schema(
     publisher: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Publisher',
-      required: true,
+      //required: true,
     },
   },
   {

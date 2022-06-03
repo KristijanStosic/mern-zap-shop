@@ -1,6 +1,5 @@
 import express from 'express'
 import 'dotenv/config'
-
 import cors from 'cors'
 import path from 'path'
 import 'express-async-errors'
@@ -29,7 +28,6 @@ import orderRoutes from './routes/orderRoutes.js'
 import addressRoutes from './routes/addressRoutes.js'
 import stripeRoutes from './routes/stripeRoutes.js'
 
-
 // middleware
 import notFoundMiddleware from './middleware/not-found.js'
 import errorHandlerMiddleware from './middleware/error-handler.js'
@@ -40,9 +38,6 @@ app.use(morgan('dev'))
 app.use(express.json())
 app.use(cookieParser(process.env.JWT_SECRET))
 app.use(fileUpload({ useTempFiles: true }))
-
-const __dirname = path.resolve()
-app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 
 app.use(cors())
 //app.disable('etag');
@@ -65,6 +60,9 @@ app.use('/api/products', productRoutes)
 app.use('/api/reviews', reviewRoutes)
 app.use('/api/orders', orderRoutes)
 app.use('/api/stripe', stripeRoutes)
+
+const __dirname = path.resolve()
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 
 app.use(notFoundMiddleware)
 app.use(errorHandlerMiddleware)
