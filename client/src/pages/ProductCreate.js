@@ -11,7 +11,6 @@ import {
   Paper,
   Container,
   MenuItem,
-  Input,
 } from '@mui/material'
 import Alert from '../components/Alert'
 import Loading from '../components/Loading'
@@ -31,8 +30,8 @@ const ProductCreate = () => {
   const [countInStock, setCountInStock] = useState(0)
   const [description, setDescription] = useState('')
   const [productImg, setProductImg] = useState('')
-  const [category, setCategory] = useState('')
-  const [publisher, setPublisher] = useState('')
+  //const [category, setCategory] = useState('')
+  //const [publisher, setPublisher] = useState('')
   const [gameLength, setGameLength] = useState('')
   const [minPlayers, setMinPlayers] = useState(1)
   const [maxPlayers, setMaxPlayers] = useState(10)
@@ -44,7 +43,6 @@ const ProductCreate = () => {
   const [languageDependence, setLanguageDependence] = useState('')
   const [originCountry, setOriginCountry] = useState('')
   const [designer, setDesigner] = useState('')
-  const [uploading, setUploading] = useState(false)
 
   const productCreate = useSelector((state) => state.productCreate)
   const {
@@ -54,7 +52,7 @@ const ProductCreate = () => {
     product,
   } = productCreate
 
-  const categoryList = useSelector((state) => state.categoryList)
+  /*const categoryList = useSelector((state) => state.categoryList)
   const {
     loading: loadingCategories,
     error: errorCategories,
@@ -66,7 +64,7 @@ const ProductCreate = () => {
     loading: loadingPublishers,
     error: errorPublishers,
     publishers,
-  } = publisherList
+  } = publisherList*/
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
@@ -283,7 +281,7 @@ const ProductCreate = () => {
                   onChange={(e) => setSku(e.target.value)}
                   value={sku}
                 />
-                <FormControl fullWidth>
+                {/* <FormControl fullWidth>
                   <small>Select Category</small>
                   <Select
                     sx={{ mt: 1 }}
@@ -317,7 +315,7 @@ const ProductCreate = () => {
                         </MenuItem>
                       ))}
                   </Select>
-                </FormControl>
+                </FormControl> */}
                 <TextField
                   margin='normal'
                   required

@@ -27,25 +27,26 @@ import { getProductDetails } from '../redux/actions/productActions'
 const ProductDetails = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const params = useParams()
   const [quantity, setQuantity] = useState(1)
-  const { id } = useParams()
 
+  const productId = params.id
 
   const productDetails = useSelector((state) => state.productDetails)
 
   const { loading, error, product } = productDetails
 
   useEffect(() => {
-    dispatch(getProductDetails(id))
-  }, [dispatch, id])
+    if(!product || product._id !== productId) {
+      dispatch(getProductDetails(productId))
+    }
+  }, [dispatch, productId, product])
 
   const addToCartHandler = () => {
-    navigate(`/cart/${id}?quantity=${quantity}`)
+    navigate(`/cart/${productId}?quantity=${quantity}`)
   }
 
-
   if (loading) return <Loading message='Loading product...' />
-
   return (
     <>
       {error ? (
@@ -56,7 +57,7 @@ const ProductDetails = () => {
           <Grid container spacing={6}>
             <Grid item xs={6}>
               <img
-                src={product.image.url}
+                src={product.image?.url}
                 alt={product.name}
                 style={{ width: '100%' }}
               />

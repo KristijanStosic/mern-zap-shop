@@ -89,7 +89,7 @@ const Cart = () => {
               </TableHead>
               <TableBody>
                 {cartItems &&
-                  cartItems.map((cartItem) => (
+                  cartItems?.map((cartItem) => (
                     <TableRow
                       key={cartItem.product}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -97,7 +97,7 @@ const Cart = () => {
                       <TableCell component='th' scope='row'>
                         <Box display='flex' alignItems='center'>
                           <img
-                            src={cartItem.image.url}
+                            src={cartItem.image?.url}
                             alt={cartItem.name}
                             style={{ height: 50, marginRight: 20 }}
                           />

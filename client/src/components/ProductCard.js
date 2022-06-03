@@ -48,9 +48,9 @@ const ProductCard = ({ product }) => {
           backgroundSize: 'contain',
         }}
         component={Link}
-        to={`/products/${product.id}`}
+        to={`/products/${product._id}`}
         title={product.name}
-        image={product.image.url}
+        image={product.image?.url}
       />
       <CardContent>
         <Typography gutterBottom color='primary' variant='h5'>

@@ -21,7 +21,7 @@ import Alert from '../components/Alert'
 import Loading from '../components/Loading'
 import Meta from '../components/Meta'
 import { PRODUCT_CREATE_RESET } from '../redux/constants/productConstants'
-import { getAllProducts, createProduct, deleteProduct } from '../redux/actions/productActions'
+import { getAllProducts, deleteProduct } from '../redux/actions/productActions'
 
 const ProductList = () => {
   const navigate = useNavigate()
@@ -58,9 +58,9 @@ const ProductList = () => {
     }
   }
 
-  const createProductHandler = () => {
+  /*const createProductHandler = () => {
     dispatch(createProduct())
-  }
+  }*/
 
   return (
     <>

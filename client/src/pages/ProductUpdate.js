@@ -11,7 +11,6 @@ import {
   Paper,
   Container,
   MenuItem,
-  IconButton
 } from '@mui/material'
 import Alert from '../components/Alert'
 import Loading from '../components/Loading'
@@ -24,7 +23,6 @@ import {
 import { PRODUCT_UPDATE_RESET } from '../redux/constants/productConstants'
 //import { getAllCategories } from '../redux/actions/categoryActions'
 //import { getAllPublishers } from '../redux/actions/publisherActions'
-import { toast } from 'react-toastify'
 
 const ProductUpdate = () => {
   const params = useParams()
@@ -38,8 +36,8 @@ const ProductUpdate = () => {
   const [countInStock, setCountInStock] = useState(0)
   const [description, setDescription] = useState('')
   const [productImg, setProductImg] = useState('');
-  const [category, setCategory] = useState('')
-  const [publisher, setPublisher] = useState('')
+  //const [category, setCategory] = useState('')
+  //const [publisher, setPublisher] = useState('')
   const [gameLength, setGameLength] = useState('')
   const [minPlayers, setMinPlayers] = useState(1)
   const [maxPlayers, setMaxPlayers] = useState(10)
