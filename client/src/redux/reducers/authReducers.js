@@ -6,6 +6,7 @@ import {
   FORGOT_PASSWORD_REQUEST,
   FORGOT_PASSWORD_SUCCESS,
   FORGOT_PASSWORD_FAIL,
+  FORGOT_PASSWORD_RESET,
   RESET_PASSWORD_REQUEST,
   RESET_PASSWORD_SUCCESS,
   RESET_PASSWORD_FAIL,
@@ -15,6 +16,7 @@ import {
   VERIFY_EMAIL_REQUEST,
   VERIFY_EMAIL_SUCCESS,
   VERIFY_EMAIL_FAIL,
+  RESET_PASSWORD_RESET,
 } from '../constants/authConstants'
 
 export const userLoginReducer = (state = {}, action) => {
@@ -59,12 +61,14 @@ export const forgotPasswordReducer = (state = {}, action) => {
       return {
         ...state,
         loading: false,
-        msg: action.payload,
+        success: true
       }
 
     case FORGOT_PASSWORD_FAIL:
       return { ...state, loading: false, error: action.payload }
 
+    case FORGOT_PASSWORD_RESET:
+      return { }
     default:
       return state
   }
@@ -82,12 +86,14 @@ export const resetPasswordReducer = (state = {}, action) => {
       return {
         ...state,
         loading: false,
-        msg: action.payload,
+        success: true
       }
 
     case RESET_PASSWORD_FAIL:
       return { ...state, loading: false, error: action.payload }
 
+    case RESET_PASSWORD_RESET:
+      return { }
     default:
       return state
   }

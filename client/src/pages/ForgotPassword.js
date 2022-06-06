@@ -11,24 +11,28 @@ import {
   Button,
 } from '@mui/material'
 import LockOpenIcon from '@mui/icons-material/LockOpen'
-import Alert from '../components/Alert'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { forgotPassword, clearErrors } from '../redux/actions/authActions'
+import { forgotPassword } from '../redux/actions/authActions'
+import { FORGOT_PASSWORD_RESET } from '../redux/constants/authConstants'
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('')
 
   const dispatch = useDispatch()
 
-  const { error, loading, msg } = useSelector((state) => state.forgotPassword)
+  const { error, loading, success } = useSelector((state) => state.forgotPassword)
 
   useEffect(() => {
+    if(success) {
+      dispatch({ type: FORGOT_PASSWORD_RESET })
+      toast.info('Please check your email for link reset')
+    }
+
     if (error) {
       toast.error(error)
-      dispatch(clearErrors())
     }
-  }, [dispatch, error, msg])
+  }, [dispatch, error, success])
 
 
   const handleSubmit = (e) => {
@@ -55,8 +59,6 @@ const ForgotPassword = () => {
           <Typography component='h1' variant='h5'>
             FORGOT PASSWORD
           </Typography>
-          {msg && <Alert severity='success'>{msg}</Alert>}
-          
           <Box
             component='form'
             onSubmit={handleSubmit}

@@ -249,7 +249,7 @@ const featuredProducts = async (req, res) => {
   const count = req.params.count ? req.params.count : 0
   const featuredProducts = await Product.find({ featured: true }).limit(count)
 
-  res.status(StatusCodes.OK).json({ featuredProducts: featuredProducts })
+  res.status(StatusCodes.OK).json(featuredProducts)
 }
 
 const getProductsByCategory = async(req, res) => {

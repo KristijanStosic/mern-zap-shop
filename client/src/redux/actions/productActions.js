@@ -63,9 +63,7 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
   try {
     dispatch({ type: PRODUCT_DELETE_REQUEST })
 
-    const {
-      userLogin: { userInfo },
-    } = getState()
+    const { userLogin: { userInfo } } = getState()
 
     const config = {
       headers: {

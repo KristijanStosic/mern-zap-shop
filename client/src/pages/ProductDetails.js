@@ -232,7 +232,6 @@ const ProductDetails = () => {
               </List>
             </Grid>
             <Grid sx={{ mt: 3}} item xs={6}>
-              <List>
                 <Typography variant='h4'>Write customer review</Typography>
                 {userInfo ? (
                 <Box
@@ -270,7 +269,6 @@ const ProductDetails = () => {
                   margin='normal'
                   required
                   fullWidth
-                  autoFocus
                   autoComplete='title'
                   id='title'
                   label='Title'
@@ -286,7 +284,6 @@ const ProductDetails = () => {
                   margin='normal'
                   required
                   fullWidth
-                  autoFocus
                   autoComplete='comment'
                   id='comment'
                   label='Comment'
@@ -301,7 +298,6 @@ const ProductDetails = () => {
                 </Button>
                 </Box>
                 ) : <Alert severity='info'>Please <Link to='/login'>login</Link> to post review</Alert>}
-            </List>
               </Grid>
           </Grid>
         </>

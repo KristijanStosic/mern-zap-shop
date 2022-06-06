@@ -9,7 +9,7 @@ import Alert from '../components/Alert'
 
 const Products = () => {
   const dispatch = useDispatch()
-  
+
   const productList = useSelector((state) => state.productList)
   const { loading, error, products } = productList
 
@@ -19,21 +19,22 @@ const Products = () => {
 
   return (
     <>
-      <Meta title={'Products Page'} />
-
       {loading ? (
         <Loading message='Loading products...' />
       ) : error ? (
         <Alert severity='error'>{error}</Alert>
       ) : (
-        <Grid container spacing={4}>
-          {products &&
-            products.map((product) => (
-              <Grid item xs={3} key={product._id}>
-                <ProductCard product={product} />
-              </Grid>
-            ))}
-        </Grid>
+        <>
+          <Meta title={'Products Page'} />
+          <Grid container spacing={4}>
+            {products &&
+              products.map((product) => (
+                <Grid item xs={3} key={product._id}>
+                  <ProductCard product={product} />
+                </Grid>
+              ))}
+          </Grid>
+        </>
       )}
     </>
   )

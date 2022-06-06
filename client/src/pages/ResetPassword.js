@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   Container,
@@ -17,8 +17,10 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import Alert from '../components/Alert'
 import { useQuery } from '../utils/utils'
 import { resetPassword } from '../redux/actions/authActions'
+import { RESET_PASSWORD_RESET } from '../redux/constants/authConstants'
+import { toast } from 'react-toastify'
 
-const ResetPasswordForm = () => {
+const ResetPassword = () => {
   const query = useQuery()
   const [hide, setHide] = useState(false)
   const [token] = useState(query.get('token'))
@@ -27,7 +29,14 @@ const ResetPasswordForm = () => {
 
   const dispatch = useDispatch()
 
-  const { loading, error, msg } = useSelector(state => state.resetPassword)
+  const { loading, error, success } = useSelector(state => state.resetPassword)
+
+  useEffect(() => {
+    if(success) {
+      dispatch({ type: RESET_PASSWORD_RESET })
+      toast.info('Password updated successfully')
+    }
+  }, [dispatch, success])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -45,6 +54,7 @@ const ResetPasswordForm = () => {
     e.preventDefault()
     setHide(!hide)
   }
+
 
   return (
     <>
@@ -65,9 +75,6 @@ const ResetPasswordForm = () => {
           </Typography>
           {error && (
             <Alert severity='error'>{error}</Alert>
-          )}
-          {msg && (
-            <Alert severity='info'>{msg}</Alert>
           )}
             <Box
               component='form'
@@ -113,4 +120,4 @@ const ResetPasswordForm = () => {
   )
 }
 
-export default ResetPasswordForm
+export default ResetPassword

@@ -23,9 +23,7 @@ import { MY_ORDERS_RESET } from '../constants/orderConstants'
 
 export const login = (email, password) => async (dispatch) => {
   try {
-    dispatch({
-      type: USER_LOGIN_REQUEST,
-    })
+    dispatch({ type: USER_LOGIN_REQUEST })
 
     const config = {
       headers: {
