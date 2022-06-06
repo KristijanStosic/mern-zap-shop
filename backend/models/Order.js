@@ -6,7 +6,7 @@ const OrderItemSchema = new mongoose.Schema({
     required: true,
   },
   image: {
-    type: String,
+    type: Object,
     required: true,
   },
   price: {
@@ -48,7 +48,7 @@ const OrderSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['pending', 'failed', 'paid', 'canceled'],
+      enum: ['pending', 'failed', 'paid', 'canceled', 'delivered'],
       default: 'pending',
     },
     isPaid: {
@@ -78,12 +78,9 @@ const OrderSchema = new mongoose.Schema(
       type: String,
     },
     paymentInfo: {
-      id: {
-        type: String,
-      },
-      status: {
-        type: String,
-      },
+      data: { 
+        type: Object
+      }
     },
     orderItems: [OrderItemSchema],
     shippingAddress: {

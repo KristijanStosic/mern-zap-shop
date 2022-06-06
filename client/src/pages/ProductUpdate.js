@@ -21,8 +21,8 @@ import {
   updateProduct,
 } from '../redux/actions/productActions'
 import { PRODUCT_UPDATE_RESET } from '../redux/constants/productConstants'
-//import { getAllCategories } from '../redux/actions/categoryActions'
-//import { getAllPublishers } from '../redux/actions/publisherActions'
+import { getAllCategories } from '../redux/actions/categoryActions'
+import { getAllPublishers } from '../redux/actions/publisherActions'
 
 const ProductUpdate = () => {
   const params = useParams()
@@ -36,8 +36,8 @@ const ProductUpdate = () => {
   const [countInStock, setCountInStock] = useState(0)
   const [description, setDescription] = useState('')
   const [productImg, setProductImg] = useState('');
-  //const [category, setCategory] = useState('')
-  //const [publisher, setPublisher] = useState('')
+  const [category, setCategory] = useState('')
+  const [publisher, setPublisher] = useState('')
   const [gameLength, setGameLength] = useState('')
   const [minPlayers, setMinPlayers] = useState(1)
   const [maxPlayers, setMaxPlayers] = useState(10)
@@ -60,11 +60,11 @@ const ProductUpdate = () => {
     success: successUpdate,
   } = productUpdate
 
-  /*const categoryList = useSelector((state) => state.categoryList)
-  const { loading: loadingCategories, error: errorCategories, categories } = categoryList
+  const categoryList = useSelector((state) => state.categoryList)
+  const { categories } = categoryList
 
   const publisherList = useSelector((state) => state.publisherList)
-  const { loading: loadingPublishers, error: errorPublishers, publishers } = publisherList*/
+  const { publishers } = publisherList
 
   useEffect(() => {
     if (successUpdate) {
@@ -73,6 +73,8 @@ const ProductUpdate = () => {
     } else {
       if (!product || !product.name || product._id !== productId) {
         dispatch(getProductDetails(productId))
+        dispatch(getAllCategories())
+        dispatch(getAllPublishers())
       } else {
         setName(product.name)
         setPrice(product.price)
@@ -115,6 +117,8 @@ const ProductUpdate = () => {
         languageDependence,
         originCountry,
         designer,
+        category,
+        publisher
       })
     )
   }
@@ -290,7 +294,7 @@ const ProductUpdate = () => {
                   onChange={(e) => setSku(e.target.value)}
                   value={sku}
                 />
-                {/* <FormControl fullWidth>
+                <FormControl fullWidth>
                   <small>Select Category</small>
                   <Select
                     sx={{mt: 1}}
@@ -300,7 +304,7 @@ const ProductUpdate = () => {
                     value={category}
                   >
                     {categories && categories.map((category) => (
-                        <MenuItem key={category._id} value={category}>{category.name}</MenuItem>
+                        <MenuItem key={category._id} value={category._id}>{category.name}</MenuItem>
                     ))}
                   </Select>
                 </FormControl>
@@ -315,10 +319,10 @@ const ProductUpdate = () => {
                     value={publisher}
                   >
                     {publishers && publishers.map((publisher) => (
-                        <MenuItem key={publisher._id} value={publisher}>{publisher.name}</MenuItem>
+                        <MenuItem key={publisher._id} value={publisher._id}>{publisher.name}</MenuItem>
                     ))}
                   </Select>
-                </FormControl> */}
+                </FormControl>
                 <TextField
                   margin='normal'
                   required

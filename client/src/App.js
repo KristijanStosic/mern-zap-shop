@@ -30,7 +30,10 @@ import {
   ProductCreate,
   CategoryCreate,
   ProductUpdate,
-  OrderList
+  OrderList,
+  CategoryUpdate,
+  PublisherCreate,
+  PublisherUpdate
 } from './pages'
 
 import { Container, createTheme, CssBaseline, ThemeProvider, } from '@mui/material'
@@ -73,9 +76,12 @@ const App = () => {
                 {/* Categories */}
                 <Route path='/admin/category-list' element={ <ProtectedRoute> <CategoryList /> </ProtectedRoute>} />
                 <Route path='/admin/category-create' element={ <ProtectedRoute> <CategoryCreate /> </ProtectedRoute>} />
+                <Route path='/admin/category/:id/update' element={ <ProtectedRoute> <CategoryUpdate /> </ProtectedRoute>} />
 
                 {/* Publishers */}
                 <Route path='/admin/publisher-list' element={ <ProtectedRoute> <PublisherList /> </ProtectedRoute>} />
+                <Route path='/admin/publisher-create' element={ <ProtectedRoute> <PublisherCreate /> </ProtectedRoute>} />
+                <Route path='/admin/publisher/:id/update' element={ <ProtectedRoute> <PublisherUpdate /> </ProtectedRoute>} />
 
                 {/* Cart */}
                 <Route path='/cart'>
@@ -86,7 +92,7 @@ const App = () => {
                 {/* Checkout and Orders */}
                 <Route path='/shipping' element={<Shipping />} />
                 <Route path='/payment-method' element={<PaymentMethod />} />
-                <Route path='/place-order' element={<PlaceOrder />} />
+                <Route path='/place-order' element={ <ProtectedRoute> <PlaceOrder /> </ProtectedRoute>} />
                 <Route path='/order-success' element={<OrderSuccess />} />
                 <Route path='/order/:id' element={ <ProtectedRoute> <Order /> </ProtectedRoute>}/>
                 <Route path='/payment' element={ <ProtectedRoute> <Payment /> </ProtectedRoute> } />

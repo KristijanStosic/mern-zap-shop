@@ -10,7 +10,8 @@ import {
   uploadImage,
   uploadImageToCloud,
   productCount,
-  featuredProducts
+  featuredProducts,
+  getProductsByCategory
 } from '../controllers/productController.js'
 
 import { getSingleProductReviews } from '../controllers/reviewController.js'
@@ -23,19 +24,18 @@ router
   .get(getAllProducts);
 
 
-router
-  .route('/upload-image')
-  .post(uploadImageToCloud);
+router.route('/upload-image').post(uploadImageToCloud)
 
-  router.get('/count', productCount)
-  router.get('/featured/:count', featuredProducts)
-
+router.get('/count', productCount)
+router.get('/featured/:count', featuredProducts)
 
 router
   .route('/:id')
   .get(getProductById)
   .patch([authenticateUser, authorizePermissions('admin')], updateProduct)
-  .delete([authenticateUser, authorizePermissions('admin')], deleteProduct);
+  .delete([authenticateUser, authorizePermissions('admin')], deleteProduct)
+
+  router.route('/category/:id').get(getProductsByCategory)
 
 router.route('/:id/reviews').get(getSingleProductReviews)
 

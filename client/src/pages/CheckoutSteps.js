@@ -5,7 +5,7 @@ import {
   Button,
 } from '@mui/material'
 
-const CheckoutSteps = ({ shipping, paymentMethod, placeOrder, payment }) => {
+const CheckoutSteps = ({ shipping, paymentMethod, placeOrder }) => {
   return (
     <Container component='main' maxWidth='sm' sx={{ aligntItems: 'center', justifyContent: 'center', display: 'flex', mb: 2 }}>
       <>
@@ -38,17 +38,6 @@ const CheckoutSteps = ({ shipping, paymentMethod, placeOrder, payment }) => {
             3 Place Order
           </Button>
         )}
-
-        {payment ? (
-          <Button component={Link} to='/payment' style={{ backgroundColor: 'transparent'}} disableRipple color='primary'>
-            4 Payment
-          </Button>
-        ) : (
-          <Button color='primary' disabled>
-            4 Payment
-          </Button>
-        )}
-
       </>
     </Container>
   )

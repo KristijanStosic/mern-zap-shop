@@ -19,7 +19,7 @@ const createPublisher = async (req, res) => {
   const publisher = await Publisher.create({ name })
   res
     .status(StatusCodes.CREATED)
-    .json({ msg: 'Success! Publisher created', publisher })
+    .json(publisher)
 }
 
 const getAllPublishers = async (req, res) => {
@@ -35,7 +35,7 @@ const getPublisherById = async (req, res) => {
   if (!publisher) {
     throw new NotFoundError(`No publisher with id: ${publisherId}`)
   }
-  res.status(StatusCodes.OK).json({ publisher })
+  res.status(StatusCodes.OK).json(publisher)
 }
 
 const updatePublisher = async (req, res) => {

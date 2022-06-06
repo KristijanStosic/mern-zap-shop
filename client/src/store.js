@@ -31,9 +31,12 @@ import {
   orderDetailsReducer,
   myOrdersReducer,
   orderListReducer,
+  orderDeliverReducer,
+  orderPayReducer,
 } from './redux/reducers/orderReducers'
-import { categoryCreateReducer, categoryDeleteReducer, categoryListReducer } from './redux/reducers/categoryReducers'
-import { publisherDeleteReducer, publisherListReducer } from './redux/reducers/publisherReducers'
+import { categoryCreateReducer, categoryDeleteReducer, categoryDetailsReducer, categoryListReducer, categoryUpdateReducer } from './redux/reducers/categoryReducers'
+import { publisherCreateReducer, publisherDeleteReducer, publisherDetailsReducer, publisherListReducer, publisherUpdateReducer } from './redux/reducers/publisherReducers'
+import { reviewCreateReducer, singleProductReviewsReducer } from './redux/reducers/reviewReducers'
 
 const reducer = combineReducers({
   productList: productListReducer,
@@ -56,12 +59,21 @@ const reducer = combineReducers({
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
   orderList: orderListReducer,
+  orderDeliver: orderDeliverReducer,
+  orderPay: orderPayReducer,
   myOrders: myOrdersReducer,
   categoryList: categoryListReducer,
+  categoryDetails: categoryDetailsReducer,
   categoryCreate: categoryCreateReducer,
+  categoryUpdate: categoryUpdateReducer,
   categoryDelete: categoryDeleteReducer,
   publisherList: publisherListReducer,
-  publisherDelete: publisherDeleteReducer
+  publisherDetails: publisherDetailsReducer,
+  publisherCreate: publisherCreateReducer,
+  publisherUpdate: publisherUpdateReducer,
+  publisherDelete: publisherDeleteReducer,
+  reviewCreate: reviewCreateReducer,
+  singleProductReviews: singleProductReviewsReducer
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')

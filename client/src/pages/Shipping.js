@@ -11,19 +11,16 @@ import {
   Box,
   Divider,
 } from '@mui/material'
-import { useForm } from 'react-hook-form'
-import { saveShippingAddress } from '../redux/actions/cartActions'
 import Meta from '../components/Meta'
 import CheckoutSteps from '../pages/CheckoutSteps'
+import { useForm } from 'react-hook-form'
+import { saveShippingAddress } from '../redux/actions/cartActions'
 
 const Shipping = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm()
+  const { register, formState: { errors } } = useForm()
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
   const cart = useSelector((state) => state.cart)
   const { shippingAddress } = cart
 
@@ -36,7 +33,7 @@ const Shipping = () => {
   const [country, setCountry] = useState(shippingAddress.country)
 
   const saveShippingAddressHandler = (e) => {
-    //e.preventDefault()
+    e.preventDefault()
     dispatch(
       saveShippingAddress({
         firstName,
@@ -189,7 +186,7 @@ const Shipping = () => {
           </Grid>
           <Box
             component='form'
-            onSubmit={handleSubmit(saveShippingAddressHandler)}
+            onSubmit={saveShippingAddressHandler}
             sx={{ display: 'flex', justifyContent: 'flex-end' }}
           >
             <Button type='submit' variant='contained' sx={{ mt: 3, ml: 1 }}>

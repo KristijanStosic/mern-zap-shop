@@ -23,6 +23,9 @@ const PlaceOrder = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
+  const orderCreate = useSelector((state) => state.orderCreate)
+  const { success, error } = orderCreate
+
   const cart = useSelector((state) => state.cart)
   const { cartItems } = cart
 
@@ -32,32 +35,14 @@ const PlaceOrder = () => {
     navigate('/payment')
   }
 
-  const orderCreate = useSelector((state) => state.orderCreate)
-  const { success, error } = orderCreate
-
-  // Calculate prices
-  const addDecimals = (num) => {
+  const addDecimals = (num) => { 
     return (Math.round(num * 100) / 100).toFixed(2)
   }
-  // will return 0 if left side is null or undefined
-  cart.itemsPrice =
-    addDecimals(
-      Number(
-        cartItems.reduce(
-          (sum, cartItem) => sum + cartItem.quantity * cartItem.price,
-          0
-        )
-      )
-    ) ?? 0
+  cart.itemsPrice = addDecimals(Number(cartItems.reduce((sum, cartItem) => sum + cartItem.quantity * cartItem.price, 0))) ??0
 
-  // if order is > $100 shipping is 0, else $3
   cart.shippingPrice = addDecimals(cart.itemsPrice > 100 ? 0 : 3)
-  cart.taxPrice = addDecimals(Number((0.15 * cart.itemsPrice).toFixed(2))) // 15% taxPrice price
-  cart.totalPrice = (
-    Number(cart.itemsPrice) +
-    Number(cart.shippingPrice) +
-    Number(cart.taxPrice)
-  ).toFixed(2)
+  cart.taxPrice = addDecimals(Number((0.05 * cart.itemsPrice).toFixed(2))) // 5% taxPrice price
+  cart.totalPrice = (Number(cart.itemsPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice)).toFixed(2)
 
   useEffect(() => {
     if (success) {
@@ -67,34 +52,18 @@ const PlaceOrder = () => {
     }
   }, [dispatch, navigate, success])
 
-  const placeOrderHandler = (e) => {
+  const createOrderHandler = (e) => {
     e.preventDefault()
-    const orderData = {
-      orderItems: cartItems,
+    dispatch(createOrder({
+      orderItems: cart.cartItems,
       shippingAddress: cart.shippingAddress,
       paymentMethod: cart.paymentMethod,
       itemsPrice: cart.itemsPrice,
       shippingPrice: cart.shippingPrice,
       taxPrice: cart.taxPrice,
       totalPrice: cart.totalPrice,
-    }
-    dispatch(createOrder(orderData))
+    }))
   }
-
-  /*const proceedToPayment = async () => {
-    const data = {
-      orderItems: cartItems,
-      shippingAddress: cart.shippingAddress,
-      paymentMethod: cart.paymentMethod,
-      itemsPrice: cart.itemsPrice,
-      shippingPrice: cart.shippingPrice,
-      taxPrice: cart.taxPrice,
-      totalPrice: cart.totalPrice,
-    }
-
-    sessionStorage.setItem('orderInfo', JSON.stringify(data))
-    navigate('/payment')
-  }*/
 
   return (
     <>
@@ -117,7 +86,7 @@ const PlaceOrder = () => {
                   cartItems.map((cartItem, index) => (
                     <ListItem key={index} sx={{ py: 1, px: 0 }}>
                       <img
-                        src={cartItem.image}
+                        src={cartItem.image?.url}
                         alt={cartItem.name}
                         style={{ height: 50, marginRight: 20 }}
                       />
@@ -155,7 +124,7 @@ const PlaceOrder = () => {
                   </Typography>
                 </ListItem>
                 <ListItem>
-                  {error && <Alert severity='erro'>{error}</Alert>}
+                  {error && <Alert severity='error'>{error}</Alert>}
                 </ListItem>
               </List>
             )}
@@ -193,16 +162,12 @@ const PlaceOrder = () => {
                 <Typography variant='h6' gutterBottom sx={{ mt: 2 }}>
                   Method: {cart.paymentMethod}
                 </Typography>
-                <Button
-                  type='button'
+              <Button type='button'
                   sx={{ mt: 2 }}
                   variant='contained'
                   disabled={cartItems === 0}
-                  onClick={placeOrderHandler}
-                >
-                  {/* PROCEED TO PAYMENT */}
-                  PLACE ORDER
-                </Button>
+                  onClick={createOrderHandler}
+                  >PLACE ORDER</Button>
               </Grid>
             </Grid>
           </Paper>

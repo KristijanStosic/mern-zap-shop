@@ -33,7 +33,7 @@ const getCategoryById = async (req, res) => {
   if (!category) {
     throw new NotFoundError(`No category with id: ${categoryId}`)
   }
-  res.status(StatusCodes.OK).json({ category })
+  res.status(StatusCodes.OK).json(category)
 }
 
 const updateCategory = async (req, res) => {

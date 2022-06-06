@@ -26,8 +26,12 @@ import UserUpdate from './UserUpdate'
 import PublisherList from './PublisherList'
 import ProductCreate from './ProductCreate'
 import CategoryCreate from './CategoryCreate'
+import CategoryUpdate from './CategoryUpdate'
 import ProductUpdate from './ProductUpdate'
 import OrderList from './OrderList'
+import PublisherCreate from './PublisherCreate'
+import PublisherUpdate from './PublisherUpdate'
+
 
 export {
   NotFound,
@@ -59,5 +63,8 @@ export {
   ProductCreate,
   ProductUpdate,
   CategoryCreate,
-  OrderList
+  OrderList,
+  CategoryUpdate,
+  PublisherCreate,
+  PublisherUpdate
 }

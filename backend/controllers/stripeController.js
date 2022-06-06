@@ -9,7 +9,7 @@ const createCheckoutSession = async (req, res) => {
         currency: 'usd',
         product_data: {
           name: item.name,
-          images: [item.image],
+          images: [item.image?.url],
           metadata: {
             id: item.id
           }
@@ -41,4 +41,19 @@ const getStripeApiKey = async (req, res) => {
   })
 }
 
-export { getStripeApiKey, createCheckoutSession }
+const createPayment = (req, res) => {
+  stripe.charges.create({
+    source: req.body.tokenId,
+    amount: req.body.amount,
+    currency: 'usd'
+  },
+  (stripeErr, stripeRes) => {
+    if(stripeErr){
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(stripeErr)
+    } else {
+      res.status(StatusCodes.OK).json(stripeRes)
+    }
+  })
+}
+
+export { getStripeApiKey, createCheckoutSession, createPayment }

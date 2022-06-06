@@ -97,22 +97,6 @@ const getMyOrders = async (req, res) => {
   res.status(StatusCodes.OK).json({ ordersCount: orders.length, orders })
 }
 
-const updateOrder = async (req, res) => {
-  const { id: orderId } = req.params
-  //const { paymentIntentId } = req.body;
-
-  const order = await Order.findOne({ _id: orderId })
-  if (!order) {
-    throw new NotFoundError(`No order with id : ${orderId}`)
-  }
-
-  //order.paymentIntentId = paymentIntentId;
-  order.status = 'paid'
-  await order.save()
-
-  res.status(StatusCodes.OK).json({ msg: 'Success! Order updated.' })
-}
-
 const deleteOrder = async (req, res) => {
   const { id: orderId } = req.params
 
@@ -135,20 +119,38 @@ const updateOrderToPaid = async(req, res) => {
     throw new NotFoundError(`No order with id : ${orderId}`)
   }
 
-  if(order.isPaid) {
-    throw new BadRequestError(`You have already paid this order`)
-  }
-
   order.status = 'paid'
-  //order.isPaid = true 
-  //order.paidAt = Date.now()
-  order.paymentInfo ={
-    id: req.body.id,
-    status: req.body.status
+  order.isPaid = true 
+  order.paidAt = Date.now()
+  order.paymentInfo = req.body.paymentInfo 
+
+  console.log(order.paymentInfo)
+
+
+  const updatedOrder = await order.save()
+  res.status(StatusCodes.OK).json(updatedOrder)
+}
+
+const updateOrderToDelivered = async (req, res) => {
+  const { id: orderId } = req.params
+  //const { paymentIntentId } = req.body;
+
+  const order = await Order.findOne({ _id: orderId })
+  if (!order) {
+    throw new NotFoundError(`No order with id : ${orderId}`)
   }
 
-  await order.save()
-  res.status(StatusCodes.OK).json({ msg: 'Success! Order updated.', order })
+  if(order.isDelivered || order.status === 'delivered') {
+    throw new BadRequestError('This order is already delivered')
+  }
+
+  //order.paymentIntentId = paymentIntentId;
+  order.status = 'delivered'
+  order.isDelivered = true
+  order.deliveredAt = Date.now()
+  const updatedOrder = await order.save()
+
+  res.status(StatusCodes.OK).json(updatedOrder)
 }
 
 export {
@@ -157,6 +159,6 @@ export {
   getAllOrders,
   getOrderById,
   getMyOrders,
-  updateOrder,
+  updateOrderToDelivered,
   updateOrderToPaid
 }

@@ -16,6 +16,7 @@ import Alert from '../components/Alert'
 import Loading from '../components/Loading'
 import Meta from '../components/Meta'
 import styled from "styled-components";
+import { toast } from 'react-toastify'
 import { createProduct } from '../redux/actions/productActions'
 import { PRODUCT_CREATE_RESET } from '../redux/constants/productConstants'
 import { getAllCategories } from '../redux/actions/categoryActions'
@@ -30,8 +31,8 @@ const ProductCreate = () => {
   const [countInStock, setCountInStock] = useState(0)
   const [description, setDescription] = useState('')
   const [productImg, setProductImg] = useState('')
-  //const [category, setCategory] = useState('')
-  //const [publisher, setPublisher] = useState('')
+  const [category, setCategory] = useState('')
+  const [publisher, setPublisher] = useState('')
   const [gameLength, setGameLength] = useState('')
   const [minPlayers, setMinPlayers] = useState(1)
   const [maxPlayers, setMaxPlayers] = useState(10)
@@ -45,26 +46,13 @@ const ProductCreate = () => {
   const [designer, setDesigner] = useState('')
 
   const productCreate = useSelector((state) => state.productCreate)
-  const {
-    loading: loadingCreate,
-    error: errorCreate,
-    success: successCreate,
-    product,
-  } = productCreate
+  const { loading: loadingCreate, error: errorCreate, success: successCreate, product } = productCreate
 
-  /*const categoryList = useSelector((state) => state.categoryList)
-  const {
-    loading: loadingCategories,
-    error: errorCategories,
-    categories,
-  } = categoryList
+  const categoryList = useSelector((state) => state.categoryList)
+  const { categories } = categoryList
 
   const publisherList = useSelector((state) => state.publisherList)
-  const {
-    loading: loadingPublishers,
-    error: errorPublishers,
-    publishers,
-  } = publisherList*/
+  const { publishers } = publisherList
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
@@ -85,6 +73,12 @@ const ProductCreate = () => {
 
   const handleProductImageUpload = (e) => {
     const file = e.target.files[0]
+
+    if (!file) return toast.error('File not exist')
+
+    if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/jpg') return toast.error('File format is incorrect, please choose image')
+    
+    if (file.size > 1024 * 1024) return toast.error('Size to large')
 
     TransformFileData(file)
   }
@@ -123,6 +117,8 @@ const ProductCreate = () => {
         languageDependence,
         originCountry,
         designer,
+        category,
+        publisher
       })
     )
   }
@@ -281,7 +277,7 @@ const ProductCreate = () => {
                   onChange={(e) => setSku(e.target.value)}
                   value={sku}
                 />
-                {/* <FormControl fullWidth>
+                <FormControl fullWidth>
                   <small>Select Category</small>
                   <Select
                     sx={{ mt: 1 }}
@@ -292,7 +288,7 @@ const ProductCreate = () => {
                   >
                     {categories &&
                       categories.map((category) => (
-                        <MenuItem key={category._id} value={category}>
+                        <MenuItem key={category._id} value={category._id}>
                           {category.name}
                         </MenuItem>
                       ))}
@@ -310,12 +306,12 @@ const ProductCreate = () => {
                   >
                     {publishers &&
                       publishers.map((publisher) => (
-                        <MenuItem key={publisher._id} value={publisher}>
+                        <MenuItem key={publisher._id} value={publisher._id}>
                           {publisher.name}
                         </MenuItem>
                       ))}
                   </Select>
-                </FormControl> */}
+                </FormControl>
                 <TextField
                   margin='normal'
                   required

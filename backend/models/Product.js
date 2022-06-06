@@ -26,9 +26,6 @@ const ProductSchema = new mongoose.Schema(
       type: Object,
       //default: '/uploads/sample.jpg',
     },
-    cloudinary_id: {
-      type: String,
-    },
     numOfReviews: {
       type: Number,
       default: 0,

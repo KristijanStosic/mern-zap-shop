@@ -18,7 +18,7 @@ const getUserById = async (req, res) => {
     throw new NotFoundError(`No user with id: ${req.params.id}`)
   }
   checkPermissions(req.user, user._id)
-  res.status(StatusCodes.OK).json({ user })
+  res.status(StatusCodes.OK).json(user)
 }
 
 const getUserProfile = async (req, res) => {
@@ -28,7 +28,7 @@ const getUserProfile = async (req, res) => {
     throw new NotFoundError(`No user with id: ${req.params.id}`)
   }
 
-  res.status(StatusCodes.OK).json({ user })
+  res.status(StatusCodes.OK).json(user)
 }
 
 // update user with user.save()

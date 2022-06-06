@@ -23,8 +23,8 @@ const createReview = async (req, res) => {
   }
 
   req.body.user = req.user.userId
-  const review = await Review.create(req.body)
-  res.status(StatusCodes.CREATED).json({ review })
+  /*const review = */await Review.create(req.body)
+  res.status(StatusCodes.CREATED).json({ msg: 'Review created!'})
 }
 
 const getAllReviews = async (req, res) => {
@@ -83,8 +83,8 @@ const deleteReview = async (req, res) => {
 
 const getSingleProductReviews = async (req, res) => {
   const { id: productId } = req.params
-  const reviews = await Review.find({ product: productId })
-  res.status(StatusCodes.OK).json({ count: reviews.length, reviews })
+  const reviews = await Review.find({ product: productId }).populate('user', 'name')
+  res.status(StatusCodes.OK).json(reviews)
 }
 
 export {

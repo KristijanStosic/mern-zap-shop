@@ -1,4 +1,5 @@
 import Product from '../models/Product.js'
+import Category from '../models/Category.js'
 import { StatusCodes } from 'http-status-codes'
 import { BadRequestError, NotFoundError } from '../errors/index.js'
 import { fileURLToPath } from 'url'
@@ -31,6 +32,10 @@ const createProduct = async (req, res) => {
     publisher,
   } = req.body
 
+  if(!name || !description || !price || !countInStock || !image || !gameLength || !minPlayers || !maxPlayers || !featured || !freeShipping || !sku || !suggestedAge || !languageOfPublication || !languageDependence || !originCountry || !designer) {
+    throw new BadRequestError('Please provide all values')
+  }
+
   if (image) {
     const uploadedResponse = await cloudinary.v2.uploader.upload(image, {
       upload_preset: "online-shop",
@@ -54,8 +59,8 @@ const createProduct = async (req, res) => {
         languageDependence,
         originCountry,
         designer,
-        //category,
-        //publisher,
+        category,
+        publisher,
         user: req.user.userId,
       });
 
@@ -64,6 +69,8 @@ const createProduct = async (req, res) => {
       //const product = await Product.create(req.body)
       res.status(StatusCodes.CREATED).json(createdProduct)
     }
+  } else {
+    throw new BadRequestError('Please provide image')
   }
 }
 
@@ -76,7 +83,6 @@ const getAllProducts = async (req, res) => {
     req.query
   ).search().filter().pagination(pageSize).sort()
 
-  //const products = await Product.find({})//.populate('category publisher')
   const products = await apiFeatures.query
   res.status(StatusCodes.OK).json({ count: productCount, productsCount: products.length, products })
 }
@@ -89,7 +95,7 @@ const getProductById = async (req, res) => {
   if (!product) {
     throw new NotFoundError(`No product with id: ${productId}`)
   }
-  res.status(StatusCodes.OK).json({ product })
+  res.status(StatusCodes.OK).json(product)
 }
 
 const updateProduct = async (req, res) => {
@@ -147,8 +153,8 @@ const updateProduct = async (req, res) => {
         languageDependence: languageDependence || product.languageDependence,
         originCountry: originCountry || product.originCountry,
         designer: designer || product.designer,
-        //category: category || product.category,
-        //publisher: publisher || product.publisher,
+        category: category || product.category,
+        publisher: publisher || product.publisher,
         user: req.user.userId || product.user,
       }
       await Product.findByIdAndUpdate(productId, productData, {
@@ -246,6 +252,12 @@ const featuredProducts = async (req, res) => {
   res.status(StatusCodes.OK).json({ featuredProducts: featuredProducts })
 }
 
+const getProductsByCategory = async(req, res) => {
+  const { id: categoryId } = req.params
+  const products = await Product.find({ category: categoryId })
+  res.status(StatusCodes.OK).json(products)
+}
+
 export {
   createProduct,
   getAllProducts,
@@ -256,6 +268,7 @@ export {
   uploadImageToCloud,
   productCount,
   featuredProducts,
+  getProductsByCategory
 }
 
 /*const updateProduct = async (req, res) => {

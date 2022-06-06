@@ -9,8 +9,8 @@ import Alert from '../components/Alert'
 
 const Products = () => {
   const dispatch = useDispatch()
+  
   const productList = useSelector((state) => state.productList)
-
   const { loading, error, products } = productList
 
   useEffect(() => {

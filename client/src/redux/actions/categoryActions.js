@@ -9,6 +9,12 @@ import {
   CATEGORY_CREATE_SUCCESS,
   CATEGORY_CREATE_REQUEST,
   CATEGORY_CREATE_FAIL,
+  CATEGORY_UPDATE_REQUEST,
+  CATEGORY_UPDATE_SUCCESS,
+  CATEGORY_DETAILS_REQUEST,
+  CATEGORY_DETAILS_SUCCESS,
+  CATEGORY_DETAILS_FAIL,
+  CATEGORY_UPDATE_FAIL,
 } from '../constants/categoryConstants'
 
 export const getAllCategories = () => async (dispatch) => {
@@ -24,6 +30,35 @@ export const getAllCategories = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: CATEGORY_LIST_FAIL,
+      payload:
+        error.response && error.response.data.msg
+          ? error.response.data.msg
+          : error.msg,
+    })
+  }
+}
+
+export const getCategoryDetails = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: CATEGORY_DETAILS_REQUEST })
+
+    const { userLogin: { userInfo }, } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    const { data } = await axios.get(`/api/categories/${id}`, config)
+
+    dispatch({
+      type: CATEGORY_DETAILS_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch({
+      type: CATEGORY_DETAILS_FAIL,
       payload:
         error.response && error.response.data.msg
           ? error.response.data.msg
@@ -61,7 +96,33 @@ export const createCategory = (category) => async (dispatch, getState) => {
   }
 }
 
+export const updateCategory = (category) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: CATEGORY_UPDATE_REQUEST })
 
+    const { userLogin: { userInfo }, } = getState()
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    const { data } = await axios.patch(`/api/categories/${category._id}`, category, config)
+
+    dispatch({ type: CATEGORY_UPDATE_SUCCESS })
+    dispatch({ type: CATEGORY_DETAILS_SUCCESS, payload: data })
+  } catch (error) {
+    dispatch({
+      type: CATEGORY_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.msg
+          ? error.response.data.msg
+          : error.msg,
+    })
+  }
+}
 
 export const deleteCategory = (id) => async (dispatch, getState) => {
   try {

@@ -9,7 +9,10 @@ import {
   updatePublisher,
 } from '../controllers/publisherController.js'
 
-router.route('/').post(createPublisher).get(getAllPublishers)
-router.route('/:id').delete(deletePublisher).patch(updatePublisher).get(getPublisherById)
+import { authenticateUser, authorizePermissions } from '../middleware/authentication.js'
+
+
+router.route('/').post(authenticateUser, authorizePermissions('admin'), createPublisher).get(getAllPublishers)
+router.route('/:id').delete(authenticateUser, authorizePermissions('admin'), deletePublisher).patch(authenticateUser, authorizePermissions('admin'), updatePublisher).get(authenticateUser, authorizePermissions('admin'), getPublisherById)
 
 export default router

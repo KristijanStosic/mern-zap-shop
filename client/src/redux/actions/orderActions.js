@@ -15,6 +15,9 @@ import {
   ORDER_LIST_REQUEST,
   ORDER_LIST_SUCCESS,
   ORDER_LIST_FAIL,
+  ORDER_DELIVER_REQUEST,
+  ORDER_DELIVER_SUCCESS,
+  ORDER_DELIVER_FAIL,
 } from '../constants/orderConstants'
 import { CART_CLEAR_ITEMS } from '../constants/cartConstants'
 
@@ -159,32 +162,56 @@ export const getMyOrders = () => async (dispatch, getState) => {
 }
 
 
-export const updateOrderToPaid = (orderId, paymentInfo) => async (dispatch, getState) => {
+export const updateOrderToPaid = (order) => async (dispatch, getState) => {
   try {
-    dispatch({
-      type: ORDER_PAY_REQUEST,
-    })
+    dispatch({ type: ORDER_PAY_REQUEST })
 
-    const {
-      userLogin: { userInfo },
-    } = getState()
+    const { userLogin: { userInfo } } = getState()
 
     const config = {
       headers: {
-        'Content-Type': 'application/json',
         Authorization: `Bearer ${userInfo.token}`,
       },
     }
 
-    const { data } = await axios.patch(`/api/orders/${orderId}/pay`, paymentInfo, config)
+    const { data } = await axios.patch(`/api/orders/${order._id}/pay`, {}, config)
 
-    dispatch({
+    dispatch({ 
       type: ORDER_PAY_SUCCESS,
       payload: data,
     })
   } catch (error) {
     dispatch({
       type: ORDER_PAY_FAIL,
+      payload:
+        error.response && error.response.data.msg
+          ? error.response.data.msg
+          : error.msg,
+    })
+  }
+}
+
+export const updateOrderToDelivered = (order) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: ORDER_DELIVER_REQUEST })
+
+    const { userLogin: { userInfo } } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    const { data } = await axios.patch(`/api/orders/${order._id}/deliver`, {}, config)
+
+    dispatch({
+      type: ORDER_DELIVER_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch({
+      type: ORDER_DELIVER_FAIL,
       payload:
         error.response && error.response.data.msg
           ? error.response.data.msg

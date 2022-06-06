@@ -49,10 +49,6 @@ const PublisherList = () => {
     }
   }
 
-  const createPublisherHandler = (publisher) => {
-      // create publisher
-  }
-
   return (
     <>
       <Meta title={'Admin Publisher List Page'} />
@@ -70,7 +66,7 @@ const PublisherList = () => {
                 <Typography variant='h4'>PUBLISHERS</Typography>
               </Grid>
               <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Button onClick={createPublisherHandler} variant='contained' color='primary' startIcon={<AddBoxIcon />}>
+                <Button component={Link} to='/admin/publisher-create' variant='contained' color='primary' startIcon={<AddBoxIcon />}>
                   CREATE PUBLISHER
                 </Button>
               </Grid>
