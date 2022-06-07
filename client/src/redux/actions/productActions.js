@@ -17,11 +17,25 @@ import {
   PRODUCT_UPDATE_FAIL,
 } from '../constants/productConstants'
 
-export const getAllProducts = () => async (dispatch) => {
+export const getAllProducts = (keyword = '', page = 1, sort = '', category, publisher) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST })
 
-    const { data } = await axios.get('/api/products')
+    let link = `/api/products?keyword=${keyword}&page=${page}&sort=${sort}`
+
+    if(category) {
+      link = `/api/products?keyword=${keyword}&page=${page}&sort=${sort}&category=${category}`
+    }
+
+    if(publisher) {
+      link = `/api/products?keyword=${keyword}&page=${page}&sort=${sort}&publisher=${publisher}`
+    }
+
+    if(publisher && category) {
+      link = `/api/products?keyword=${keyword}&page=${page}&sort=${sort}&category=${category}&publisher=${publisher}`
+    }
+
+    const { data } = await axios.get(link)
 
     dispatch({
       type: PRODUCT_LIST_SUCCESS,

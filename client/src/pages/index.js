@@ -31,6 +31,8 @@ import ProductUpdate from './ProductUpdate'
 import OrderList from './OrderList'
 import PublisherCreate from './PublisherCreate'
 import PublisherUpdate from './PublisherUpdate'
+import Search from '../components/Search'
+
 
 
 export {
@@ -66,5 +68,6 @@ export {
   OrderList,
   CategoryUpdate,
   PublisherCreate,
-  PublisherUpdate
+  PublisherUpdate,
+  Search
 }

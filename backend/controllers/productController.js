@@ -75,8 +75,8 @@ const createProduct = async (req, res) => {
 }
 
 const getAllProducts = async (req, res) => {
-  const pageSize = 8
-  const productCount = await Product.countDocuments()
+  const pageSize = 3
+  const productsCount = await Product.countDocuments()
 
   const apiFeatures = new APIFeatures(
     Product.find().populate('category publisher'),
@@ -84,7 +84,7 @@ const getAllProducts = async (req, res) => {
   ).search().filter().pagination(pageSize).sort()
 
   const products = await apiFeatures.query
-  res.status(StatusCodes.OK).json({ count: productCount, productsCount: products.length, products })
+  res.status(StatusCodes.OK).json({ productsCount: productsCount, productsPerPage: products.length, products })
 }
 
 const getProductById = async (req, res) => {

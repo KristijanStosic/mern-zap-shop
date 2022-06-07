@@ -24,7 +24,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import { logout } from '../redux/actions/authActions'
 
 const middleLinks = [
-  { title: '', path: '/' },
+  
 ]
 
 const rightLinks = [
@@ -100,7 +100,6 @@ const Header = ({ darkMode, handleThemeChange }) => {
             </Typography>
             <Switch checked={darkMode} onChange={handleThemeChange} />
           </Box>
-
           <List sx={{ display: 'flex' }}>
             {middleLinks.map(({ title, path }) => (
               <ListItem component={NavLink} to={path} key={path} sx={navStyles}>

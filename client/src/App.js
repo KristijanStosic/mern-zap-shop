@@ -33,7 +33,7 @@ import {
   OrderList,
   CategoryUpdate,
   PublisherCreate,
-  PublisherUpdate
+  PublisherUpdate,
 } from './pages'
 
 import { Container, createTheme, CssBaseline, ThemeProvider, } from '@mui/material'
@@ -68,6 +68,7 @@ const App = () => {
               <Routes>
                 {/* Products */}
                 <Route path='/' element={<Products />} />
+                <Route path='/search/:keyword' element={<Products />} />
                 <Route path='/products/:id' element={<ProductDetails />} />
                 <Route path='/admin/product-list' element={ <ProtectedRoute> <ProductList /> </ProtectedRoute>} />
                 <Route path='/admin/product-create' element={ <ProtectedRoute> <ProductCreate /> </ProtectedRoute>} />

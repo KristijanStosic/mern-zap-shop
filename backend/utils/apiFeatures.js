@@ -34,8 +34,8 @@ class APIFeatures {
   }
 
   pagination(pageSize) {
-    const currentPage = Number(this.queryStr.page) || 1
-    const skip = pageSize * (currentPage - 1)
+    const page = Number(this.queryStr.page) || 1
+    const skip = pageSize * (page - 1)
 
     this.query = this.query.limit(pageSize).skip(skip)
     return this
