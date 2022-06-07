@@ -83,9 +83,6 @@ const ProductList = () => {
                 <Typography variant='h4'>PRODUCTS</Typography>
               </Grid>
               <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                {/* <Button onClick={createProductHandler} variant='contained' color='primary' startIcon={<AddBoxIcon />}>
-                  CREATE PRODUCT
-                </Button> */}
                 <Button component={Link} to='/admin/product-create' variant='contained' color='primary' startIcon={<AddBoxIcon />}>
                   CREATE PRODUCT
                 </Button>

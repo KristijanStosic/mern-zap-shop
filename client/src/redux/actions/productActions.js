@@ -17,11 +17,11 @@ import {
   PRODUCT_UPDATE_FAIL,
 } from '../constants/productConstants'
 
-export const getAllProducts = (keyword = '', page = 1, sort = '', category, publisher) => async (dispatch) => {
+export const getAllProducts = (keyword = '', page = 1, sort = '', category, publisher, countInStock = 0) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST })
 
-    let link = `/api/products?keyword=${keyword}&page=${page}&sort=${sort}`
+    let link = `/api/products?keyword=${keyword}&page=${page}&sort=${sort}&countInStock[gte]=${countInStock}`
 
     if(category) {
       link = `/api/products?keyword=${keyword}&page=${page}&sort=${sort}&category=${category}`

@@ -75,7 +75,7 @@ const createProduct = async (req, res) => {
 }
 
 const getAllProducts = async (req, res) => {
-  const pageSize = 3
+  const pageSize = 6
   const productsCount = await Product.countDocuments()
 
   const apiFeatures = new APIFeatures(
@@ -252,12 +252,6 @@ const featuredProducts = async (req, res) => {
   res.status(StatusCodes.OK).json(featuredProducts)
 }
 
-const getProductsByCategory = async(req, res) => {
-  const { id: categoryId } = req.params
-  const products = await Product.find({ category: categoryId })
-  res.status(StatusCodes.OK).json(products)
-}
-
 export {
   createProduct,
   getAllProducts,
@@ -268,7 +262,6 @@ export {
   uploadImageToCloud,
   productCount,
   featuredProducts,
-  getProductsByCategory
 }
 
 /*const updateProduct = async (req, res) => {

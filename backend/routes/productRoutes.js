@@ -11,7 +11,6 @@ import {
   uploadImageToCloud,
   productCount,
   featuredProducts,
-  getProductsByCategory
 } from '../controllers/productController.js'
 
 import { getSingleProductReviews } from '../controllers/reviewController.js'
@@ -34,8 +33,6 @@ router
   .get(getProductById)
   .patch([authenticateUser, authorizePermissions('admin')], updateProduct)
   .delete([authenticateUser, authorizePermissions('admin')], deleteProduct)
-
-  router.route('/category/:id').get(getProductsByCategory)
 
 router.route('/:id/reviews').get(getSingleProductReviews)
 
