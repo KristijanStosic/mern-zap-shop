@@ -33,6 +33,12 @@ const getCategoryById = async (req, res) => {
   if (!category) {
     throw new NotFoundError(`No category with id: ${categoryId}`)
   }
+
+  const product = await Product.findOne({ category: categoryId })
+  if(product) {
+    throw new BadRequestError('Please all delete products related with this category')
+  }
+
   res.status(StatusCodes.OK).json(category)
 }
 

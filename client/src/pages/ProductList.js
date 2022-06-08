@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, } from 'react-router-dom'
 import {
@@ -13,6 +13,9 @@ import {
   Paper,
   IconButton,
   Button,
+  FormControl,
+  MenuItem,
+  Select
 } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 import AddBoxIcon from '@mui/icons-material/AddBox'
@@ -21,16 +24,14 @@ import Alert from '../components/Alert'
 import Loading from '../components/Loading'
 import Meta from '../components/Meta'
 import { PRODUCT_CREATE_RESET } from '../redux/constants/productConstants'
-import { getAllProducts, deleteProduct } from '../redux/actions/productActions'
+import { getAllProductsByAdmin, deleteProduct } from '../redux/actions/productActions'
 
 const ProductList = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-
-
-  const productList = useSelector((state) => state.productList)
-  const { loading, error, products } = productList
+  const productListAdmin = useSelector((state) => state.productListAdmin)
+  const { loading, error, products } = productListAdmin
 
   const productCreate = useSelector((state) => state.productCreate)
   const { loading: loadingCreate, error: errorCreate, success: successCreate, product: createdProduct } = productCreate
@@ -49,9 +50,8 @@ const ProductList = () => {
 
     if(successCreate) {
       navigate(`/admin/product/${createdProduct.id}/update`)
-    } else {
-      dispatch(getAllProducts())
-    }
+    } 
+      dispatch(getAllProductsByAdmin())
   }, [dispatch, navigate, userInfo, successCreate, successDelete, createdProduct])
 
   const deleteProductHandler = (id) => {
@@ -59,10 +59,6 @@ const ProductList = () => {
       dispatch(deleteProduct(id))
     }
   }
-
-  /*const createProductHandler = () => {
-    dispatch(createProduct())
-  }*/
 
   return (
     <>
@@ -101,14 +97,18 @@ const ProductList = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {products.map((product) => (
+                  {products && products.map((product) => (
                     <TableRow key={product._id}>
                       <TableCell component='th' scope='row'>
                         {product._id}
                       </TableCell>
                       <TableCell align='center'>{product.name}</TableCell>
                       <TableCell align='center'>${product.price}</TableCell>
-                      <TableCell align='center'>{product.countInStock}</TableCell>
+                      <TableCell align='center'>
+                        {product.countInStock === 0 ? 
+                        <strong style={{ color: 'red', fontSize: '24px'}}>{product.countInStock}</strong> 
+                        : product.countInStock}
+                        </TableCell>
                       <TableCell align='center'>{product.designer}</TableCell>
                       <TableCell align="center">
                         <IconButton 

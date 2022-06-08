@@ -11,6 +11,7 @@ import {
   uploadImageToCloud,
   productCount,
   featuredProducts,
+  getAllProductsByAdmin,
 } from '../controllers/productController.js'
 
 import { getSingleProductReviews } from '../controllers/reviewController.js'
@@ -21,6 +22,8 @@ router
   .route('/')
   .post([authenticateUser, authorizePermissions('admin')], createProduct)
   .get(getAllProducts);
+
+router.route('/admin').get(authenticateUser, authorizePermissions('admin'), getAllProductsByAdmin)
 
 
 router.route('/upload-image').post(uploadImageToCloud)

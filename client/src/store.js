@@ -7,6 +7,7 @@ import {
   productDeleteReducer,
   productCreateReducer,
   productUpdateReducer,
+  productListAdminReducer,
 } from './redux/reducers/productReducers'
 import { cartReducer } from './redux/reducers/cartReducers'
 import {
@@ -40,6 +41,7 @@ import { reviewCreateReducer, singleProductReviewsReducer } from './redux/reduce
 
 const reducer = combineReducers({
   productList: productListReducer,
+  productListAdmin: productListAdminReducer,
   productDetails: productDetailsReducer,
   productDelete: productDeleteReducer,
   productCreate: productCreateReducer,

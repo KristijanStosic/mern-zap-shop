@@ -15,24 +15,27 @@ import {
   PRODUCT_UPDATE_REQUEST,
   PRODUCT_UPDATE_SUCCESS,
   PRODUCT_UPDATE_FAIL,
+  PRODUCT_LIST_ADMIN_REQUEST,
+  PRODUCT_LIST_ADMIN_SUCCESS,
+  PRODUCT_LIST_ADMIN_FAIL,
 } from '../constants/productConstants'
 
-export const getAllProducts = (keyword = '', page = 1, sort = '', category, publisher, countInStock = 0) => async (dispatch) => {
+export const getAllProducts = (keyword = '', page = 1, sort = '', category, publisher, countInStock = 1) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST })
 
     let link = `/api/products?keyword=${keyword}&page=${page}&sort=${sort}&countInStock[gte]=${countInStock}`
 
     if(category) {
-      link = `/api/products?keyword=${keyword}&page=${page}&sort=${sort}&category=${category}`
+      link = `/api/products?keyword=${keyword}&page=${page}&sort=${sort}&category=${category}&countInStock[gte]=${countInStock}`
     }
 
     if(publisher) {
-      link = `/api/products?keyword=${keyword}&page=${page}&sort=${sort}&publisher=${publisher}`
+      link = `/api/products?keyword=${keyword}&page=${page}&sort=${sort}&publisher=${publisher}&countInStock[gte]=${countInStock}`
     }
 
     if(publisher && category) {
-      link = `/api/products?keyword=${keyword}&page=${page}&sort=${sort}&category=${category}&publisher=${publisher}`
+      link = `/api/products?keyword=${keyword}&page=${page}&sort=${sort}&category=${category}&publisher=${publisher}&countInStock[gte]=${countInStock}`
     }
 
     const { data } = await axios.get(link)
@@ -44,6 +47,35 @@ export const getAllProducts = (keyword = '', page = 1, sort = '', category, publ
   } catch (error) {
     dispatch({
       type: PRODUCT_LIST_FAIL,
+      payload:
+        error.response && error.response.data.msg
+          ? error.response.data.msg
+          : error.msg,
+    })
+  }
+}
+
+export const getAllProductsByAdmin = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: PRODUCT_LIST_ADMIN_REQUEST })
+
+    const { userLogin: { userInfo } } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    const { data } = await axios.get('/api/products/admin', config)
+
+    dispatch({
+      type: PRODUCT_LIST_ADMIN_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_LIST_ADMIN_FAIL,
       payload:
         error.response && error.response.data.msg
           ? error.response.data.msg

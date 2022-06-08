@@ -35,6 +35,11 @@ const getPublisherById = async (req, res) => {
   if (!publisher) {
     throw new NotFoundError(`No publisher with id: ${publisherId}`)
   }
+
+  const product = await Product.findOne({ publisher: publisherId })
+  if(product) {
+    throw new BadRequestError('Please all delete products related with this publisher')
+  }
   res.status(StatusCodes.OK).json(publisher)
 }
 

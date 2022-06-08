@@ -30,7 +30,7 @@ const ProductCreate = () => {
   const [price, setPrice] = useState(0)
   const [countInStock, setCountInStock] = useState(0)
   const [description, setDescription] = useState('')
-  const [productImg, setProductImg] = useState('')
+  const [image, setImage] = useState('')
   const [category, setCategory] = useState('')
   const [publisher, setPublisher] = useState('')
   const [gameLength, setGameLength] = useState('')
@@ -89,10 +89,10 @@ const ProductCreate = () => {
     if (file) {
       reader.readAsDataURL(file)
       reader.onloadend = () => {
-        setProductImg(reader.result)
+        setImage(reader.result)
       }
     } else {
-      setProductImg('')
+      setImage('')
     }
   }
 
@@ -104,7 +104,7 @@ const ProductCreate = () => {
         name,
         price,
         description,
-        image: productImg,
+        image,
         countInStock,
         gameLength,
         minPlayers,
@@ -383,9 +383,9 @@ const ProductCreate = () => {
                   />
                 </label>
                 <ImagePreview>
-                  {productImg ? (
+                  {image ? (
                     <>
-                      <img src={productImg} alt='error!' />
+                      <img src={image} alt='error!' />
                     </>
                   ) : (
                     <p>Product image upload preview will appear here!</p>

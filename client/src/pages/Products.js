@@ -93,7 +93,6 @@ const Products = () => {
                   </MenuItem>
                 </Select>
                 </FormControl>
-                
               </Paper>
               <Paper variant='outlined' sx={{ mt: 3, p: { xs: 2, md: 3 } }}>
                 <Button

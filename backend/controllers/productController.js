@@ -66,7 +66,6 @@ const createProduct = async (req, res) => {
 
       const createdProduct = await product.save()
   
-      //const product = await Product.create(req.body)
       res.status(StatusCodes.CREATED).json(createdProduct)
     }
   } else {
@@ -85,6 +84,11 @@ const getAllProducts = async (req, res) => {
 
   const products = await apiFeatures.query
   res.status(StatusCodes.OK).json({ productsCount: productsCount, productsPerPage: products.length, products })
+}
+
+const getAllProductsByAdmin = async (req, res) => {
+  const products = await Product.find({}).populate('category', 'name').populate('publisher', 'name')
+  res.status(StatusCodes.OK).json(products)
 }
 
 const getProductById = async (req, res) => {
@@ -131,6 +135,28 @@ const updateProduct = async (req, res) => {
       }
     }
   } else {
+    
+  /*const productData = {
+    name: req.body.name || product.name,
+    price: req.body.price || product.price,
+    description: req.body.description || product.description,
+    countInStock: req.body.countInStock || product.countInStock,
+    featured: req.body.featured || product.featured,
+    freeShipping: req.body.freeShipping || product.freeShipping,
+    gameLength: req.body.gameLength || product.gameLength,
+    minPlayers: req.body.minPlayers || product.minPlayers,
+    maxPlayers: req.body.maxPlayers || product.maxPlayers,
+    sku: req.body.sku || product.sku,
+    suggestedAge: req.body.suggestedAge || product.suggestedAge,
+    languageOfPublication: req.body.languageOfPublication || product.languageOfPublication,
+    languageDependence: req.body.languageDependence || product.languageDependence,
+    originCountry: req.body.originCountry || product.originCountry,
+    designer: req.body.designer || product.designer,
+    category: req.body.category || product.category,
+    publisher: req.body.publisher || product.publisher,
+    user: req.user.userId,
+  }*/
+    product.user = req.user.userId
     const updatedProduct = await Product.findByIdAndUpdate(productId, 
       {
         $set: req.body.product
@@ -150,7 +176,10 @@ const deleteProduct = async (req, res) => {
   if (!product) {
     throw new NotFoundError(`No product with id: ${productId}`)
   }
-  await cloudinary.v2.uploader.destroy(product.image.public_id)
+  if(product.image.public_id) {
+    await cloudinary.v2.uploader.destroy(product.image.public_id)
+  }
+
   await product.remove()
   res.status(StatusCodes.OK).json({ msg: 'Success! Product removed.' })
 }
@@ -236,6 +265,7 @@ export {
   uploadImageToCloud,
   productCount,
   featuredProducts,
+  getAllProductsByAdmin
 }
 
 /*const updateProduct = async (req, res) => {

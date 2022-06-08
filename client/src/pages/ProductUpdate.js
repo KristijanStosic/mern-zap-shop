@@ -16,10 +16,8 @@ import Alert from '../components/Alert'
 import Loading from '../components/Loading'
 import Meta from '../components/Meta'
 import styled from "styled-components";
-import {
-  getProductDetails,
-  updateProduct,
-} from '../redux/actions/productActions'
+import { getProductDetails, updateProduct, } from '../redux/actions/productActions'
+import { toast } from 'react-toastify'
 import { PRODUCT_UPDATE_RESET } from '../redux/constants/productConstants'
 import { getAllCategories } from '../redux/actions/categoryActions'
 import { getAllPublishers } from '../redux/actions/publisherActions'
@@ -129,6 +127,12 @@ const ProductUpdate = () => {
 
   const handleProductImageUpload = (e) => {
     const file = e.target.files[0]
+
+    if (!file) return toast.error('File not exist')
+
+    if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/jpg') return toast.error('File format is incorrect, please choose image')
+    
+    if (file.size > 1024 * 1024) return toast.error('Size to large')
 
     TransformFileData(file)
   }
