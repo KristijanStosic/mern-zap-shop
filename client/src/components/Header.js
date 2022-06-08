@@ -7,25 +7,22 @@ import {
   IconButton,
   List,
   ListItem,
+  ListItemText,
   Switch,
   Toolbar,
   Typography,
   Box,
   MenuItem,
   Menu,
-  Tooltip,
   Avatar,
   Divider,
 } from '@mui/material'
 import ListItemIcon from '@mui/material/ListItemIcon'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import 'react-toastify/dist/ReactToastify.css'
 import { ShoppingCart, Logout } from '@mui/icons-material'
 import { ToastContainer, toast } from 'react-toastify'
 import { logout } from '../redux/actions/authActions'
-
-const middleLinks = [
-  
-]
 
 const rightLinks = [
   { title: 'login', path: '/login' },
@@ -100,13 +97,6 @@ const Header = ({ darkMode, handleThemeChange }) => {
             </Typography>
             <Switch checked={darkMode} onChange={handleThemeChange} />
           </Box>
-          <List sx={{ display: 'flex' }}>
-            {middleLinks.map(({ title, path }) => (
-              <ListItem component={NavLink} to={path} key={path} sx={navStyles}>
-                {title.toUpperCase()}
-              </ListItem>
-            ))}
-          </List>
 
           <Box display='flex' alignItems='center'>
             <IconButton
@@ -135,20 +125,19 @@ const Header = ({ darkMode, handleThemeChange }) => {
                     textAlign: 'center',
                   }}
                 >
-                  <Tooltip title='Account settings'>
                     <IconButton
-                      onClick={handleClick}
-                      size='small'
-                      sx={{ ml: 2 }}
+                      disableRipple
+                      onClick={handleClick} 
+                      style={{ backgroundColor: 'transparent', color: 'white' }}
                       aria-controls={open ? 'account-menu' : undefined}
                       aria-haspopup='true'
                       aria-expanded={open ? 'true' : undefined}
                     >
-                      <Avatar sx={{ width: 32, height: 32, bgcolor: 'secondary.light' }}>
-                        {userInfo.user.name.charAt(0)}
-                      </Avatar>
+                      <ListItemText size='small' sx={{ ml: 2 }}>
+                      {userInfo.user.name}
+                      </ListItemText>
+                      <ArrowDropDownIcon />
                     </IconButton>
-                  </Tooltip>
                 </Box>
                 <Menu
                   anchorEl={anchorEl}

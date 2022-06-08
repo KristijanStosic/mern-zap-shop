@@ -35,7 +35,7 @@ const ProductUpdate = () => {
   const [price, setPrice] = useState(0)
   const [countInStock, setCountInStock] = useState(0)
   const [description, setDescription] = useState('')
-  const [productImg, setProductImg] = useState('');
+  const [image, setImage] = useState('');
   const [category, setCategory] = useState('')
   const [publisher, setPublisher] = useState('')
   const [gameLength, setGameLength] = useState('')
@@ -79,7 +79,6 @@ const ProductUpdate = () => {
         setName(product.name)
         setPrice(product.price)
         setDescription(product.description)
-        setProductImg(product.image.url)
         setCountInStock(product.countInStock)
         setGameLength(product.gameLength)
         setMinPlayers(product.minPlayers)
@@ -92,6 +91,8 @@ const ProductUpdate = () => {
         setLanguageDependence(product.languageDependence)
         setOriginCountry(product.originCountry)
         setDesigner(product.designer)
+        setPublisher(product.publisher.name)
+        setCategory(product.category.name)
       }
     }
   }, [dispatch, navigate, productId, product, successUpdate])
@@ -101,24 +102,27 @@ const ProductUpdate = () => {
     dispatch(
       updateProduct({
         _id: productId,
-        name,
-        price,
-        description,
-        image: productImg,
-        countInStock,
-        gameLength,
-        minPlayers,
-        maxPlayers,
-        featured,
-        freeShipping,
-        sku,
-        suggestedAge,
-        languageOfPublication,
-        languageDependence,
-        originCountry,
-        designer,
-        category,
-        publisher
+        image,
+        product: {
+          name,
+          price,
+          description,
+          countInStock,
+          gameLength,
+          minPlayers,
+          maxPlayers,
+          featured,
+          freeShipping,
+          sku,
+          suggestedAge,
+          languageOfPublication,
+          languageDependence,
+          originCountry,
+          designer,
+          category,
+          publisher
+        }
+
       })
     )
   }
@@ -135,10 +139,10 @@ const ProductUpdate = () => {
     if (file) {
       reader.readAsDataURL(file)
       reader.onloadend = () => {
-        setProductImg(reader.result)
+        setImage(reader.result)
       }
     } else {
-      setProductImg('')
+      setImage('')
     }
   }
 
@@ -383,20 +387,16 @@ const ProductUpdate = () => {
                   onChange={(e) => setDesigner(e.target.value)}
                   value={designer}
                 />
-                <TextField
-                  margin='normal'
-                  required
-                  fullWidth
-                  autoComplete='image'
-                  id='image'
-                  label='Image'
-                  name='image'
-                  type='text'
-                  onChange={(e) => setProductImg(e.target.value)}
-                  value={productImg}
-                />
+                <p>Current product image</p>
+                <CurrentImagePreview>
+                  {product.image?.url && (
+                    <>
+                      <img src={product.image?.url} alt='error!' />
+                    </>
+                  )}
+                </CurrentImagePreview>
                 <label htmlFor='contained-button-file'>
-                  <p>Please choose product image</p>
+                  <p>Please choose new product image</p>
                   <input
                     id='imgUpload'
                     accept='image/*'
@@ -406,9 +406,9 @@ const ProductUpdate = () => {
                   />
                 </label>
                 <ImagePreview>
-                  {productImg ? (
+                  {image ? (
                     <>
-                      <img src={productImg} alt='error!' />
+                      <img src={image} alt='error!' />
                     </>
                   ) : (
                     <p>Product image upload preview will appear here!</p>
@@ -446,4 +446,20 @@ const ImagePreview = styled.div`
     max-width: 100%;
   }
 `
+
+const CurrentImagePreview = styled.div`
+  padding: 2rem;
+  border: 1px solid rgb(183, 183, 183);
+  max-width: 150px;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  color: rgb(78, 78, 78);
+  img {
+    max-width: 50%;
+  }
+`
+
 export default ProductUpdate

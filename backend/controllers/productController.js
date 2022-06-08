@@ -70,7 +70,7 @@ const createProduct = async (req, res) => {
       res.status(StatusCodes.CREATED).json(createdProduct)
     }
   } else {
-    throw new BadRequestError('Please provide image')
+    throw new BadRequestError('Please choose image')
   }
 }
 
@@ -101,70 +101,44 @@ const getProductById = async (req, res) => {
 const updateProduct = async (req, res) => {
   const { id: productId } = req.params
 
-  const {
-    name,
-    description,
-    price,
-    countInStock,
-    image,
-    gameLength,
-    minPlayers,
-    maxPlayers,
-    featured,
-    freeShipping,
-    sku,
-    suggestedAge,
-    languageOfPublication,
-    languageDependence,
-    originCountry,
-    designer,
-    category,
-    publisher,
-  } = req.body
-
   const product = await Product.findById({ _id: productId })
 
   if (!product) {
     throw new NotFoundError(`No product with id: ${productId}`)
   }
 
-  await cloudinary.v2.uploader.destroy(product.image.public_id)
+  if(req.body.image) {
+    const destroyResponse = await cloudinary.v2.uploader.destroy(product.image.public_id)
 
-  if (image) {
-    const uploadedResponse = await cloudinary.v2.uploader.upload(image, {
-      upload_preset: "online-shop",
-    });
+    if (destroyResponse) {
+      const uploadedResponse = await cloudinary.v2.uploader.upload(req.body.image, {
+        upload_preset: "online-shop",
+        }
+      );
 
-    if (uploadedResponse) {
-      const productData = {
-        name: name || product.name,
-        description: description || product.description,
-        price: price || product.price,
-        countInStock: countInStock || product.countInStock,
-        image: uploadedResponse || product.image.url,
-        featured: featured || product.featured,
-        freeShipping: freeShipping || product.freeShipping,
-        gameLength: gameLength || product.gameLength,
-        minPlayers: minPlayers || product.minPlayers,
-        maxPlayers: maxPlayers || product.maxPlayers,
-        sku: sku || product.sku,
-        suggestedAge: suggestedAge || product.suggestedAge,
-        languageOfPublication: languageOfPublication || product.languageOfPublication,
-        languageDependence: languageDependence || product.languageDependence,
-        originCountry: originCountry || product.originCountry,
-        designer: designer || product.designer,
-        category: category || product.category,
-        publisher: publisher || product.publisher,
-        user: req.user.userId || product.user,
+      if(uploadedResponse) {
+        const updatedProduct = await Product.findByIdAndUpdate(productId, 
+          {
+            $set: {
+              ... req.body.product,
+              image: uploadedResponse
+            }
+          },
+          {
+            new: true
+          })
+          res.status(StatusCodes.OK).json(updatedProduct)
       }
-      await Product.findByIdAndUpdate(productId, productData, {
-        new: true,
-        runValidators: true,
-      })
-
-      const updatedProduct = await product.save()
-      res.status(StatusCodes.OK).json(updatedProduct)
     }
+  } else {
+    const updatedProduct = await Product.findByIdAndUpdate(productId, 
+      {
+        $set: req.body.product
+      },
+      {
+        new: true
+      })
+    res.status(StatusCodes.OK).json(updatedProduct)
   }
 }
 
