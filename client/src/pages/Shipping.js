@@ -24,7 +24,10 @@ const Shipping = () => {
   const cart = useSelector((state) => state.cart)
   const { shippingAddress } = cart
 
-  const [firstName, setFirstName] = useState(shippingAddress.firstName)
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+
+  const [firstName, setFirstName] = useState(userInfo.user.name)
   const [lastName, setLastName] = useState(shippingAddress.lastName)
   const [address, setAddress] = useState(shippingAddress.address)
   const [city, setCity] = useState(shippingAddress.city)

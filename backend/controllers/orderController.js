@@ -110,7 +110,7 @@ const deleteOrder = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: 'Success! Order removed' })
 }
 
-const updateOrderToPaid = async(req, res) => {
+const updateOrderToPaid = async(req, res, data) => {
   const { id: orderId } = req.params
 
   const order = await Order.findOne({ _id: orderId })
@@ -122,10 +122,6 @@ const updateOrderToPaid = async(req, res) => {
   order.status = 'paid'
   order.isPaid = true 
   order.paidAt = Date.now()
-  order.paymentInfo = req.body.paymentInfo 
-
-  console.log(order.paymentInfo)
-
 
   const updatedOrder = await order.save()
   res.status(StatusCodes.OK).json(updatedOrder)

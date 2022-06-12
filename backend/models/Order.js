@@ -78,9 +78,7 @@ const OrderSchema = new mongoose.Schema(
       type: String,
     },
     paymentInfo: {
-      data: { 
-        type: Object
-      }
+      type: Object
     },
     orderItems: [OrderItemSchema],
     shippingAddress: {

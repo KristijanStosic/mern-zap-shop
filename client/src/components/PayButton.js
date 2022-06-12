@@ -1,54 +1,50 @@
-import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-//import { useParams } from 'react-router-dom'
-import { Elements } from '@stripe/react-stripe-js'
-import { loadStripe } from '@stripe/stripe-js'
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { Button } from '@mui/material'
+import { useParams } from 'react-router-dom'
 import axios from 'axios'
-
+import { updateOrderToPaid, getOrderById } from '../redux/actions/orderActions'
 
 const PayButton = ({ cartItems }) => {
-  const [stripeApiKey, setStripeApiKey] = useState('')
-
-  //const orderDetails = useSelector((state) => state.orderDetails)
-  //const { order, success, error } = orderDetails
+  const dispatch = useDispatch()
+  const params = useParams()
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
+  const orderId = params.id
+
+  const orderDetails = useSelector((state) => state.orderDetails)
+  const { order } = orderDetails
+
   useEffect(() => {
-    async function getStripeApiKey() {
-      const { data } = await axios.get('/api/stripe/stripe-api-key', {
-        headers: {
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      })
-      setStripeApiKey(data.stripeApiKey)
-    }
-    getStripeApiKey()
-  }, [userInfo.token])
+
+  }, [])
 
   const handleCheckout = () => {
-    axios
-      .post(`/api/stripe/create-checkout-session`, {
-        cartItems,
-        userId: userInfo.user.userId,
-      })
-      .then((res) => {
+    axios.post(`/api/stripe/create-checkout-session`, {
+        totalPrice: order.totalPrice,
+        orderItems: order.orderItems,
+        shippingAddress: order.shippingAddress,
+        paymentMethod: order.paymentMethod,
+        user: userInfo.user.id,
+      }).then((res) => {
         if (res.data.url) {
           window.location.href = res.data.url
         }
-      })
-      .catch((err) => console.log(err.message))
+      }).catch((err) => console.log(err.message))
   }
 
   return (
     <>
-      {stripeApiKey && (
-        <Elements stripe={loadStripe(stripeApiKey)}>
-          <Button sx={{ mt: 2}} variant='contained' color='primary' onClick={() => handleCheckout()}>PAY</Button>
-        </Elements>
-      )}
+      <Button
+        sx={{ mt: 2 }}
+        variant='contained'
+        color='primary'
+        onClick={() => handleCheckout()}
+      >
+        PAY
+      </Button>
     </>
   )
 }

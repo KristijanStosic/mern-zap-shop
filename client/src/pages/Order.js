@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import {
@@ -15,15 +15,11 @@ import {
 import Meta from '../components/Meta'
 import Alert from '../components/Alert'
 import Loading from '../components/Loading'
-import axios from 'axios'
-import StripeCheckout from 'react-stripe-checkout'
-import { getOrderById, updateOrderToDelivered, updateOrderToPaid } from '../redux/actions/orderActions'
+import { getOrderById, updateOrderToDelivered } from '../redux/actions/orderActions'
 import { ORDER_DELIVER_RESET, ORDER_PAY_RESET } from '../redux/constants/orderConstants'
-
-const STRIPE_KEY = process.env.REACT_APP_STRIPE
+import PayButton from '../components/PayButton'
 
 const Order = () => {
-  const [stripeToken, setStripeToken] = useState(null)
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const params = useParams()
@@ -42,8 +38,6 @@ const Order = () => {
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
-  console.log(stripeToken)
-
   useEffect(() => {
     if(!userInfo) {
       navigate('/login')
@@ -54,21 +48,7 @@ const Order = () => {
       dispatch({ type: ORDER_PAY_RESET })
       dispatch(getOrderById(orderId))
     } 
-      const createPayment = async () => {
-        try {
-          /*const res = */await axios.post('/api/stripe/create-payment', {
-            headers: {
-              Authorization: `Bearer ${userInfo.token}`
-            },
-            tokenId: stripeToken.id,
-            amount: order.totalPrice * 100,
-          })
-        } catch (error) {
-          console.log(error)
-        }
-      }
-      stripeToken && createPayment() && dispatch(updateOrderToPaid(order))
-  }, [dispatch, orderId, successDeliver, order, userInfo, navigate, stripeToken, successPay])
+  }, [dispatch, orderId, successDeliver, order, userInfo, navigate, successPay])
 
   const deliverHandler = () => {
     dispatch(updateOrderToDelivered(order))
@@ -78,9 +58,6 @@ const Order = () => {
     dispatch(updateOrderToPaid(order))
   }*/
 
-  const onToken = (token) => {
-    setStripeToken(token)
-  }
 
   return (
     <>
@@ -223,7 +200,9 @@ const Order = () => {
                   ) : (
                     <Alert severity='error'>Not Paid</Alert>
                   )}
-                 {userInfo && userInfo.user.role !== 'admin' && !order.isPaid && 
+                  {userInfo && userInfo.user.role === 'user' && !order.isPaid &&
+                  <PayButton cartItems={order.orderItems} />}
+                 {/* {userInfo && userInfo.user.role !== 'admin' && !order.isPaid && 
                   <StripeCheckout
                   name="ZAP-SHOP"
                   image="https://res.cloudinary.com/kristijan/image/upload/v1654428540/online-shop/shopping-cart-icon-illustration-free-vector_qldlfm.jpg"
@@ -239,7 +218,7 @@ const Order = () => {
                     color='primary'
                     sx={{ mt: 2}}
                     >PAY NOW</Button>
-                  </StripeCheckout>}
+                  </StripeCheckout>} */}
                 </Paper>
               </Container>
             </Grid>
