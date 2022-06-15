@@ -10,6 +10,7 @@ const authenticateUser = async (req, res, next) => {
   if (!authHeader || !authHeader.startsWith('Bearer')) {
     throw new UnauthenticatedError('Authentication invalid. Please login to access this route')
   }
+  
   const token = authHeader.split(' ')[1]
 
   try {

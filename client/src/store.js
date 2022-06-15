@@ -24,7 +24,7 @@ import {
   userUpdateProfileReducer,
   userListReducer,
   userDeleteReducer,
-  userUpdateReducer
+  userUpdateReducer,
 } from './redux/reducers/userReducers'
 
 import {
@@ -35,10 +35,30 @@ import {
   orderDeliverReducer,
   orderPayReducer,
 } from './redux/reducers/orderReducers'
-import { categoryCreateReducer, categoryDeleteReducer, categoryDetailsReducer, categoryListReducer, categoryUpdateReducer } from './redux/reducers/categoryReducers'
-import { publisherCreateReducer, publisherDeleteReducer, publisherDetailsReducer, publisherListReducer, publisherUpdateReducer } from './redux/reducers/publisherReducers'
-import { reviewCreateReducer, singleProductReviewsReducer } from './redux/reducers/reviewReducers'
-import { addressCreateReducer, addressDetailsReducer, addressListReducer, addressUpdateReducer } from './redux/reducers/addressReducers'
+import {
+  categoryCreateReducer,
+  categoryDeleteReducer,
+  categoryDetailsReducer,
+  categoryListReducer,
+  categoryUpdateReducer,
+} from './redux/reducers/categoryReducers'
+import {
+  publisherCreateReducer,
+  publisherDeleteReducer,
+  publisherDetailsReducer,
+  publisherListReducer,
+  publisherUpdateReducer,
+} from './redux/reducers/publisherReducers'
+import {
+  reviewCreateReducer,
+  singleProductReviewsReducer,
+} from './redux/reducers/reviewReducers'
+import {
+  addressCreateReducer,
+  addressDetailsReducer,
+  addressListReducer,
+  addressUpdateReducer,
+} from './redux/reducers/addressReducers'
 
 const reducer = combineReducers({
   productList: productListReducer,
@@ -80,7 +100,7 @@ const reducer = combineReducers({
   addressCreate: addressCreateReducer,
   addressUpdate: addressUpdateReducer,
   reviewCreate: reviewCreateReducer,
-  singleProductReviews: singleProductReviewsReducer
+  singleProductReviews: singleProductReviewsReducer,
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')
@@ -107,10 +127,10 @@ const initialState = {
   cart: {
     cartItems: cartItemsFromStorage,
     shippingAddress: shippingAddressFromStorage,
-    paymentMethod: paymentMethodFromStorage
+    paymentMethod: paymentMethodFromStorage,
   },
   userLogin: { userInfo: userInfoFromStorage },
-  userAddress: { addressInfo: addressInfoFromStorage }
+  userAddress: { addressInfo: addressInfoFromStorage },
 }
 
 const middleware = [thunk]

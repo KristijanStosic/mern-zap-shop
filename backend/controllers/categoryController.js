@@ -67,11 +67,13 @@ const deleteCategory = async (req, res) => {
   const { id: categoryId } = req.params
 
   const product = await Product.findOne({ category: categoryId })
+  
   if(product) {
     throw new BadRequestError('Please delete all products related with this category')
   }
 
   const category = await Category.findOne({ _id: categoryId })
+
   if (!category) {
     throw new NotFoundError(`No category with id: ${categoryId}`)
   }

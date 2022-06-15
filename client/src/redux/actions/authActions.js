@@ -17,7 +17,6 @@ import {
   VERIFY_EMAIL_REQUEST,
   VERIFY_EMAIL_SUCCESS,
   VERIFY_EMAIL_FAIL,
-  CLEAR_ERRORS,
 } from '../constants/authConstants'
 import { MY_ORDERS_RESET } from '../constants/orderConstants'
 import { ADDRESS_DETAILS_RESET } from '../constants/addressConstants'
@@ -192,10 +191,4 @@ export const verifyEmail = () => async (dispatch) => {
           : error.msg,
     })
   }
-}
-
-export const clearErrors = () => async (dispatch) => {
-  dispatch({
-    type: CLEAR_ERRORS,
-  })
 }

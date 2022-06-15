@@ -98,8 +98,8 @@ const webhook = async (req, res) => {
       .retrieve(data.customer)
       .then(async (customer) => {
         try {
-          // CREATE ORDER
-          createOrder(customer, data);
+          console.log(data)
+          console.log(customer)
         } catch (err) {
           console.log(typeof createOrder);
           console.log(err);

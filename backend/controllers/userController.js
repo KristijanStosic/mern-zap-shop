@@ -1,23 +1,22 @@
 import User from '../models/User.js'
 import { StatusCodes } from 'http-status-codes'
-import {
-  NotFoundError,
-  BadRequestError,
-  UnauthenticatedError,
-} from '../errors/index.js'
+import { NotFoundError, BadRequestError, UnauthenticatedError } from '../errors/index.js'
 import { createTokenUser, checkPermissions, createJWT } from '../utils/index.js'
 
 const getAllUsers = async (req, res) => {
   const users = await User.find({ }).select('-password')
-  res.status(StatusCodes.OK).json({ users })
+  res.status(StatusCodes.OK).json(users)
 }
 
 const getUserById = async (req, res) => {
   const user = await User.findOne({ _id: req.params.id }).select('-password')
+
   if (!user) {
     throw new NotFoundError(`No user with id: ${req.params.id}`)
   }
+
   checkPermissions(req.user, user._id)
+
   res.status(StatusCodes.OK).json(user)
 }
 
@@ -38,6 +37,7 @@ const updateUserProfile = async (req, res) => {
   if (!email || !name) {
     throw new BadRequestError('Please provide all values');
   }
+
   const user = await User.findOne({ _id: req.user.userId });
 
   user.email = email;
@@ -47,6 +47,7 @@ const updateUserProfile = async (req, res) => {
 
   const tokenUser = createTokenUser(user);
   const token = createJWT({ payload: tokenUser })
+
   res.status(StatusCodes.OK).json({ user: tokenUser, token });
 };
 
@@ -68,6 +69,7 @@ const updateUserById = async (req, res) => {
   user.name = name
   user.email = email
   user.role = role
+
   await user.save()
   
   res.status(StatusCodes.OK).json({ msg: 'Success! User updated.', user })
@@ -95,6 +97,7 @@ const updateUserPassword = async (req, res) => {
   user.password = newPassword
 
   await user.save()
+
   res.status(StatusCodes.OK).json({ msg: 'Success! Password updated.' })
 }
 
@@ -102,6 +105,7 @@ const deleteUser = async (req, res) => {
   const { id: userId } = req.params
 
   const user = await User.findOne({ _id: userId })
+  
   if (!user) {
     throw new NotFoundError(`No user with id: ${userId}`)
   }

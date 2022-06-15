@@ -14,7 +14,6 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 })
 
-// db and authenticateUser
 import connectDB from './db/connect.js'
 
 // routes
@@ -34,7 +33,6 @@ import errorHandlerMiddleware from './middleware/error-handler.js'
 
 const app = express()
 
-
 app.use("/api/stripe/webhook", express.json({
     verify: (req, res, buf) => {
       req.rawBody = buf.toString();
@@ -47,7 +45,6 @@ app.use(cookieParser(process.env.JWT_SECRET))
 app.use(fileUpload({ useTempFiles: true }))
 
 app.use(cors())
-//app.disable('etag');
 
 app.get('/', (req, res) => {
   //console.log(req.signedCookies);

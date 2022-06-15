@@ -33,7 +33,7 @@ const getAllReviews = async (req, res) => {
     select: 'name designer price',
   })
 
-  res.status(StatusCodes.OK).json({ count: reviews.length, reviews })
+  res.status(StatusCodes.OK).json({ reviewsCount: reviews.length, reviews })
 }
 
 const getReviewById = async (req, res) => {
@@ -45,7 +45,7 @@ const getReviewById = async (req, res) => {
     throw new NotFoundError(`No review with id ${reviewId}`)
   }
 
-  res.status(StatusCodes.OK).json({ review })
+  res.status(StatusCodes.OK).json(review)
 }
 
 const updateReview = async (req, res) => {

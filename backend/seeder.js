@@ -15,7 +15,6 @@ import Address from './models/Address.js'
 import Review from './models/Review.js'
 import Order from './models/Order.js'
 
-
 import connectDB from './db/connect.js'
 
 dotenv.config()
@@ -33,13 +32,10 @@ const importData = async () => {
     await Order.deleteMany()
 
     const createdUsers = await User.insertMany(users)
-
     const createdPublishers = await Publisher.insertMany(publishers)
-
     const createdCategories = await Category.insertMany(categories)
 
     const adminUser = createdUsers[0]._id
-
     const productCategory = createdCategories[0]._id
     const productPublisher = createdPublishers[0]._id
 
@@ -58,7 +54,6 @@ const importData = async () => {
         user: adminUser,
       }
     })
-
 
     await Product.insertMany(sampleProducts)
     await Address.insertMany(sampleAddresses)

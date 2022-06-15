@@ -10,9 +10,6 @@ const createJWT = ({ payload }) => {
 
 const isTokenValid = ({token}) => jwt.verify(token, process.env.JWT_SECRET)
 
-
-
-//////////////////////////////////////////////
 const attachCookiesToResponse = ({ res, user, refreshToken }) => {
   const accessTokenJWT = createJWT({ payload: { user } })
 

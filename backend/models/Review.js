@@ -55,7 +55,7 @@ ReviewSchema.statics.calculateAverageRating = async function (productId) {
       { _id: productId },
       {
         // optional chaining -> ?   // javascript will complain if there is no ratings, so it cannot calculate average rating on something that does not exist
-        averageRating: Math.ceil(result[0]?.averageRating || 0),
+        averageRating: result[0]?.averageRating || 0,
         numOfReviews: result[0]?.numOfReviews || 0,
       }
     );

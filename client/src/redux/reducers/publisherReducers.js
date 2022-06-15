@@ -25,7 +25,7 @@ export const publisherListReducer = (state = { publishers: [] }, action) => {
     case PUBLISHER_LIST_REQUEST:
       return { loading: true }
     case PUBLISHER_LIST_SUCCESS:
-      return { loading: false, publishers: action.payload.publishers }
+      return { loading: false, publishers: action.payload }
     case PUBLISHER_LIST_FAIL:
       return { loading: false, error: action.payload }
     case PUBLISHER_LIST_RESET:

@@ -28,8 +28,8 @@ const AddressCreate = () => {
   const addressCreate = useSelector((state) => state.addressCreate)
   const { loading: loadingCreate, error: errorCreate, success: successCreate, address } = addressCreate
 
-  const addressDetails = useSelector((state) => state.addressDetails)
-  const { address: loadedAddress } = addressDetails
+  /*const addressDetails = useSelector((state) => state.addressDetails)
+  const { address: loadedAddress } = addressDetails*/
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
@@ -38,9 +38,10 @@ const AddressCreate = () => {
     dispatch({ type: ADDRESS_CREATE_RESET })
     dispatch({ type: ADDRESS_DETAILS_RESET })
 
-    if(successCreate || loadedAddress) {
+    if(successCreate || address) {
       navigate('/my-address')
     }
+    // eslint-disable-next-line
   }, [dispatch, userInfo, successCreate, address, navigate])
 
   const createAddressHandler = (e) => {

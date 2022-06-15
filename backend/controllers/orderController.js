@@ -45,7 +45,6 @@ const createOrder = async (req, res) => {
     }
 
     orderItems = [...orderItems, singleOrderItem]
-    // calculate subtotal
     itemsPrice += cartItem.quantity * price // all items multipiled their quantity with price example: 3xgame1 + 2xgame2 
 
     if (cartItem.quantity > dbProduct.countInStock) {
@@ -84,12 +83,14 @@ const getAllOrders = async (req, res) => {
 
 const getOrderById = async (req, res) => {
   const { id: orderId } = req.params
+
   const order = await Order.findOne({ _id: orderId }).populate('user', 'name email')
+
   if (!order) {
     throw new NotFoundError(`No order with id : ${orderId}`)
   }
   //checkPermissions(req.user, order.user)
-  res.status(StatusCodes.OK).json({ order })
+  res.status(StatusCodes.OK).json(order)
 }
 
 const getMyOrders = async (req, res) => {
@@ -144,6 +145,7 @@ const updateOrderToDelivered = async (req, res) => {
   order.status = 'delivered'
   order.isDelivered = true
   order.deliveredAt = Date.now()
+  
   const updatedOrder = await order.save()
 
   res.status(StatusCodes.OK).json(updatedOrder)

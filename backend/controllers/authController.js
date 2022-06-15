@@ -67,11 +67,14 @@ const login = async (req, res) => {
 
   const tokenUser = createTokenUser(user)
   const token = createJWT({ payload: tokenUser })
-  res
-    .status(StatusCodes.OK)
-    .json({
-      user: { id: user._id, name: user.name, email: user.email, role: user.role, createdAt: user.createdAt },
-      token,
+  res.status(StatusCodes.OK).json({
+      user: { 
+        id: user._id,
+        name: user.name, 
+        email: user.email, 
+        role: user.role, 
+        createdAt: user.createdAt },
+        token,
     })
 }
 
@@ -139,9 +142,7 @@ const forgotPassword = async (req, res) => {
     await user.save()
   }
 
-  res
-    .status(StatusCodes.OK)
-    .json({ msg: 'Please check your email for reset password link' })
+  res.status(StatusCodes.OK).json({ msg: 'Please check your email for reset password link' })
 }
 
 const resetPassword = async (req, res) => {
@@ -160,10 +161,7 @@ const resetPassword = async (req, res) => {
   if (user) {
     const currentDate = new Date()
 
-    if (
-      user.passwordToken === createHash(token) &&
-      user.passwordTokenExpirationDate > currentDate
-    ) {
+    if (user.passwordToken === createHash(token) && user.passwordTokenExpirationDate > currentDate) {
       user.password = password
       user.passwordToken = undefined
       user.passwordTokenExpirationDate = undefined
@@ -173,9 +171,7 @@ const resetPassword = async (req, res) => {
     throw new UnauthenticatedError('Password reset failed')
   }
 
-  res
-    .status(StatusCodes.OK)
-    .json({ msg: 'Success! New password set successfully' })
+  res.status(StatusCodes.OK).json({ msg: 'Success! New password set successfully' })
 }
 
 

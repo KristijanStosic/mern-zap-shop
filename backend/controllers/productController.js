@@ -1,14 +1,13 @@
 import Product from '../models/Product.js'
-import Category from '../models/Category.js'
 import { StatusCodes } from 'http-status-codes'
 import { BadRequestError, NotFoundError } from '../errors/index.js'
 import { fileURLToPath } from 'url'
 import fs from 'fs'
 import cloudinary from 'cloudinary'
+import APIFeatures from '../utils/apiFeatures.js'
 import path from 'path'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
-import APIFeatures from '../utils/apiFeatures.js'
 
 const createProduct = async (req, res) => {
   const {
@@ -176,12 +175,26 @@ const deleteProduct = async (req, res) => {
   if (!product) {
     throw new NotFoundError(`No product with id: ${productId}`)
   }
+
   if(product.image.public_id) {
     await cloudinary.v2.uploader.destroy(product.image.public_id)
   }
 
   await product.remove()
   res.status(StatusCodes.OK).json({ msg: 'Success! Product removed.' })
+}
+
+const productCount = async (req, res) => {
+  const countProducts = await Product.countDocuments((count) => count).clone()
+
+  res.status(StatusCodes.OK).json({ productCount: countProducts })
+}
+
+const featuredProducts = async (req, res) => {
+  const count = req.params.count ? req.params.count : 0
+  const featuredProducts = await Product.find({ featured: true }).limit(count)
+
+  res.status(StatusCodes.OK).json(featuredProducts)
 }
 
 const uploadImage = async (req, res) => {
@@ -205,6 +218,7 @@ const uploadImage = async (req, res) => {
     __dirname,
     '../../uploads/' + `${productImage.name}` 
   )
+
   await productImage.mv(imagePath)
 
   return res.send( `/uploads/${productImage.name}`)
@@ -237,22 +251,7 @@ const uploadImageToCloud = async (req, res) => {
 
   fs.unlinkSync(productImage.tempFilePath)
 
-  return res
-    .status(StatusCodes.OK)
-    .json({ public_id: result.public_id, url: result.secure_url })
-}
-
-const productCount = async (req, res) => {
-  const countProducts = await Product.countDocuments((count) => count).clone()
-
-  res.status(StatusCodes.OK).json({ productCount: countProducts })
-}
-
-const featuredProducts = async (req, res) => {
-  const count = req.params.count ? req.params.count : 0
-  const featuredProducts = await Product.find({ featured: true }).limit(count)
-
-  res.status(StatusCodes.OK).json(featuredProducts)
+  return res.status(StatusCodes.OK).json({ public_id: result.public_id, url: result.secure_url })
 }
 
 export {

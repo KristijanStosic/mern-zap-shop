@@ -17,14 +17,12 @@ const createPublisher = async (req, res) => {
   }
 
   const publisher = await Publisher.create({ name })
-  res
-    .status(StatusCodes.CREATED)
-    .json(publisher)
+  res.status(StatusCodes.CREATED).json(publisher)
 }
 
 const getAllPublishers = async (req, res) => {
   const publishers = await Publisher.find({})
-  res.status(StatusCodes.OK).json({ publishers })
+  res.status(StatusCodes.OK).json(publishers)
 }
 
 const getPublisherById = async (req, res) => {
@@ -68,11 +66,13 @@ const deletePublisher = async (req, res) => {
   const { id: publisherId } = req.params
 
   const product = await Product.findOne({ publisher: publisherId })
+
   if(product) {
     throw new BadRequestError('Please delete all products related with this publisher')
   }
 
   const publisher = await Publisher.findOne({ _id: publisherId })
+  
   if (!publisher) {
     throw new NotFoundError(`No publisher with id: ${publisherId}`)
   }
