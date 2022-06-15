@@ -35,7 +35,7 @@ export const publisherListReducer = (state = { publishers: [] }, action) => {
   }
 }
 
-export const publisherDetailsReducer = (state = { publisher: {} }, action) => {
+export const publisherDetailsReducer = (state = { loading: true, publisher: {} }, action) => {
   switch (action.type) {
     case PUBLISHER_DETAILS_REQUEST:
       return { ...state, loading: true }

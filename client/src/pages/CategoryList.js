@@ -59,7 +59,7 @@ const CategoryList = () => {
       ) : error ? (
         <Alert severity='error'>{error}</Alert>
       ) : (
-        <Grid container spacing={2}>
+        <Grid container spacing={2} sx={{ mt: 2 }}>
           <Grid item xs={12}>
             <Grid container spacing={2}>
               <Grid item xs={6}>

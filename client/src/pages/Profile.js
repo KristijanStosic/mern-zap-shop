@@ -54,7 +54,7 @@ const Profile = () => {
     } else {
       if (!user || !user.name || !user.email || success) {
         dispatch({ type: USER_UPDATE_PROFILE_RESET })
-        dispatch(getUserDetails('profile')) // getting logged in user
+        dispatch(getUserDetails('profile'))
         dispatch(getMyOrders())
       } else {
         setName(user.name)
@@ -122,7 +122,6 @@ const Profile = () => {
               >
                 UPDATE PROFILE
               </Button>
-
               <Button
                 component={Link}
                 to='/update-password'

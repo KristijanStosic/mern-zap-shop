@@ -35,7 +35,7 @@ export const categoryListReducer = (state = { categories: [] }, action) => {
   }
 }
 
-export const categoryDetailsReducer = (state = { category: {} }, action) => {
+export const categoryDetailsReducer = (state = { loading: true, category: {} }, action) => {
   switch (action.type) {
     case CATEGORY_DETAILS_REQUEST:
       return { ...state, loading: true }

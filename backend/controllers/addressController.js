@@ -11,12 +11,12 @@ const createAddress = async (req, res) => {
   }
   req.body.user = req.user.userId
   const address = await Address.create(req.body)
-  res.status(StatusCodes.CREATED).json({ address })
+  res.status(StatusCodes.CREATED).json(address)
 }
 
 const getAllAddresses = async (req, res) => {
-  const addresses = await Address.find({})
-  res.status(StatusCodes.OK).json({ addresses })
+  const addresses = await Address.find({}).populate('user', 'name email')
+  res.status(StatusCodes.OK).json(addresses)
 }
 
 const getAddressById = async (req, res) => {
@@ -28,16 +28,22 @@ const getAddressById = async (req, res) => {
     throw new NotFoundError(`No address with id: ${addressId}`)
   }
 
-  res.status(StatusCodes.OK).json({ address })
+  res.status(StatusCodes.OK).json(address)
+}
+
+const getUserAddress = async (req, res) => {
+  const address = await Address.findOne({ user: req.user.userId })
+
+  if(!address) {
+    throw new NotFoundError('Address not found')
+  }
+
+  res.status(StatusCodes.OK).json(address)
 }
 
 const updateAddress = async (req, res) => {
   const { id: addressId } = req.params
   const { street, city, postalCode, country } = req.body
-
-  if (!street || !city || !postalCode || !country) {
-    throw new BadRequestError('Please provide all values')
-  }
 
   const address = await Address.findOne({ _id: addressId })
 
@@ -69,11 +75,11 @@ const deleteAddress = async (req, res) => {
 
   res.status(StatusCodes.OK).json({ msg: 'Success! Address removed.' })
 }
-
 export {
   createAddress,
   deleteAddress,
   getAllAddresses,
   getAddressById,
   updateAddress,
+  getUserAddress,
 }

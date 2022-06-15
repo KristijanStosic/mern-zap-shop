@@ -34,6 +34,10 @@ import {
   CategoryUpdate,
   PublisherCreate,
   PublisherUpdate,
+  AddressList,
+  MyAddress,
+  AddressUpdate,
+  AddressCreate
 } from './pages'
 
 import { Container, createTheme, CssBaseline, ThemeProvider, } from '@mui/material'
@@ -83,6 +87,12 @@ const App = () => {
                 <Route path='/admin/publisher-list' element={ <ProtectedRoute> <PublisherList /> </ProtectedRoute>} />
                 <Route path='/admin/publisher-create' element={ <ProtectedRoute> <PublisherCreate /> </ProtectedRoute>} />
                 <Route path='/admin/publisher/:id/update' element={ <ProtectedRoute> <PublisherUpdate /> </ProtectedRoute>} />
+
+                {/* Addresses */}
+                <Route path='/admin/address-list' element={ <ProtectedRoute> <AddressList /> </ProtectedRoute>} />
+                <Route path='/my-address' element={ <ProtectedRoute> <MyAddress /> </ProtectedRoute>} />
+                <Route path='/address-create' element={ <ProtectedRoute> <AddressCreate /> </ProtectedRoute>} />
+                <Route path='/address-update/:id/update' element={ <ProtectedRoute> <AddressUpdate /> </ProtectedRoute>} />
 
                 {/* Cart */}
                 <Route path='/cart'>

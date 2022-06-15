@@ -38,6 +38,7 @@ import {
 import { categoryCreateReducer, categoryDeleteReducer, categoryDetailsReducer, categoryListReducer, categoryUpdateReducer } from './redux/reducers/categoryReducers'
 import { publisherCreateReducer, publisherDeleteReducer, publisherDetailsReducer, publisherListReducer, publisherUpdateReducer } from './redux/reducers/publisherReducers'
 import { reviewCreateReducer, singleProductReviewsReducer } from './redux/reducers/reviewReducers'
+import { addressCreateReducer, addressDetailsReducer, addressListReducer, addressUpdateReducer } from './redux/reducers/addressReducers'
 
 const reducer = combineReducers({
   productList: productListReducer,
@@ -74,6 +75,10 @@ const reducer = combineReducers({
   publisherCreate: publisherCreateReducer,
   publisherUpdate: publisherUpdateReducer,
   publisherDelete: publisherDeleteReducer,
+  addressList: addressListReducer,
+  addressDetails: addressDetailsReducer,
+  addressCreate: addressCreateReducer,
+  addressUpdate: addressUpdateReducer,
   reviewCreate: reviewCreateReducer,
   singleProductReviews: singleProductReviewsReducer
 })
@@ -94,6 +99,10 @@ const paymentMethodFromStorage = localStorage.getItem('paymentMethod')
   ? JSON.parse(localStorage.getItem('paymentMethod'))
   : {}
 
+const addressInfoFromStorage = localStorage.getItem('addressInfo')
+  ? JSON.parse(localStorage.getItem('addressInfo'))
+  : null
+
 const initialState = {
   cart: {
     cartItems: cartItemsFromStorage,
@@ -101,6 +110,7 @@ const initialState = {
     paymentMethod: paymentMethodFromStorage
   },
   userLogin: { userInfo: userInfoFromStorage },
+  userAddress: { addressInfo: addressInfoFromStorage }
 }
 
 const middleware = [thunk]

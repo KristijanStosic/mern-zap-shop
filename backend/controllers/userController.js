@@ -33,7 +33,7 @@ const getUserProfile = async (req, res) => {
 
 // update user with user.save()
 const updateUserProfile = async (req, res) => {
-  const { email, name} = req.body;
+  const { email, name } = req.body;
   
   if (!email || !name) {
     throw new BadRequestError('Please provide all values');
@@ -51,27 +51,26 @@ const updateUserProfile = async (req, res) => {
 };
 
 const updateUserById = async (req, res) => {
-    const { id: userId } = req.params
+  const { id: userId } = req.params
 
-    const { name, email, role } = req.body
+  const { name, email, role } = req.body
   
-    if (!name || !email || !role) {
-      throw new BadRequestError('Please provide all values')
-    }
+  if (!name || !email || !role) {
+    throw new BadRequestError('Please provide all values')
+  }
   
-    const user = await User.findOne({ _id: userId }).select('-password')
+  const user = await User.findOne({ _id: userId }).select('-password')
   
-    if (!user) {
-      throw new NotFoundError(`No user with id: ${userId}`)
-    }
+  if (!user) {
+    throw new NotFoundError(`No user with id: ${userId}`)
+  }
 
-    user.name = name
-    user.email = email
-    user.role = role
-    await user.save()
+  user.name = name
+  user.email = email
+  user.role = role
+  await user.save()
   
-    res.status(StatusCodes.OK).json({ msg: 'Success! User updated.', user })
-
+  res.status(StatusCodes.OK).json({ msg: 'Success! User updated.', user })
 }
 
 const updateUserPassword = async (req, res) => {

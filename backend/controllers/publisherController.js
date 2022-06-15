@@ -35,11 +35,6 @@ const getPublisherById = async (req, res) => {
   if (!publisher) {
     throw new NotFoundError(`No publisher with id: ${publisherId}`)
   }
-
-  const product = await Product.findOne({ publisher: publisherId })
-  if(product) {
-    throw new BadRequestError('Please all delete products related with this publisher')
-  }
   res.status(StatusCodes.OK).json(publisher)
 }
 
@@ -73,8 +68,8 @@ const deletePublisher = async (req, res) => {
   const { id: publisherId } = req.params
 
   const product = await Product.findOne({ publisher: publisherId })
-  if (product) {
-    throw new BadRequestError('Please delete all products with a relationship')
+  if(product) {
+    throw new BadRequestError('Please delete all products related with this publisher')
   }
 
   const publisher = await Publisher.findOne({ _id: publisherId })

@@ -178,6 +178,10 @@ const Header = ({ darkMode, handleThemeChange }) => {
                     <Avatar /> Profile
                   </MenuItem>
                   <Divider />
+                  <MenuItem component={Link} to='/my-address'>
+                    Address
+                  </MenuItem>
+                  <Divider />
                   <MenuItem onClick={logoutHandler}>
                     <ListItemIcon>
                       <Logout fontSize='small' />
@@ -247,6 +251,10 @@ const Header = ({ darkMode, handleThemeChange }) => {
                   <Divider />
                   <MenuItem component={Link} to='/admin/address-list'>
                     Addresses
+                  </MenuItem>
+                  <Divider />
+                  <MenuItem component={Link} to='/admin/review-list'>
+                    Reviews
                   </MenuItem>
                   <Divider />
                   <MenuItem onClick={logoutHandler}>

@@ -32,8 +32,10 @@ import OrderList from './OrderList'
 import PublisherCreate from './PublisherCreate'
 import PublisherUpdate from './PublisherUpdate'
 import Search from '../components/Search'
-
-
+import AddressList from './AddressList'
+import MyAddress from './MyAddress'
+import AddressUpdate from './AddressUpdate'
+import AddressCreate from './AddressCreate'
 
 export {
   NotFound,
@@ -69,5 +71,9 @@ export {
   CategoryUpdate,
   PublisherCreate,
   PublisherUpdate,
-  Search
+  Search,
+  AddressList,
+  MyAddress,
+  AddressUpdate,
+  AddressCreate
 }

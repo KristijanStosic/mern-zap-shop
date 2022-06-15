@@ -16,7 +16,7 @@ import Alert from '../components/Alert'
 import Loading from '../components/Loading'
 import Meta from '../components/Meta'
 import styled from "styled-components";
-import { getProductDetails, updateProduct, } from '../redux/actions/productActions'
+import { getProductDetails, updateProduct } from '../redux/actions/productActions'
 import { toast } from 'react-toastify'
 import { PRODUCT_UPDATE_RESET } from '../redux/constants/productConstants'
 import { getAllCategories } from '../redux/actions/categoryActions'

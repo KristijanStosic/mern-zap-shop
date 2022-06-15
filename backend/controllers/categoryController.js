@@ -34,11 +34,6 @@ const getCategoryById = async (req, res) => {
     throw new NotFoundError(`No category with id: ${categoryId}`)
   }
 
-  const product = await Product.findOne({ category: categoryId })
-  if(product) {
-    throw new BadRequestError('Please all delete products related with this category')
-  }
-
   res.status(StatusCodes.OK).json(category)
 }
 
@@ -72,8 +67,8 @@ const deleteCategory = async (req, res) => {
   const { id: categoryId } = req.params
 
   const product = await Product.findOne({ category: categoryId })
-  if (product) {
-    throw new BadRequestError('Please delete all products with a relationship')
+  if(product) {
+    throw new BadRequestError('Please delete all products related with this category')
   }
 
   const category = await Category.findOne({ _id: categoryId })
