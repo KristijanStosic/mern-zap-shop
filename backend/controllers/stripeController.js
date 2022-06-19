@@ -1,7 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
 import Stripe from 'stripe'
-import OrderModel from '../models/OrderModel.js'
-import Order from '../models/Order.js'
 
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY)
 
@@ -10,7 +8,7 @@ const createCheckoutSession = async (req, res) => {
     
   });
 
-  const line_items = req.body.orderItems.map((item) => {
+  const line_items = req.body.cartItems.map((item) => {
     return {
       price_data: {
         currency: 'usd',
@@ -36,27 +34,8 @@ const createCheckoutSession = async (req, res) => {
     cancel_url: `${process.env.CLIENT_URL}/cart`,
   });
 
-
   res.send({ url: session.url })
 }
-
-const createOrder = async (req, res) => {
-
-  const newOrder = new Order({
-    totalPrice: res.data.totalPrice,
-    shippingAddress: res.data.shippingAddress,
-    paymentMethod: res.data.paymentMethod,
-    orderItems: res.data.orderItems,
-    user: res.data.user,
-  });
-
-  try {
-    const savedOrder = await newOrder.save();
-    console.log("Processed Order:", savedOrder);
-  } catch (err) {
-    console.log(err);
-  }
-};
 
 const webhook = async (req, res) => {
   const signature = req.headers['stripe-signature']
