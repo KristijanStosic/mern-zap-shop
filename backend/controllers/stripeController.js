@@ -1,14 +1,19 @@
 import { StatusCodes } from 'http-status-codes'
 import Stripe from 'stripe'
+import { updateOrderToPaid } from './orderController.js'
 
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY)
 
+let order
+
 const createCheckoutSession = async (req, res) => {
   const customer = await stripe.customers.create({
-    
-  });
-
-  const line_items = req.body.cartItems.map((item) => {
+    metadata: {
+      userId: req.body.user,
+    },
+  })
+  order = req.body.order
+  const line_items = order.orderItems.map((item) => {
     return {
       price_data: {
         currency: 'usd',
@@ -28,11 +33,11 @@ const createCheckoutSession = async (req, res) => {
 
   const session = await stripe.checkout.sessions.create({
     line_items,
-    mode: "payment",
+    mode: 'payment',
     customer: customer.id,
     success_url: `${process.env.CLIENT_URL}/checkout-success`,
     cancel_url: `${process.env.CLIENT_URL}/cart`,
-  });
+  })
 
   res.send({ url: session.url })
 }
@@ -72,46 +77,22 @@ const webhook = async (req, res) => {
   }
 
   // Handle the checkout.session.completed event
-  if (eventType === "checkout.session.completed") {
+  if (eventType === 'checkout.session.completed') {
     stripe.customers
       .retrieve(data.customer)
       .then(async (customer) => {
         try {
-          console.log(data)
-          console.log(customer)
+          console.log('Data from stripe', data)
+          console.log('Customer', customer)
+          updateOrderToPaid(order, data)
         } catch (err) {
-          console.log(typeof createOrder);
-          console.log(err);
+          console.log(err)
         }
       })
-      .catch((err) => console.log(err.message));
+      .catch((err) => console.log(err.message))
   }
   // Return a 200 response to acknowledge receipt of the event
   res.send().end()
 }
 
-/* ************************************************************************************ */
-const getStripeApiKey = async (req, res) => {
-  res.status(StatusCodes.OK).json({
-    stripeApiKey: process.env.STRIPE_API_KEY,
-  })
-}
-
-const createPayment = (req, res) => {
-  stripe.charges.create(
-    {
-      source: req.body.tokenId,
-      amount: req.body.amount,
-      currency: 'usd',
-    },
-    (stripeErr, stripeRes) => {
-      if (stripeErr) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(stripeErr)
-      } else {
-        res.status(StatusCodes.OK).json(stripeRes)
-      }
-    }
-  )
-}
-
-export { getStripeApiKey, createCheckoutSession, createPayment, webhook }
+export { createCheckoutSession, webhook }

@@ -10,14 +10,20 @@ import {
   ListItem,
   ListItemText,
   Divider,
-  Button
+  Button,
 } from '@mui/material'
 import Meta from '../components/Meta'
 import Alert from '../components/Alert'
 import Loading from '../components/Loading'
-import { getOrderById, updateOrderToDelivered } from '../redux/actions/orderActions'
-import { ORDER_DELIVER_RESET, ORDER_PAY_RESET } from '../redux/constants/orderConstants'
 import PayButton from '../components/PayButton'
+import {
+  getOrderById,
+  updateOrderToDelivered,
+} from '../redux/actions/orderActions'
+import {
+  ORDER_DELIVER_RESET,
+  ORDER_PAY_RESET,
+} from '../redux/constants/orderConstants'
 
 const Order = () => {
   const navigate = useNavigate()
@@ -39,25 +45,20 @@ const Order = () => {
   const { userInfo } = userLogin
 
   useEffect(() => {
-    if(!userInfo) {
+    if (!userInfo) {
       navigate('/login')
     }
 
-    if(!order || successDeliver || successPay || order._id !== orderId) {
+    if (!order || successDeliver || successPay || order._id !== orderId) {
       dispatch({ type: ORDER_DELIVER_RESET })
       dispatch({ type: ORDER_PAY_RESET })
       dispatch(getOrderById(orderId))
-    } 
+    }
   }, [dispatch, orderId, successDeliver, order, userInfo, navigate, successPay])
 
   const deliverHandler = () => {
     dispatch(updateOrderToDelivered(order))
   }
-
-  /*const payHandler = () => {
-    dispatch(updateOrderToPaid(order))
-  }*/
-
 
   return (
     <>
@@ -165,60 +166,58 @@ const Order = () => {
                       {order.shippingAddress.firstName}{' '}
                       {order.shippingAddress.lastName}
                     </ListItem>
-                    <ListItem>
-                      {order.shippingAddress.address}
-                    </ListItem>
+                    <ListItem>{order.shippingAddress.address}</ListItem>
                     <ListItem>
                       {order.shippingAddress.postalCode},{' '}
                       {order.shippingAddress.city}
                     </ListItem>
-                    <ListItem>
-                      {order.shippingAddress.country}
-                    </ListItem>
+                    <ListItem>{order.shippingAddress.country}</ListItem>
                   </List>
                   {order.isDelivered ? (
                     <Alert severity='success'>
-                      Delivered on: {new Date(order.deliveredAt).toLocaleDateString('LL')}
+                      Delivered on:{' '}
+                      {new Date(order.deliveredAt).toLocaleDateString('LL')}
                     </Alert>
                   ) : (
                     <Alert severity='error'>Not Delivered</Alert>
                   )}
                   {loadingDeliver && <Loading message='Updating order...' />}
-                  {userInfo && userInfo.user.role === 'admin' && order.isPaid && !order.isDelivered && (
-                    <Button type='button' variant='contained' color='primary' 
-                    onClick={deliverHandler} sx={{ mt: 2 }}>
-                      MARK AS DELIVERED
-                    </Button>
-                  )}
+                  {userInfo &&
+                    userInfo.user.role === 'admin' &&
+                    order.isPaid &&
+                    !order.isDelivered && (
+                      <Button
+                        style={{
+                          display: 'inline-block',
+                          width: '100%',
+                          padding: '15px',
+                          color: 'white',
+                          'font-size': '1.3em',
+                        }}
+                        type='button'
+                        variant='contained'
+                        color='primary'
+                        onClick={deliverHandler}
+                        sx={{ mt: 2 }}
+                      >
+                        MARK AS DELIVERED
+                      </Button>
+                    )}
                   <Divider sx={{ mt: 1 }} />
                   <Typography variant='h4'>Payment Method</Typography>
                   <ListItem>{order.paymentMethod}</ListItem>
                   {loadingPay && <Loading message='Loading...' />}
                   {errorPay && <Alert severity='error'>{errorPay}</Alert>}
                   {order.isPaid ? (
-                    <Alert severity='success'>Paid on: {new Date(order.paidAt).toLocaleDateString('LL')}</Alert>
+                    <Alert severity='success'>
+                      Paid on: {new Date(order.paidAt).toLocaleDateString('LL')}
+                    </Alert>
                   ) : (
                     <Alert severity='error'>Not Paid</Alert>
                   )}
-                  {userInfo && userInfo.user.role === 'user' && !order.isPaid &&
-                  <PayButton cartItems={order.orderItems} />}
-                 {/* {userInfo && userInfo.user.role !== 'admin' && !order.isPaid && 
-                  <StripeCheckout
-                  name="ZAP-SHOP"
-                  image="https://res.cloudinary.com/kristijan/image/upload/v1654428540/online-shop/shopping-cart-icon-illustration-free-vector_qldlfm.jpg"
-                  description={`Your total is $${order.totalPrice}`}
-                  amount={order.totalPrice * 100}
-                  token={onToken}
-                  stripeKey={STRIPE_KEY}
-                  >
-                    <Button  
-                    type='button' 
-                    //onClick={payHandler} 
-                    variant='contained' 
-                    color='primary'
-                    sx={{ mt: 2}}
-                    >PAY NOW</Button>
-                  </StripeCheckout>} */}
+                  {userInfo &&
+                    userInfo.user.role === 'user' &&
+                    !order.isPaid && <PayButton order={order} />}
                 </Paper>
               </Container>
             </Grid>

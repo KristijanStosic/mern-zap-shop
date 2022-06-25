@@ -111,26 +111,25 @@ const deleteOrder = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: 'Success! Order removed' })
 }
 
-const updateOrderToPaid = async(req, res, data) => {
-  const { id: orderId } = req.params
+const updateOrderToPaid = async(order, data) => {
+  //const { id: orderId } = req.params
+  const orderToPaid = await Order.findOne({ _id: order._id })
 
-  const order = await Order.findOne({ _id: orderId })
-
-  if (!order) {
-    throw new NotFoundError(`No order with id : ${orderId}`)
+  if (!orderToPaid) {
+    throw new NotFoundError(`No order with id : ${order._id}`)
   }
 
-  order.status = 'paid'
-  order.isPaid = true 
-  order.paidAt = Date.now()
+  orderToPaid.status = 'paid'
+  orderToPaid.isPaid = true 
+  orderToPaid.paidAt = Date.now()
+  orderToPaid.paymentInfo = data
 
-  const updatedOrder = await order.save()
-  res.status(StatusCodes.OK).json(updatedOrder)
+  await orderToPaid.save()
+  //res.status(StatusCodes.OK).json(updatedOrder)
 }
 
 const updateOrderToDelivered = async (req, res) => {
   const { id: orderId } = req.params
-  //const { paymentIntentId } = req.body;
 
   const order = await Order.findOne({ _id: orderId })
   if (!order) {
@@ -141,7 +140,6 @@ const updateOrderToDelivered = async (req, res) => {
     throw new BadRequestError('This order is already delivered')
   }
 
-  //order.paymentIntentId = paymentIntentId;
   order.status = 'delivered'
   order.isDelivered = true
   order.deliveredAt = Date.now()

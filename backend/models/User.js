@@ -30,7 +30,7 @@ const UserSchema = new mongoose.Schema(
       enum: ['admin', 'user'],
       default: 'user',
     },
-    verificationToken: String,
+    /*verificationToken: String,
     isVerified: {
       type: Boolean,
       default: false,
@@ -41,7 +41,7 @@ const UserSchema = new mongoose.Schema(
     },
     passwordTokenExpirationDate: {
       type: Date,
-    },
+    },*/
   },
   {
     timestamps: true,

@@ -125,7 +125,6 @@ export {
   updateUserById
 }
 
-
 // updateUser with findOneAndUpdate
 /*const updateUser = async (req, res) => {
   const { name, email, address } = req.body

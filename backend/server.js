@@ -47,7 +47,6 @@ app.use(fileUpload({ useTempFiles: true }))
 app.use(cors())
 
 app.get('/', (req, res) => {
-  //console.log(req.signedCookies);
   res.json({ msg: 'Welcome' })
 })
 

@@ -35,6 +35,7 @@ import {
   orderDeliverReducer,
   orderPayReducer,
 } from './redux/reducers/orderReducers'
+
 import {
   categoryCreateReducer,
   categoryDeleteReducer,
@@ -42,6 +43,7 @@ import {
   categoryListReducer,
   categoryUpdateReducer,
 } from './redux/reducers/categoryReducers'
+
 import {
   publisherCreateReducer,
   publisherDeleteReducer,
@@ -49,10 +51,12 @@ import {
   publisherListReducer,
   publisherUpdateReducer,
 } from './redux/reducers/publisherReducers'
+
 import {
   reviewCreateReducer,
   singleProductReviewsReducer,
 } from './redux/reducers/reviewReducers'
+
 import {
   addressCreateReducer,
   addressDetailsReducer,

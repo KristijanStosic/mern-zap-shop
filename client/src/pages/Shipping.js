@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import {
   Typography,
   Grid,
@@ -21,19 +21,13 @@ const Shipping = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const cart = useSelector((state) => state.cart)
-  const { shippingAddress } = cart
-
-  const userLogin = useSelector((state) => state.userLogin)
-  const { userInfo } = userLogin
-
-  const [firstName, setFirstName] = useState(userInfo.user.name)
-  const [lastName, setLastName] = useState(shippingAddress.lastName)
-  const [address, setAddress] = useState(shippingAddress.address)
-  const [city, setCity] = useState(shippingAddress.city)
-  const [postalCode, setPostalCode] = useState(shippingAddress.postalCode)
-  const [phoneNumber, setPhoneNumber] = useState(shippingAddress.phoneNumber)
-  const [country, setCountry] = useState(shippingAddress.country)
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [address, setAddress] = useState('')
+  const [city, setCity] = useState('')
+  const [postalCode, setPostalCode] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [country, setCountry] = useState('')
 
   const saveShippingAddressHandler = (e) => {
     e.preventDefault()
