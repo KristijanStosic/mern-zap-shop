@@ -31,7 +31,7 @@ import { REVIEW_CREATE_RESET } from '../redux/constants/reviewConstants'
 
 const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1)
-  const [rating, setRating] = useState(1)
+  const [rating, setRating] = useState('')
   const [comment, setComment] = useState('')
   const [title, setTitle] = useState('')
 
@@ -253,6 +253,7 @@ const ProductDetails = () => {
                     size='small'
                     onChange={(e) => setRating(e.target.value)}
                     value={rating}
+                    displayEmpty
                   >
                     <MenuItem value=''>Select...</MenuItem>
                     <MenuItem value='1'>1 - Poor</MenuItem>

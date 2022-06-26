@@ -4,7 +4,7 @@ import { NotFoundError, BadRequestError, UnauthenticatedError } from '../errors/
 import { createTokenUser, checkPermissions, createJWT } from '../utils/index.js'
 
 const getAllUsers = async (req, res) => {
-  const users = await User.find({ }).select('-password')
+  const users = await User.find({ role: 'user' }).select('-password')
   res.status(StatusCodes.OK).json(users)
 }
 

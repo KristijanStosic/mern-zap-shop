@@ -89,8 +89,6 @@ const ProductUpdate = () => {
         setLanguageDependence(product.languageDependence)
         setOriginCountry(product.originCountry)
         setDesigner(product.designer)
-        setPublisher(product.publisher.name)
-        setCategory(product.category.name)
       }
     }
   }, [dispatch, navigate, productId, product, successUpdate])
@@ -327,6 +325,7 @@ const ProductUpdate = () => {
                     value={publisher}
                   >
                     {publishers && publishers.map((publisher) => (
+
                         <MenuItem key={publisher._id} value={publisher._id}>{publisher.name}</MenuItem>
                     ))}
                   </Select>

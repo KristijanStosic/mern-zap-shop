@@ -71,12 +71,6 @@ const OrderSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    clientSecret: {
-      type: String,
-    },
-    paymentIntentId: {
-      type: String,
-    },
     paymentInfo: {
       type: Object
     },

@@ -70,4 +70,8 @@ UserSchema.pre('remove', async function (next) {
   await this.model('Address').deleteMany({ user: this._id })
 })
 
+UserSchema.pre('remove', async function (next) {
+  await this.model('Review').deleteMany({ user: this._id })
+})
+
 export default mongoose.model('User', UserSchema)
