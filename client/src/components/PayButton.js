@@ -35,7 +35,7 @@ const PayButton = ({ order }) => {
         }}
         onClick={() => handleCheckout()}
       >
-        PAY
+        PAY WITH STRIPE
       </Button>
     </>
   )
