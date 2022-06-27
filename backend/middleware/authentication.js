@@ -1,7 +1,5 @@
 import { UnauthenticatedError, UnauthorizedError } from '../errors/index.js'
 import { isTokenValid } from '../utils/index.js'
-import { attachCookiesToResponse } from '../utils/index.js'
-import Token from '../models/Token.js'
 
 // authentication by passing token via Auth headers
 const authenticateUser = async (req, res, next) => {
