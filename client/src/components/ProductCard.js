@@ -60,7 +60,7 @@ const ProductCard = ({ product }) => {
         <Rating value={product.averageRating} text={` (${product.numOfReviews})  reviews`} />
       </CardContent>
       <CardActions>
-        <Button size='small' onClick={addToCartHandler}>
+        <Button size='small' onClick={addToCartHandler} disabled={product.countInStock === 0}>
           Add to cart
         </Button>
         <Button component={Link} to={`/products/${product.id}`} size='small'>
