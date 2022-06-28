@@ -16,7 +16,7 @@ import {
 
 router.route('/')
   .post(authenticateUser, createReview)
-  .get(getAllReviews)
+  .get(authenticateUser, authorizePermissions('admin'), getAllReviews)
   
 router.route('/:id')
   .get(getReviewById)

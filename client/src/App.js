@@ -37,7 +37,8 @@ import {
   AddressList,
   MyAddress,
   AddressUpdate,
-  AddressCreate
+  AddressCreate,
+  ReviewList
 } from './pages'
 
 import { Container, createTheme, CssBaseline, ThemeProvider, } from '@mui/material'
@@ -93,6 +94,9 @@ const App = () => {
                 <Route path='/my-address' element={ <ProtectedRoute> <MyAddress /> </ProtectedRoute>} />
                 <Route path='/address-create' element={ <ProtectedRoute> <AddressCreate /> </ProtectedRoute>} />
                 <Route path='/address-update/:id/update' element={ <ProtectedRoute> <AddressUpdate /> </ProtectedRoute>} />
+
+                {/* Reviews */}
+                <Route path='/admin/review-list' element={ <ProtectedRoute> <ReviewList /> </ProtectedRoute>} />
 
                 {/* Cart */}
                 <Route path='/cart'>

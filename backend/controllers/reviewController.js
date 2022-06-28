@@ -30,10 +30,10 @@ const createReview = async (req, res) => {
 const getAllReviews = async (req, res) => {
   const reviews = await Review.find({}).populate({
     path: 'product',
-    select: 'name designer price',
-  })
+    select: 'name',
+  }).populate('user', 'name')
 
-  res.status(StatusCodes.OK).json({ reviewsCount: reviews.length, reviews })
+  res.status(StatusCodes.OK).json(reviews)
 }
 
 const getReviewById = async (req, res) => {

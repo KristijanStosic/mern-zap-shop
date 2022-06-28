@@ -128,9 +128,7 @@ export const deleteCategory = (id) => async (dispatch, getState) => {
   try {
     dispatch({ type: CATEGORY_DELETE_REQUEST })
 
-    const {
-      userLogin: { userInfo },
-    } = getState()
+    const { userLogin: { userInfo } } = getState()
 
     const config = {
       headers: {

@@ -36,6 +36,7 @@ import AddressList from './AddressList'
 import MyAddress from './MyAddress'
 import AddressUpdate from './AddressUpdate'
 import AddressCreate from './AddressCreate'
+import ReviewList from './ReviewList'
 
 export {
   NotFound,
@@ -75,5 +76,6 @@ export {
   AddressList,
   MyAddress,
   AddressUpdate,
-  AddressCreate
+  AddressCreate,
+  ReviewList
 }

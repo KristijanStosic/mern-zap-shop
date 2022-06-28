@@ -54,6 +54,8 @@ import {
 
 import {
   reviewCreateReducer,
+  reviewDeleteReducer,
+  reviewListReducer,
   singleProductReviewsReducer,
 } from './redux/reducers/reviewReducers'
 
@@ -105,6 +107,8 @@ const reducer = combineReducers({
   addressUpdate: addressUpdateReducer,
   reviewCreate: reviewCreateReducer,
   singleProductReviews: singleProductReviewsReducer,
+  reviewList: reviewListReducer,
+  reviewDelete: reviewDeleteReducer
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')
