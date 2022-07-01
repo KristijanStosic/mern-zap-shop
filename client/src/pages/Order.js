@@ -204,7 +204,7 @@ const Order = () => {
                       </Button>
                     )}
                   <Divider sx={{ mt: 1 }} />
-                  <Typography variant='h4'>Payment Method</Typography>
+                  <Typography variant='h4' sx={{ mt: 2 }}>Payment Method</Typography>
                   <ListItem>{order.paymentMethod}</ListItem>
                   {loadingPay && <Loading message='Loading...' />}
                   {errorPay && <Alert severity='error'>{errorPay}</Alert>}

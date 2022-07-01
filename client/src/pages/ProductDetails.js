@@ -268,7 +268,6 @@ const ProductDetails = () => {
                 <Typography variant='h6'>Title</Typography>
                 <TextField
                   margin='normal'
-                  required
                   fullWidth
                   autoComplete='title'
                   id='title'
@@ -283,7 +282,6 @@ const ProductDetails = () => {
                 <Typography variant='h6'>Comment</Typography>
                 <TextField
                   margin='normal'
-                  required
                   fullWidth
                   autoComplete='comment'
                   id='comment'

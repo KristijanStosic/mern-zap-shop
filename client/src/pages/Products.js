@@ -23,6 +23,7 @@ import Loading from '../components/Loading'
 import Meta from '../components/Meta'
 import Alert from '../components/Alert'
 import Search from '../components/Search'
+import { REVIEW_CREATE_RESET } from '../redux/constants/reviewConstants'
 
 const Products = () => {
   const params = useParams()
@@ -46,11 +47,10 @@ const Products = () => {
   const { publishers } = publisherList
 
   useEffect(() => {
-    dispatch(
-      getAllProducts(keyword, page, sort, category, publisher, countInStock)
-    )
+    dispatch(getAllProducts(keyword, page, sort, category, publisher, countInStock))
     dispatch(getAllCategories())
     dispatch(getAllPublishers())
+    dispatch({ type: REVIEW_CREATE_RESET })
   }, [dispatch, keyword, page, sort, category, publisher, countInStock])
 
   const resetApiFeatures = () => {

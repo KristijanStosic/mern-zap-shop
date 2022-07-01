@@ -20,6 +20,7 @@ import { Delete } from '@mui/icons-material'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { addToCart, removeFromCart, clearCart} from '../redux/actions/cartActions'
 import { useQuery } from '../utils/utils'
+import { REVIEW_CREATE_RESET } from '../redux/constants/reviewConstants'
 import Meta from '../components/Meta'
 import CartSummary from '../components/CartSummary'
 
@@ -39,6 +40,7 @@ const Cart = () => {
   const quantity = Number(query.get('quantity'))
 
   useEffect(() => {
+    dispatch({ type: REVIEW_CREATE_RESET })
     if (productId) {
       dispatch(addToCart(productId, quantity))
     }
