@@ -23,7 +23,6 @@ import Meta from '../components/Meta'
 import { USER_UPDATE_PROFILE_RESET } from '../redux/constants/userConstants';
 import { getUserDetails, updateUserProfile } from '../redux/actions/userActions'
 import { getMyOrders } from '../redux/actions/orderActions'
-import { REVIEW_CREATE_RESET } from '../redux/constants/reviewConstants';
 
 const Profile = () => {
   const [name, setName] = useState('')
@@ -53,7 +52,6 @@ const Profile = () => {
     if (!userInfo) {
       navigate('/login')
     } else {
-      dispatch({ type: REVIEW_CREATE_RESET })
       if (!user || !user.name || !user.email || success) {
         dispatch({ type: USER_UPDATE_PROFILE_RESET })
         dispatch(getUserDetails('profile'))
