@@ -176,7 +176,7 @@ const Order = () => {
                   {order.isDelivered ? (
                     <Alert severity='success'>
                       Delivered on:{' '}
-                      {new Date(order.deliveredAt).toLocaleDateString('LL')}
+                      {new Date(order.deliveredAt).toLocaleString('LL')}
                     </Alert>
                   ) : (
                     <Alert severity='error'>Not Delivered</Alert>
@@ -210,7 +210,7 @@ const Order = () => {
                   {errorPay && <Alert severity='error'>{errorPay}</Alert>}
                   {order.isPaid ? (
                     <Alert severity='success'>
-                      Paid on: {new Date(order.paidAt).toLocaleDateString('LL')}
+                      Paid on: {new Date(order.paidAt).toLocaleString('LL')}
                     </Alert>
                   ) : (
                     <Alert severity='error'>Not Paid</Alert>
