@@ -82,7 +82,7 @@ const getAllProducts = async (req, res) => {
   ).search().filter().pagination(pageSize).sort()
 
   const products = await apiFeatures.query
-  res.status(StatusCodes.OK).json({ productsCount: productsCount, productsPerPage: products.length, products })
+  res.status(StatusCodes.OK).json({ productsCount: productsCount, productsPerPage: pageSize, products })
 }
 
 const getAllProductsByAdmin = async (req, res) => {
