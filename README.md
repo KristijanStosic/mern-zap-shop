@@ -24,6 +24,14 @@ SMTP_FROM_NAME = Add smtp from name
 CLOUDINARY_NAME =  cloudinary name
 CLOUDINARY_API_KEY = cloudinary api key
 CLOUDINARY_API_SECRET = cloudinary api secret
+
+STRIPE_API_KEY = stripe public key
+STRIPE_SECRET_KEY = stripe secret key
+STRIPE_WEBHOOK = webhook signing secret
+
+STRIPE_WEBHOOK2  = webhook signing secret
+
+CLIENT_URL = client url 
 ```
 
 ### Install Dependencies (frontend & backend)
